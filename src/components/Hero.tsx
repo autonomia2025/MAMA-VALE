@@ -53,7 +53,7 @@ export default function Hero() {
 
               <div className="mt-[32px] flex items-center gap-[24px]">
                 <Link
-                  to="/catalogo"
+                  to="/contrapesos#catalogo"
                   className="type-label inline-flex items-center justify-center py-[16px] px-[32px] rounded-full bg-ink-900 text-paper hover:bg-ink-900/90 hover:-translate-y-[2px] transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
                 >
                   Ver catálogo técnico
@@ -97,7 +97,7 @@ export default function Hero() {
 
               <div className="mt-[32px] flex items-center gap-[24px]">
                 <Link
-                  to="/catalogo"
+                  to="/contrapesos#catalogo"
                   className="type-label inline-flex items-center justify-center py-[16px] px-[32px] rounded-full bg-ink-900 text-paper hover:bg-ink-900/90 hover:-translate-y-[2px] transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
                 >
                   Ver catálogo técnico
@@ -141,7 +141,7 @@ export default function Hero() {
 
               <div className="mt-[32px] flex flex-col items-stretch gap-[16px]">
                 <Link
-                  to="/catalogo"
+                  to="/contrapesos#catalogo"
                   className="type-label w-full py-[16px] px-[24px] text-center rounded-full bg-ink-900 text-paper hover:bg-ink-900/90 transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
                 >
                   Ver catálogo técnico

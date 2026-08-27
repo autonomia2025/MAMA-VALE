@@ -115,15 +115,58 @@ export default function GramScale({ heroRef }: GramScaleProps) {
     setActiveIndex(restIdx !== -1 ? restIdx : 0);
   }, [ticks]);
 
-  // Mobile auto-loop animation
+  // Mobile auto-loop animation + touch drag support
   useEffect(() => {
     if (viewportMode !== 'mobile' || prefersReducedMotion) return;
 
+    let isInteracting = false;
+    let resumeTimeout: NodeJS.Timeout | null = null;
+
     const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % ticks.length);
+      if (!isInteracting) {
+        setActiveIndex((prev) => (prev + 1) % ticks.length);
+      }
     }, 1200);
 
-    return () => clearInterval(interval);
+    const handleTouch = (e: TouchEvent) => {
+      if (!containerRef.current) return;
+      isInteracting = true;
+      if (resumeTimeout) clearTimeout(resumeTimeout);
+
+      const touch = e.touches[0];
+      const rect = containerRef.current.getBoundingClientRect();
+      const touchX = touch.clientX - rect.left;
+      const totalTicks = ticks.length;
+      if (totalTicks <= 1 || rect.width <= 0) return;
+
+      const step = rect.width / (totalTicks - 1);
+      const rawIndex = Math.round(touchX / step);
+      const clampedIndex = Math.max(0, Math.min(totalTicks - 1, rawIndex));
+      setActiveIndex(clampedIndex);
+    };
+
+    const handleTouchEnd = () => {
+      resumeTimeout = setTimeout(() => {
+        isInteracting = false;
+      }, 2500);
+    };
+
+    const containerEl = containerRef.current;
+    if (containerEl) {
+      containerEl.addEventListener('touchstart', handleTouch, { passive: true });
+      containerEl.addEventListener('touchmove', handleTouch, { passive: true });
+      containerEl.addEventListener('touchend', handleTouchEnd, { passive: true });
+    }
+
+    return () => {
+      clearInterval(interval);
+      if (resumeTimeout) clearTimeout(resumeTimeout);
+      if (containerEl) {
+        containerEl.removeEventListener('touchstart', handleTouch);
+        containerEl.removeEventListener('touchmove', handleTouch);
+        containerEl.removeEventListener('touchend', handleTouchEnd);
+      }
+    };
   }, [viewportMode, ticks.length, prefersReducedMotion]);
 
   // Snap to closest mark based on cursor position in Hero

@@ -5,7 +5,7 @@ import { NavItem } from '../types';
 const NAV_ITEMS: NavItem[] = [
   { name: 'Contrapesos', href: '/contrapesos', index: '01' },
   { name: 'Aplicaciones', href: '/aplicaciones', index: '02' },
-  { name: 'Catálogo', href: '/catalogo', index: '03' },
+  { name: 'Catálogo', href: '/contrapesos#catalogo', index: '03' },
   { name: 'Nosotros', href: '/nosotros', index: '04' },
 ];
 

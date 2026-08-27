@@ -48,7 +48,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/catalogo"
+                  to="/contrapesos#catalogo"
                   className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
                 >
                   Catálogo técnico

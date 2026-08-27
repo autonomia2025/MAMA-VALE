@@ -134,6 +134,7 @@ export default function TablaTecnica() {
 
   return (
     <section
+      id="catalogo"
       ref={sectionRef}
       aria-label="Catálogo técnico de contrapesos"
       className="w-full bg-mist py-[56px] md:py-[80px] lg:py-[128px] overflow-x-clip"
@@ -316,10 +317,10 @@ export default function TablaTecnica() {
                 {filteredData.map((item) => (
                   <tr
                     key={item.codigo}
-                    className="block md:table-row py-[20px] md:py-0 border-b border-line group lg:hover:bg-paper transition-colors duration-[200ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+                    className="block md:table-row py-[20px] md:py-0 border-b border-line group active:bg-paper/80 lg:hover:bg-paper transition-all duration-[200ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
                   >
                     {/* CÓDIGO */}
-                    <td className="block md:table-cell float-left md:float-none w-1/2 md:w-[20%] text-left md:py-[16px] lg:py-[20px] md:border-b md:border-line type-data text-ink-900 group-hover:text-gold-700 transition-colors duration-[200ms] ease-[cubic-bezier(0.16,1,0.3,1)]">
+                    <td className="block md:table-cell float-left md:float-none w-1/2 md:w-[20%] text-left md:py-[16px] lg:py-[20px] md:border-b md:border-line type-data text-ink-900 group-hover:text-gold-700 group-active:text-gold-700 transition-colors duration-[200ms] ease-[cubic-bezier(0.16,1,0.3,1)]">
                       {item.codigo}
                     </td>
 
