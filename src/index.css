@@ -1,0 +1,337 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #FAFAF9;
+  --color-mist: #ECEDEE;
+  --color-line: #D8DADC;
+  --color-steel-500: #5F6771;
+  --color-ink-900: #0D1B2E;
+  --color-gold-500: #C89B32;
+  --color-gold-700: #8A6A1F;
+
+  --font-sans: 'Geist', 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Geist Mono', 'JetBrains Mono', monospace;
+
+  --ease-industrial: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  --paper: #FAFAF9;
+  --mist: #ECEDEE;
+  --line: #D8DADC;
+  --steel-500: #5F6771;
+  --ink-900: #0D1B2E;
+  --gold-500: #C89B32;
+  --gold-700: #8A6A1F;
+
+  --easing: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-industrial: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-standard: 320ms;
+  --duration-hover: 180ms;
+}
+
+/* Base resets & typography */
+html {
+  background-color: var(--paper);
+  color: var(--ink-900);
+  font-family: var(--font-sans);
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink-900);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+/* Strict Typography Roles */
+.type-display {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-align: left;
+}
+
+@media (min-width: 1024px) {
+  .type-display {
+    font-size: 120px;
+  }
+}
+
+.type-h1 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  text-align: left;
+}
+
+@media (min-width: 1024px) {
+  .type-h1 {
+    font-size: 72px;
+  }
+}
+
+.type-h2 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-align: left;
+}
+
+@media (min-width: 1024px) {
+  .type-h2 {
+    font-size: 48px;
+  }
+}
+
+.type-h3 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-align: left;
+}
+
+@media (min-width: 1024px) {
+  .type-h3 {
+    font-size: 28px;
+  }
+}
+
+.type-body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: 0;
+  text-align: left;
+}
+
+@media (min-width: 1024px) {
+  .type-body {
+    font-size: 17px;
+  }
+}
+
+.type-body-sm {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: 0;
+  text-align: left;
+}
+
+@media (min-width: 1024px) {
+  .type-body-sm {
+    font-size: 15px;
+  }
+}
+
+.type-label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.type-data {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  text-align: left;
+}
+
+@media (min-width: 1024px) {
+  .type-data {
+    font-size: 15px;
+  }
+}
+
+/* Grid & Layout Helpers */
+.grid-base {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.layout-container {
+  width: 100%;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+@media (min-width: 768px) {
+  .layout-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .layout-container {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+}
+
+.section-padding {
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-top: 160px;
+    padding-bottom: 160px;
+  }
+}
+
+/* Focus States */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--ink-900) !important;
+  outline-offset: 2px !important;
+}
+
+footer a:focus-visible,
+footer button:focus-visible,
+footer input:focus-visible,
+footer select:focus-visible,
+footer textarea:focus-visible {
+  outline: 2px solid var(--gold-500) !important;
+  outline-offset: 2px !important;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Hero Entrance Keyframes & Animation Classes */
+@keyframes heroFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroScaleX {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes heroLineReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroTickFade {
+  0% {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+.anim-hero-eyebrow {
+  animation: heroFadeUp 500ms var(--ease-industrial) 0ms forwards;
+}
+
+.anim-hero-hairline {
+  transform-origin: left;
+  animation: heroScaleX 600ms var(--ease-industrial) 0ms forwards;
+}
+
+.anim-hero-title-1 {
+  animation: heroLineReveal 700ms var(--ease-industrial) 120ms forwards;
+}
+
+.anim-hero-title-2 {
+  animation: heroLineReveal 700ms var(--ease-industrial) 210ms forwards;
+}
+
+.anim-hero-title-3 {
+  animation: heroLineReveal 700ms var(--ease-industrial) 300ms forwards;
+}
+
+.anim-hero-body {
+  animation: heroFadeUp 600ms var(--ease-industrial) 420ms forwards;
+}
+
+.anim-hero-baseline {
+  transform-origin: left;
+  animation: heroScaleX 900ms var(--ease-industrial) 560ms forwards;
+}
+
+.anim-hero-indicator-entry {
+  animation: heroFadeUp 400ms var(--ease-industrial) 1100ms forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-hero-eyebrow,
+  .anim-hero-hairline,
+  .anim-hero-title-1,
+  .anim-hero-title-2,
+  .anim-hero-title-3,
+  .anim-hero-body,
+  .anim-hero-baseline,
+  .anim-hero-indicator-entry {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
