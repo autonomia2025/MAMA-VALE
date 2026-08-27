@@ -13,13 +13,13 @@ export default function Hero() {
     >
       <div className="layout-container h-full flex-1 flex flex-col justify-between">
         {/* BLOQUE SUPERIOR — Eyebrow + Hairline */}
-        <div className="w-full flex items-center">
+        <div className="w-full flex items-center min-w-0">
           <div className="grid-base w-full items-center">
-            <div className="col-span-12 md:col-span-8 lg:col-span-6 flex items-center gap-[16px]">
-              <span className="type-label text-gold-700 anim-hero-eyebrow">
+            <div className="col-span-12 md:col-span-8 lg:col-span-6 flex items-center gap-[12px] sm:gap-[16px] min-w-0">
+              <span className="type-label text-gold-700 anim-hero-eyebrow text-[9.5px] xs:text-[10px] sm:text-[11px] tracking-[0.06em] sm:tracking-[0.10em] truncate sm:whitespace-nowrap">
                 CONTRAPESOS PARA BALANCEO DE NEUMÁTICOS
               </span>
-              <div className="h-[1px] bg-gold-500 flex-1 anim-hero-hairline min-w-[24px]" />
+              <div className="h-[1px] bg-gold-500 flex-1 anim-hero-hairline min-w-[12px] hidden xs:block" />
             </div>
           </div>
         </div>

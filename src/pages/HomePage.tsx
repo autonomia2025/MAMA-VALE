@@ -1,6 +1,8 @@
 import Hero from '../components/Hero';
 import Aplicaciones from '../components/Aplicaciones';
 import LineaProducto from '../components/LineaProducto';
+import PorQueJVK from '../components/PorQueJVK';
+import Cierre from '../components/Cierre';
 
 export default function HomePage() {
   return (
@@ -8,6 +10,8 @@ export default function HomePage() {
       <Hero />
       <Aplicaciones />
       <LineaProducto />
+      <PorQueJVK />
+      <Cierre />
     </>
   );
 }

@@ -293,7 +293,7 @@ export default function LineaProducto() {
     <section
       ref={sectionRef}
       aria-label="Línea de producto"
-      className="w-full bg-mist section-padding"
+      className="w-full bg-mist section-padding overflow-x-clip"
     >
       <div className="layout-container">
         {/* Encabezado de Sección */}

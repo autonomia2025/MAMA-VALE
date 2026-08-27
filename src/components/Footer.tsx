@@ -25,7 +25,7 @@ export default function Footer() {
         <div className="border-t border-paper/15 mt-[96px] mb-[64px]" />
 
         {/* Bottom Row: 4 Columns (2 cols on mobile, 4 on desktop) */}
-        <div className="grid grid-cols-2 lg:grid-cols-12 gap-[24px]">
+        <div className="grid grid-cols-2 lg:grid-cols-12 gap-x-[20px] gap-y-[32px] lg:gap-[24px]">
           {/* Column 1: Producto */}
           <div className="col-span-1 lg:col-span-3 flex flex-col gap-[24px]">
             <span className="type-label text-gold-500">PRODUCTO</span>
@@ -112,7 +112,7 @@ export default function Footer() {
           </div>
 
           {/* Column 4: Contacto */}
-          <div className="col-span-1 lg:col-span-3 flex flex-col gap-[24px]">
+          <div className="col-span-2 sm:col-span-1 lg:col-span-3 flex flex-col gap-[24px]">
             <span className="type-label text-gold-500">CONTACTO</span>
             <div className="flex flex-col gap-[12px]">
               <span className="type-body-sm text-paper/65">
@@ -126,7 +126,7 @@ export default function Footer() {
               </a>
               <a
                 href="mailto:contacto@maquinariasjvk.cl"
-                className="type-data text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
+                className="type-data text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2 break-all"
               >
                 contacto@maquinariasjvk.cl ↗
               </a>

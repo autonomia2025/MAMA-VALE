@@ -50,7 +50,7 @@ interface GramScaleProps {
 
 export default function GramScale({ heroRef }: GramScaleProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [containerWidth, setContainerWidth] = useState(1000);
+  const [containerWidth, setContainerWidth] = useState(0);
   const [viewportMode, setViewportMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [activeIndex, setActiveIndex] = useState<number>(3); // 20g default
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -179,21 +179,21 @@ export default function GramScale({ heroRef }: GramScaleProps) {
   return (
     <div
       ref={containerRef}
-      className="relative w-full select-none"
+      className="relative w-full max-w-full overflow-hidden select-none"
       aria-label="Escala interactiva de gramaje"
       role="region"
     >
       <svg
         width="100%"
         height={SVG_HEIGHT}
-        className="overflow-visible block"
+        className="block w-full max-w-full"
         style={{ width: '100%' }}
       >
         {/* Baseline (animated with scaleX on entrance) */}
         <line
           x1={0}
           y1={BASELINE_Y}
-          x2={containerWidth}
+          x2={containerWidth || '100%'}
           y2={BASELINE_Y}
           stroke="#D8DADC"
           strokeWidth="1"

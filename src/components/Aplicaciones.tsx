@@ -163,7 +163,7 @@ export default function Aplicaciones() {
     <section
       ref={sectionRef}
       aria-label="Aplicaciones por sector"
-      className="w-full bg-paper section-padding"
+      className="w-full bg-paper section-padding overflow-x-clip"
     >
       <div className="layout-container">
         {/* Encabezado de Sección */}
@@ -232,7 +232,7 @@ export default function Aplicaciones() {
                       ? 'none'
                       : `opacity 600ms cubic-bezier(0.16, 1, 0.3, 1) ${rowDelayMs}ms, transform 600ms cubic-bezier(0.16, 1, 0.3, 1) ${rowDelayMs}ms`,
                   }}
-                  className="group block relative w-full -mx-[20px] px-[20px] md:-mx-[40px] md:px-[40px] lg:-mx-[80px] lg:px-[80px] py-[32px] md:py-[48px] hover:bg-mist transition-colors duration-[260ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
+                  className="group block relative w-auto -mx-[20px] px-[20px] md:-mx-[40px] md:px-[40px] lg:-mx-[80px] lg:px-[80px] py-[32px] md:py-[48px] hover:bg-mist transition-colors duration-[260ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
                 >
                   {/* Desktop Layout (≥ 1200px / lg) */}
                   <div className="hidden lg:grid grid-cols-12 gap-[24px] items-center">
