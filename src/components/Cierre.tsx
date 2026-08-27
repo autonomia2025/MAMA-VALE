@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { useReveal } from '../hooks/useReveal';
 
 // Reemplazables de contacto centralizados
 export const CONTACT_PHONE = '+56 9 0000 0000';
@@ -12,28 +12,20 @@ interface ScaleTick {
   isMajor: boolean;
 }
 
-const DESKTOP_CLOSING_TICKS: ScaleTick[] = [
-  { isMajor: true },
-  { isMajor: false },
-  { isMajor: false },
-  { isMajor: true },
-  { isMajor: false },
-  { isMajor: false },
-  { isMajor: true },
-  { isMajor: false },
-  { isMajor: false },
-  { isMajor: true },
-  { isMajor: false },
-  { isMajor: false },
-];
-
-const MOBILE_CLOSING_TICKS: ScaleTick[] = [
-  { isMajor: true },
-  { isMajor: false },
-  { isMajor: true },
-  { isMajor: false },
-  { isMajor: true },
-  { isMajor: true },
+// 12 marcas distribuidas idénticamente a la escala del Hero: mayores en 1, 5, 9 y 12 (índices 0, 4, 8 y 11)
+const CLOSING_TICKS: ScaleTick[] = [
+  { isMajor: true },  // 0 (pos 1)
+  { isMajor: false }, // 1
+  { isMajor: false }, // 2
+  { isMajor: false }, // 3
+  { isMajor: true },  // 4 (pos 5)
+  { isMajor: false }, // 5
+  { isMajor: false }, // 6
+  { isMajor: false }, // 7
+  { isMajor: true },  // 8 (pos 9)
+  { isMajor: false }, // 9
+  { isMajor: false }, // 10
+  { isMajor: true },  // 11 (pos 12)
 ];
 
 interface ClosingScaleProps {
@@ -42,21 +34,6 @@ interface ClosingScaleProps {
 }
 
 function ClosingScale({ isRevealed, prefersReducedMotion }: ClosingScaleProps) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkViewport = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkViewport();
-    window.addEventListener('resize', checkViewport);
-    return () => window.removeEventListener('resize', checkViewport);
-  }, []);
-
-  const ticks = useMemo(() => {
-    return isMobile ? MOBILE_CLOSING_TICKS : DESKTOP_CLOSING_TICKS;
-  }, [isMobile]);
-
   return (
     <div
       aria-hidden="true"
@@ -81,17 +58,17 @@ function ClosingScale({ isRevealed, prefersReducedMotion }: ClosingScaleProps) {
             transform: isRevealed || prefersReducedMotion ? 'scaleX(1)' : 'scaleX(0)',
             transition: prefersReducedMotion
               ? 'none'
-              : 'transform 900ms cubic-bezier(0.16, 1, 0.3, 1) 600ms',
+              : 'transform 700ms cubic-bezier(0.16, 1, 0.3, 1) 300ms',
           }}
         />
 
-        {/* Ticks (12 en desktop, 6 en mobile) */}
-        {ticks.map((tick, idx) => {
-          const stepPct = (idx / (ticks.length - 1)) * 100;
+        {/* Ticks (12 marcas idénticas en proporciones a la del hero) */}
+        {CLOSING_TICKS.map((tick, idx) => {
+          const stepPct = (idx / (CLOSING_TICKS.length - 1)) * 100;
           const height = tick.isMajor ? 18 : 9;
           const y1 = 24 - height / 2;
           const y2 = 24 + height / 2;
-          const tickDelay = 600 + idx * 35;
+          const tickDelay = 300 + idx * 35;
 
           return (
             <line
@@ -117,45 +94,7 @@ function ClosingScale({ isRevealed, prefersReducedMotion }: ClosingScaleProps) {
 }
 
 export default function Cierre() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isRevealed, setIsRevealed] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  // Motion preference detection
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-
-    const handleMediaChange = (e: MediaQueryListEvent) => {
-      setPrefersReducedMotion(e.matches);
-    };
-
-    mediaQuery.addEventListener('change', handleMediaChange);
-    return () => mediaQuery.removeEventListener('change', handleMediaChange);
-  }, []);
-
-  // IntersectionObserver for reveal
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting) {
-          setIsRevealed(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  const { ref: sectionRef, isRevealed, prefersReducedMotion, getStyle } = useReveal<HTMLElement>();
 
   return (
     <section
@@ -171,12 +110,8 @@ export default function Cierre() {
             {/* Columnas 1 a 8: Eyebrow + Titular type-display */}
             <div className="col-span-8 flex flex-col gap-[32px]">
               <span
-                className="type-label text-gold-700 transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{
-                  opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                  transform:
-                    isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                }}
+                className="type-label text-gold-700"
+                style={getStyle(0)}
               >
                 COTIZACIÓN
               </span>
@@ -210,13 +145,8 @@ export default function Cierre() {
 
             {/* Columnas 9 a 12: Párrafo de apoyo + Acciones */}
             <div
-              className="col-span-4 self-end flex flex-col justify-end transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-              style={{
-                opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                transform:
-                  isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                transitionDelay: prefersReducedMotion ? '0ms' : '300ms',
-              }}
+              className="col-span-4 self-end flex flex-col justify-end"
+              style={getStyle(1)}
             >
               <p className="type-body-sm text-steel-500 m-0 leading-[1.6]">
                 Cuéntanos el tipo de llanta y el volumen mensual que manejas. Te respondemos con gramajes, precios y plazos.
@@ -260,12 +190,8 @@ export default function Cierre() {
             {/* Titular en columnas 1 a 10 */}
             <div className="w-full max-w-[85%] flex flex-col gap-[32px]">
               <span
-                className="type-label text-gold-700 transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{
-                  opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                  transform:
-                    isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                }}
+                className="type-label text-gold-700"
+                style={getStyle(0)}
               >
                 COTIZACIÓN
               </span>
@@ -299,13 +225,8 @@ export default function Cierre() {
 
             {/* Párrafo y acciones con 56px de aire, columnas 1 a 6 */}
             <div
-              className="mt-[56px] max-w-[480px] flex flex-col gap-[32px] transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-              style={{
-                opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                transform:
-                  isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                transitionDelay: prefersReducedMotion ? '0ms' : '300ms',
-              }}
+              className="mt-[56px] max-w-[480px] flex flex-col gap-[32px]"
+              style={getStyle(1)}
             >
               <p className="type-body-sm text-steel-500 m-0 leading-[1.6]">
                 Cuéntanos el tipo de llanta y el volumen mensual que manejas. Te respondemos con gramajes, precios y plazos.
@@ -346,12 +267,8 @@ export default function Cierre() {
           <div className="flex md:hidden flex-col">
             <div className="flex flex-col gap-[24px]">
               <span
-                className="type-label text-gold-700 transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{
-                  opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                  transform:
-                    isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                }}
+                className="type-label text-gold-700"
+                style={getStyle(0)}
               >
                 COTIZACIÓN
               </span>
@@ -384,13 +301,8 @@ export default function Cierre() {
             </div>
 
             <div
-              className="mt-[32px] w-full flex flex-col gap-[28px] transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-              style={{
-                opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                transform:
-                  isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                transitionDelay: prefersReducedMotion ? '0ms' : '300ms',
-              }}
+              className="mt-[32px] w-full flex flex-col gap-[28px]"
+              style={getStyle(1)}
             >
               <p className="type-body-sm text-steel-500 m-0 leading-[1.6]">
                 Cuéntanos el tipo de llanta y el volumen mensual que manejas. Te respondemos con gramajes, precios y plazos.
@@ -426,13 +338,8 @@ export default function Cierre() {
 
         {/* Bloque de Datos de Contacto */}
         <div
-          className="mt-[64px] md:mt-[96px] transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-          style={{
-            opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-            transform:
-              isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-            transitionDelay: prefersReducedMotion ? '0ms' : '450ms',
-          }}
+          className="mt-[64px] md:mt-[96px]"
+          style={getStyle(2)}
         >
           {/* Filete horizontal de 1px en line a ancho completo */}
           <div className="w-full border-t border-line" />

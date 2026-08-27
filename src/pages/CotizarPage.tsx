@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, FormEvent } from 'react';
+import { useState, useMemo, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import {
   CONTACT_PHONE,
@@ -6,6 +6,7 @@ import {
   CONTACT_DISPATCH,
   WHATSAPP_URL,
 } from '../components/Cierre';
+import { useReveal } from '../hooks/useReveal';
 
 const TIPO_OPTIONS = [
   'Clip-on acero',
@@ -22,9 +23,7 @@ const VOLUMEN_OPTIONS = [
 ] as const;
 
 export default function CotizarPage() {
-  const pageRef = useRef<HTMLElement>(null);
-  const [isRevealed, setIsRevealed] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const { ref: pageRef, getStyle } = useReveal<HTMLElement>();
 
   // Form State
   const [nombre, setNombre] = useState('');
@@ -36,42 +35,6 @@ export default function CotizarPage() {
   const [selectedVolumen, setSelectedVolumen] = useState<string>('');
   const [mensaje, setMensaje] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-  // Motion preference detection
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-
-    const handleMediaChange = (e: MediaQueryListEvent) => {
-      setPrefersReducedMotion(e.matches);
-    };
-
-    mediaQuery.addEventListener('change', handleMediaChange);
-    return () => mediaQuery.removeEventListener('change', handleMediaChange);
-  }, []);
-
-  // IntersectionObserver for reveal
-  useEffect(() => {
-    const el = pageRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting) {
-          setIsRevealed(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15 }
-    );
-
-    observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
 
   // Email format validation (standard RFC regex)
   const isEmailValid = useMemo(() => {
@@ -149,14 +112,7 @@ export default function CotizarPage() {
         {/* ENCABEZADO DE PÁGINA — Ancho columnas 1 a 8 */}
         <div
           className="w-full grid-base"
-          style={{
-            opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-            transform:
-              isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-            transition: prefersReducedMotion
-              ? 'none'
-              : 'opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1)',
-          }}
+          style={getStyle(0)}
         >
           <div className="col-span-12 lg:col-span-8 flex flex-col">
             {/* Eyebrow */}
@@ -180,14 +136,7 @@ export default function CotizarPage() {
         {/* CONTENEDOR DE DOS COLUMNAS — Con 96px de aire debajo del encabezado en desktop */}
         <div
           className="mt-[56px] md:mt-[72px] lg:mt-[96px] grid grid-cols-1 md:grid-cols-12 gap-[32px] md:gap-[24px] items-start"
-          style={{
-            opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-            transform:
-              isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-            transition: prefersReducedMotion
-              ? 'none'
-              : 'opacity 600ms cubic-bezier(0.16, 1, 0.3, 1) 200ms, transform 600ms cubic-bezier(0.16, 1, 0.3, 1) 200ms',
-          }}
+          style={getStyle(1)}
         >
           {/* ========================================================= */}
           {/* COLUMNA DEL FORMULARIO — Columnas 1 a 7 (Tablet: 1 a 8) */}

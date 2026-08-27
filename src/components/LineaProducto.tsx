@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useReveal } from '../hooks/useReveal';
 
 interface ProductSpec {
   label: string;
@@ -249,45 +249,7 @@ function TechnicalDrawing({
 }
 
 export default function LineaProducto() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isRevealed, setIsRevealed] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  // Detect motion preference
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-
-    const handleMediaChange = (e: MediaQueryListEvent) => {
-      setPrefersReducedMotion(e.matches);
-    };
-
-    mediaQuery.addEventListener('change', handleMediaChange);
-    return () => mediaQuery.removeEventListener('change', handleMediaChange);
-  }, []);
-
-  // IntersectionObserver for reveal
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting) {
-          setIsRevealed(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  const { ref: sectionRef, isRevealed, prefersReducedMotion, getStyle } = useReveal<HTMLElement>();
 
   return (
     <section
@@ -297,14 +259,7 @@ export default function LineaProducto() {
     >
       <div className="layout-container">
         {/* Encabezado de Sección */}
-        <div
-          className="transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-          style={{
-            opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-            transform:
-              isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(16px)',
-          }}
-        >
+        <div style={getStyle(0)}>
           {/* Desktop Layout (≥ 1024px / lg) */}
           <div className="hidden lg:grid grid-cols-12 gap-[24px] items-end">
             {/* Columnas 1 a 7: Eyebrow + Titular */}
@@ -344,8 +299,6 @@ export default function LineaProducto() {
         {/* Desktop (lg): 3 columnas de 4 unidades con 2 divisores verticales en line */}
         <div className="hidden lg:grid grid-cols-12 gap-[24px] relative">
           {PRODUCTS.map((product, index) => {
-            const colDelayMs = index * 140;
-
             return (
               <div
                 key={product.id}
@@ -356,16 +309,7 @@ export default function LineaProducto() {
                 <Link
                   to="/contrapesos"
                   aria-label={`${product.name} — Ver detalle`}
-                  style={{
-                    opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                    transform:
-                      isRevealed || prefersReducedMotion
-                        ? 'translateY(0)'
-                        : 'translateY(16px)',
-                    transition: prefersReducedMotion
-                      ? 'none'
-                      : `opacity 600ms cubic-bezier(0.16, 1, 0.3, 1) ${colDelayMs}ms, transform 600ms cubic-bezier(0.16, 1, 0.3, 1) ${colDelayMs}ms`,
-                  }}
+                  style={getStyle(index + 1)}
                   className="group flex flex-col h-full focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
                 >
                   {/* 1. Dibujo técnico (proporción 4:3) */}
@@ -424,8 +368,6 @@ export default function LineaProducto() {
         {/* Tablet (md a lg): 2 columnas en primera fila, 3ra columna en segunda fila */}
         <div className="hidden md:grid lg:hidden grid-cols-2 gap-x-[32px] gap-y-[48px]">
           {PRODUCTS.map((product, index) => {
-            const colDelayMs = index * 140;
-
             return (
               <div
                 key={product.id}
@@ -436,16 +378,7 @@ export default function LineaProducto() {
                 <Link
                   to="/contrapesos"
                   aria-label={`${product.name} — Ver detalle`}
-                  style={{
-                    opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                    transform:
-                      isRevealed || prefersReducedMotion
-                        ? 'translateY(0)'
-                        : 'translateY(16px)',
-                    transition: prefersReducedMotion
-                      ? 'none'
-                      : `opacity 600ms cubic-bezier(0.16, 1, 0.3, 1) ${colDelayMs}ms, transform 600ms cubic-bezier(0.16, 1, 0.3, 1) ${colDelayMs}ms`,
-                  }}
+                  style={getStyle(index + 1)}
                   className="group flex flex-col h-full focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
                 >
                   {/* 1. Dibujo técnico */}
@@ -504,8 +437,6 @@ export default function LineaProducto() {
         {/* Mobile (< 768px): 1 columna apilada con filete horizontal de separación */}
         <div className="flex md:hidden flex-col">
           {PRODUCTS.map((product, index) => {
-            const colDelayMs = index * 140;
-
             return (
               <div
                 key={product.id}
@@ -514,16 +445,7 @@ export default function LineaProducto() {
                 <Link
                   to="/contrapesos"
                   aria-label={`${product.name} — Ver detalle`}
-                  style={{
-                    opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                    transform:
-                      isRevealed || prefersReducedMotion
-                        ? 'translateY(0)'
-                        : 'translateY(16px)',
-                    transition: prefersReducedMotion
-                      ? 'none'
-                      : `opacity 600ms cubic-bezier(0.16, 1, 0.3, 1) ${colDelayMs}ms, transform 600ms cubic-bezier(0.16, 1, 0.3, 1) ${colDelayMs}ms`,
-                  }}
+                  style={getStyle(index + 1)}
                   className="flex flex-col focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
                 >
                   {/* 1. Dibujo técnico (proporción 3:2 en mobile) */}

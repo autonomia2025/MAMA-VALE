@@ -91,12 +91,20 @@ export default function Navbar() {
     <>
       <nav
         aria-label="Navegación principal"
-        className={`fixed top-0 left-0 right-0 z-50 h-[80px] transition-all duration-[320ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
           isScrolled
-            ? 'bg-paper/88 backdrop-blur-md border-b border-line'
-            : 'bg-transparent border-b border-transparent'
+            ? 'h-[72px] navbar-glass-scrolled'
+            : 'h-[80px] bg-transparent border-b border-line/35'
         }`}
       >
+        {/* Inner edge reflection: 1px in paper at 50% right above bottom border */}
+        <div
+          aria-hidden="true"
+          className={`absolute bottom-[1px] left-0 right-0 h-[1px] bg-paper/50 pointer-events-none transition-opacity duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isScrolled ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+
         <div className="layout-container h-full flex items-center justify-between">
           {/* Wordmark */}
           <Link
@@ -104,11 +112,25 @@ export default function Navbar() {
             className="flex items-baseline focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
             aria-label="Maquinarias JVK — Inicio"
           >
-            <span className="font-medium tracking-[0.12em] text-[15px] text-ink-900">
+            <span
+              className={`font-medium tracking-[0.12em] text-ink-900 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isScrolled ? 'text-[14px]' : 'text-[16px]'
+              }`}
+            >
               MAQUINARIAS
             </span>
-            <span className="text-ink-900 text-[15px]">&thinsp;</span>
-            <span className="font-bold italic text-[15px] text-ink-900">
+            <span
+              className={`text-ink-900 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isScrolled ? 'text-[14px]' : 'text-[16px]'
+              }`}
+            >
+              &thinsp;
+            </span>
+            <span
+              className={`font-bold italic text-ink-900 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isScrolled ? 'text-[14px]' : 'text-[16px]'
+              }`}
+            >
               JVK
             </span>
           </Link>
@@ -121,7 +143,7 @@ export default function Navbar() {
                 to={item.href}
                 className={({ isActive }) =>
                   `group relative py-[8px] type-label text-left transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                    isActive ? 'text-ink-900' : 'text-steel-500 hover:text-ink-900'
+                    isActive ? 'text-ink-900' : 'text-ink-900/70 hover:text-ink-900'
                   }`
                 }
               >
@@ -142,7 +164,9 @@ export default function Navbar() {
             <NavLink
               to="/cotizar"
               className={({ isActive }) =>
-                `type-label py-[14px] px-[28px] rounded-full border border-gold-500 transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                `type-label px-[28px] rounded-full border border-gold-500 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  isScrolled ? 'py-[10px]' : 'py-[14px]'
+                } ${
                   isActive
                     ? 'bg-ink-900 border-ink-900 text-paper'
                     : 'bg-transparent text-gold-700 hover:bg-ink-900 hover:border-ink-900 hover:text-paper'
@@ -190,7 +214,7 @@ export default function Navbar() {
         aria-modal="true"
         role="dialog"
         aria-label="Menú móvil"
-        className={`fixed inset-0 z-40 bg-paper flex flex-col min-[900px]:hidden transition-opacity duration-[320ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        className={`fixed inset-0 z-40 mobile-menu-glass flex flex-col min-[900px]:hidden transition-opacity duration-[320ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
           mobileMenuOpen
             ? 'opacity-100 pointer-events-auto'
             : 'opacity-0 pointer-events-none'

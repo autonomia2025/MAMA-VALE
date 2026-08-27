@@ -1,61 +1,42 @@
-import { useState, useEffect, useRef, useMemo, useCallback, RefObject } from 'react';
+import { useState, useEffect, useRef, useCallback, RefObject } from 'react';
 
 interface TickData {
   value: string;
   gramDisplay: string;
   isMajor: boolean;
   label?: string;
-  hasUnit?: boolean;
 }
 
-const DESKTOP_TICKS: TickData[] = [
-  { value: '05', gramDisplay: '05g', isMajor: true, label: '05' },
-  { value: '10', gramDisplay: '10g', isMajor: false },
-  { value: '15', gramDisplay: '15g', isMajor: false },
-  { value: '20', gramDisplay: '20g', isMajor: true, label: '20' },
-  { value: '25', gramDisplay: '25g', isMajor: false },
-  { value: '30', gramDisplay: '30g', isMajor: false },
-  { value: '40', gramDisplay: '40g', isMajor: true, label: '40' },
-  { value: '45', gramDisplay: '45g', isMajor: false },
-  { value: '50', gramDisplay: '50g', isMajor: false },
-  { value: '60', gramDisplay: '60g', isMajor: true, label: '60', hasUnit: true },
-  { value: '70', gramDisplay: '70g', isMajor: false },
-  { value: '80', gramDisplay: '80g', isMajor: false },
+// 12 marcas con las mayores en las posiciones 1, 5, 9 y 12 (índices 0, 4, 8 y 11)
+const TICKS: TickData[] = [
+  { value: '05', gramDisplay: '05 g', isMajor: true, label: '05' },
+  { value: '10', gramDisplay: '10 g', isMajor: false },
+  { value: '15', gramDisplay: '15 g', isMajor: false },
+  { value: '18', gramDisplay: '18 g', isMajor: false },
+  { value: '20', gramDisplay: '20 g', isMajor: true, label: '20' },
+  { value: '25', gramDisplay: '25 g', isMajor: false },
+  { value: '30', gramDisplay: '30 g', isMajor: false },
+  { value: '35', gramDisplay: '35 g', isMajor: false },
+  { value: '40', gramDisplay: '40 g', isMajor: true, label: '40' },
+  { value: '45', gramDisplay: '45 g', isMajor: false },
+  { value: '50', gramDisplay: '50 g', isMajor: false },
+  { value: '60', gramDisplay: '60 g', isMajor: true, label: '60 g' },
 ];
 
-const TABLET_TICKS: TickData[] = [
-  { value: '05', gramDisplay: '05g', isMajor: true, label: '05' },
-  { value: '10', gramDisplay: '10g', isMajor: false },
-  { value: '15', gramDisplay: '15g', isMajor: false },
-  { value: '20', gramDisplay: '20g', isMajor: true, label: '20' },
-  { value: '30', gramDisplay: '30g', isMajor: false },
-  { value: '40', gramDisplay: '40g', isMajor: true, label: '40' },
-  { value: '50', gramDisplay: '50g', isMajor: false },
-  { value: '60', gramDisplay: '60g', isMajor: true, label: '60', hasUnit: true },
-];
-
-const MOBILE_TICKS: TickData[] = [
-  { value: '05', gramDisplay: '05g', isMajor: true, label: '05' },
-  { value: '10', gramDisplay: '10g', isMajor: false },
-  { value: '20', gramDisplay: '20g', isMajor: true, label: '20' },
-  { value: '30', gramDisplay: '30g', isMajor: false },
-  { value: '40', gramDisplay: '40g', isMajor: true, label: '40' },
-  { value: '60', gramDisplay: '60g', isMajor: true, label: '60', hasUnit: true },
-];
+const REST_INDEX = 4; // Posición 5: '20' (20 g)
 
 interface GramScaleProps {
   heroRef: RefObject<HTMLElement | null>;
 }
 
-
 export default function GramScale({ heroRef }: GramScaleProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
-  const [viewportMode, setViewportMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
-  const [activeIndex, setActiveIndex] = useState<number>(3); // 20g default
+  const [activeIndex, setActiveIndex] = useState<number>(REST_INDEX);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Detect motion preference
+  // Detección de reduced motion
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReducedMotion(mediaQuery.matches);
@@ -68,21 +49,13 @@ export default function GramScale({ heroRef }: GramScaleProps) {
     return () => mediaQuery.removeEventListener('change', handleMediaChange);
   }, []);
 
-  // Update container width and responsive mode
+  // Actualización del ancho del contenedor vía ResizeObserver
   useEffect(() => {
     const updateSize = () => {
       if (containerRef.current) {
-        const width = containerRef.current.clientWidth;
-        setContainerWidth(width);
+        setContainerWidth(containerRef.current.clientWidth);
       }
-      const windowWidth = window.innerWidth;
-      if (windowWidth < 768) {
-        setViewportMode('mobile');
-      } else if (windowWidth < 1200) {
-        setViewportMode('tablet');
-      } else {
-        setViewportMode('desktop');
-      }
+      setIsMobile(window.innerWidth < 768);
     };
 
     updateSize();
@@ -102,31 +75,65 @@ export default function GramScale({ heroRef }: GramScaleProps) {
     };
   }, []);
 
-  // Current ticks configuration based on viewport
-  const ticks = useMemo(() => {
-    if (viewportMode === 'mobile') return MOBILE_TICKS;
-    if (viewportMode === 'tablet') return TABLET_TICKS;
-    return DESKTOP_TICKS;
-  }, [viewportMode]);
+  // Manejo del movimiento del cursor en el Hero para cálculo preciso de coordenadas
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (isMobile || prefersReducedMotion || !containerRef.current) return;
 
-  // Set default rest index when viewport mode changes
-  useEffect(() => {
-    const restIdx = ticks.findIndex((t) => t.value === '20');
-    setActiveIndex(restIdx !== -1 ? restIdx : 0);
-  }, [ticks]);
+      const rect = containerRef.current.getBoundingClientRect();
+      if (rect.width <= 0) return;
 
-  // Mobile auto-loop animation + touch drag support
+      const mouseX = e.clientX - rect.left;
+      const fraction = Math.max(0, Math.min(1, mouseX / rect.width));
+      const totalTicks = TICKS.length;
+      const rawIndex = Math.round(fraction * (totalTicks - 1));
+      const clampedIndex = Math.max(0, Math.min(totalTicks - 1, rawIndex));
+
+      setActiveIndex(clampedIndex);
+    },
+    [isMobile, prefersReducedMotion]
+  );
+
+  const handleMouseLeave = useCallback(() => {
+    if (isMobile || prefersReducedMotion) return;
+    setActiveIndex(REST_INDEX);
+  }, [isMobile, prefersReducedMotion]);
+
   useEffect(() => {
-    if (viewportMode !== 'mobile' || prefersReducedMotion) return;
+    if (isMobile || prefersReducedMotion) return;
+
+    const heroElement = heroRef.current;
+    if (!heroElement) return;
+
+    let rafId: number | null = null;
+
+    const onMove = (e: MouseEvent) => {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => handleMouseMove(e));
+    };
+
+    heroElement.addEventListener('mousemove', onMove, { passive: true });
+    heroElement.addEventListener('mouseleave', handleMouseLeave, { passive: true });
+
+    return () => {
+      heroElement.removeEventListener('mousemove', onMove);
+      heroElement.removeEventListener('mouseleave', handleMouseLeave);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [heroRef, handleMouseMove, handleMouseLeave, isMobile, prefersReducedMotion]);
+
+  // Soporte táctil y ciclo automático en mobile
+  useEffect(() => {
+    if (!isMobile || prefersReducedMotion) return;
 
     let isInteracting = false;
     let resumeTimeout: NodeJS.Timeout | null = null;
 
     const interval = setInterval(() => {
       if (!isInteracting) {
-        setActiveIndex((prev) => (prev + 1) % ticks.length);
+        setActiveIndex((prev) => (prev + 1) % TICKS.length);
       }
-    }, 1200);
+    }, 1300);
 
     const handleTouch = (e: TouchEvent) => {
       if (!containerRef.current) return;
@@ -135,13 +142,13 @@ export default function GramScale({ heroRef }: GramScaleProps) {
 
       const touch = e.touches[0];
       const rect = containerRef.current.getBoundingClientRect();
-      const touchX = touch.clientX - rect.left;
-      const totalTicks = ticks.length;
-      if (totalTicks <= 1 || rect.width <= 0) return;
+      if (rect.width <= 0) return;
 
-      const step = rect.width / (totalTicks - 1);
-      const rawIndex = Math.round(touchX / step);
-      const clampedIndex = Math.max(0, Math.min(totalTicks - 1, rawIndex));
+      const touchX = touch.clientX - rect.left;
+      const fraction = Math.max(0, Math.min(1, touchX / rect.width));
+      const rawIndex = Math.round(fraction * (TICKS.length - 1));
+      const clampedIndex = Math.max(0, Math.min(TICKS.length - 1, rawIndex));
+
       setActiveIndex(clampedIndex);
     };
 
@@ -167,74 +174,41 @@ export default function GramScale({ heroRef }: GramScaleProps) {
         containerEl.removeEventListener('touchend', handleTouchEnd);
       }
     };
-  }, [viewportMode, ticks.length, prefersReducedMotion]);
+  }, [isMobile, prefersReducedMotion]);
 
-  // Snap to closest mark based on cursor position in Hero
-  const handleMouseMove = useCallback(
-    (e: MouseEvent) => {
-      if (viewportMode === 'mobile' || prefersReducedMotion) return;
-      if (!containerRef.current) return;
-
-      const rect = containerRef.current.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const totalTicks = ticks.length;
-      if (totalTicks <= 1 || rect.width <= 0) return;
-
-      const step = rect.width / (totalTicks - 1);
-      const rawIndex = Math.round(mouseX / step);
-      const clampedIndex = Math.max(0, Math.min(totalTicks - 1, rawIndex));
-
-      setActiveIndex(clampedIndex);
-    },
-    [viewportMode, prefersReducedMotion, ticks.length]
-  );
-
-  useEffect(() => {
-    if (viewportMode === 'mobile' || prefersReducedMotion) return;
-
-    const heroElement = heroRef.current;
-    if (!heroElement) return;
-
-    let rafId: number | null = null;
-
-    const onMove = (e: MouseEvent) => {
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => handleMouseMove(e));
-    };
-
-    heroElement.addEventListener('mousemove', onMove, { passive: true });
-
-    return () => {
-      heroElement.removeEventListener('mousemove', onMove);
-      if (rafId) cancelAnimationFrame(rafId);
-    };
-  }, [heroRef, handleMouseMove, viewportMode, prefersReducedMotion]);
-
-  // Compute coordinate metrics
-  const totalTicks = ticks.length;
-  const tickStep = totalTicks > 1 ? containerWidth / (totalTicks - 1) : 0;
-  const activeX = Math.round(activeIndex * tickStep);
-  const activeTick = ticks[activeIndex] || ticks[0];
+  // Cálculos métricos de coordenadas SVG
+  const totalTicks = TICKS.length;
+  const tickStep = totalTicks > 1 && containerWidth > 0 ? containerWidth / (totalTicks - 1) : 0;
+  const activeX = activeIndex * tickStep;
+  const activeTick = TICKS[activeIndex] || TICKS[REST_INDEX];
 
   const BASELINE_Y = 52;
   const SVG_HEIGHT = 88;
 
+  // Alineación óptica del valor según posición horizontal para evitar desbordes
+  let indicatorTextAnchor: 'start' | 'middle' | 'end' = 'middle';
+  if (activeIndex === 0) {
+    indicatorTextAnchor = 'start';
+  } else if (activeIndex === totalTicks - 1) {
+    indicatorTextAnchor = 'end';
+  }
+
   return (
     <div
       ref={containerRef}
-      className="relative w-full max-w-full overflow-hidden select-none"
+      className="relative w-full max-w-full overflow-visible select-none"
       aria-label="Escala interactiva de gramaje"
       role="region"
     >
       <svg
         width="100%"
         height={SVG_HEIGHT}
-        className="block w-full max-w-full"
+        className="block w-full max-w-full overflow-visible"
         style={{ width: '100%' }}
       >
-        {/* Baseline (animated with scaleX on entrance) */}
+        {/* Línea base a ancho completo (0% a 100%) */}
         <line
-          x1={0}
+          x1="0"
           y1={BASELINE_Y}
           x2={containerWidth || '100%'}
           y2={BASELINE_Y}
@@ -243,9 +217,9 @@ export default function GramScale({ heroRef }: GramScaleProps) {
           className="anim-hero-baseline"
         />
 
-        {/* Ticks */}
-        {ticks.map((tick, index) => {
-          const x = Math.round(index * tickStep);
+        {/* Marcas (12 marcas) */}
+        {TICKS.map((tick, index) => {
+          const x = index * tickStep;
           const isCurrentActive = index === activeIndex;
           const tickHeight = tick.isMajor ? 28 : 14;
           const y1 = BASELINE_Y - tickHeight;
@@ -256,12 +230,20 @@ export default function GramScale({ heroRef }: GramScaleProps) {
             ? '#C89B32'
             : '#D8DADC';
 
-          // Delay for entrance animation (starts at 700ms + index * 35ms)
+          // Entrada animada
           const animDelay = `${700 + index * 35}ms`;
+
+          // Alineación de etiquetas mayores: 05 al inicio, 60 g al final (alineada a la derecha)
+          let labelAnchor: 'start' | 'middle' | 'end' = 'middle';
+          if (index === 0) {
+            labelAnchor = 'start';
+          } else if (index === totalTicks - 1) {
+            labelAnchor = 'end';
+          }
 
           return (
             <g
-              key={`${viewportMode}-${tick.value}-${index}`}
+              key={`${tick.value}-${index}`}
               className="origin-bottom"
               style={{
                 animation: prefersReducedMotion
@@ -270,7 +252,7 @@ export default function GramScale({ heroRef }: GramScaleProps) {
                 opacity: prefersReducedMotion ? 1 : 0,
               }}
             >
-              {/* Tick Mark */}
+              {/* Marca */}
               <line
                 x1={x}
                 y1={y1}
@@ -281,60 +263,52 @@ export default function GramScale({ heroRef }: GramScaleProps) {
                 className="transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
               />
 
-              {/* Major Label Below */}
+              {/* Etiqueta mayor inferior */}
               {tick.isMajor && (
                 <text
                   x={x}
                   y={BASELINE_Y + 20}
-                  textAnchor="middle"
+                  textAnchor={labelAnchor}
                   fill="#5F6771"
                   className="type-data"
-                  style={{ fontSize: '13px' }}
+                  style={{
+                    fontSize: '13px',
+                    whiteSpace: 'nowrap',
+                  }}
                 >
                   {tick.label}
-                </text>
-              )}
-
-              {/* Unit 'g' under the last major mark */}
-              {tick.hasUnit && (
-                <text
-                  x={x}
-                  y={BASELINE_Y + 34}
-                  textAnchor="middle"
-                  fill="#8A6A1F"
-                  className="type-label"
-                  style={{ fontSize: '10px' }}
-                >
-                  g
                 </text>
               )}
             </g>
           );
         })}
 
-        {/* Moving Indicator (snapped to active mark) */}
+        {/* Indicador móvil acoplado rigurosamente al índice activo */}
         <g
           className="anim-hero-indicator-entry"
           style={{
             transform: `translateX(${activeX}px)`,
             transition: prefersReducedMotion
               ? 'none'
-              : 'transform 220ms cubic-bezier(0.16, 1, 0.3, 1)',
+              : 'transform 200ms cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
-          {/* Indicator Value Above */}
+          {/* Lectura numérica sobre la marca activa */}
           <text
             x={0}
-            y={BASELINE_Y - 44}
-            textAnchor="middle"
+            y={BASELINE_Y - 46}
+            textAnchor={indicatorTextAnchor}
             fill="#0D1B2E"
             className="type-data font-medium"
-            style={{ fontSize: '13px' }}
+            style={{
+              fontSize: '13px',
+              whiteSpace: 'nowrap',
+            }}
           >
-            {activeTick?.gramDisplay || '20g'}
+            {activeTick.gramDisplay}
           </text>
 
-          {/* Indicator 2px Vertical Bar (40px high) */}
+          {/* Barra vertical de 2px (40px de altura) */}
           <line
             x1={0}
             y1={BASELINE_Y - 40}

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useReveal } from '../hooks/useReveal';
 
 interface PillarItem {
   id: string;
@@ -40,45 +40,7 @@ const PILLARS: PillarItem[] = [
 ];
 
 export default function PorQueJVK() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isRevealed, setIsRevealed] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  // Detect motion preference
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-
-    const handleMediaChange = (e: MediaQueryListEvent) => {
-      setPrefersReducedMotion(e.matches);
-    };
-
-    mediaQuery.addEventListener('change', handleMediaChange);
-    return () => mediaQuery.removeEventListener('change', handleMediaChange);
-  }, []);
-
-  // IntersectionObserver for reveal
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting) {
-          setIsRevealed(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  const { ref: sectionRef, isRevealed, prefersReducedMotion, getStyle } = useReveal<HTMLElement>();
 
   return (
     <section
@@ -94,12 +56,8 @@ export default function PorQueJVK() {
             {/* Columnas 1 a 8: Eyebrow + Titular en 2 líneas con revelado clip-path */}
             <div className="col-span-8 flex flex-col gap-[24px]">
               <span
-                className="type-label text-gold-500 transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{
-                  opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                  transform:
-                    isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                }}
+                className="type-label text-gold-500"
+                style={getStyle(0)}
               >
                 POR QUÉ JVK
               </span>
@@ -134,13 +92,8 @@ export default function PorQueJVK() {
             {/* Columnas 9 a 12: Párrafo de apoyo alineado a la base */}
             <div className="col-start-9 col-span-4 pb-[4px]">
               <p
-                className="type-body-sm text-paper/65 m-0 leading-[1.6] transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{
-                  opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                  transform:
-                    isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                  transitionDelay: prefersReducedMotion ? '0ms' : '300ms',
-                }}
+                className="type-body-sm text-paper/65 m-0 leading-[1.6]"
+                style={getStyle(1)}
               >
                 Trabajamos con talleres que no pueden permitirse una rueda mal balanceada ni un despacho que no llega.
               </p>
@@ -150,12 +103,8 @@ export default function PorQueJVK() {
           {/* Tablet & Mobile Layout (< 1024px) */}
           <div className="flex lg:hidden flex-col gap-[24px]">
             <span
-              className="type-label text-gold-500 transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-              style={{
-                opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                transform:
-                  isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-              }}
+              className="type-label text-gold-500"
+              style={getStyle(0)}
             >
               POR QUÉ JVK
             </span>
@@ -187,13 +136,8 @@ export default function PorQueJVK() {
             </h2>
 
             <p
-              className="type-body-sm text-paper/65 m-0 max-w-[540px] leading-[1.6] transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-              style={{
-                opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                transform:
-                  isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                transitionDelay: prefersReducedMotion ? '0ms' : '300ms',
-              }}
+              className="type-body-sm text-paper/65 m-0 max-w-[540px] leading-[1.6]"
+              style={getStyle(1)}
             >
               Trabajamos con talleres que no pueden permitirse una rueda mal balanceada ni un despacho que no llega.
             </p>
@@ -207,8 +151,7 @@ export default function PorQueJVK() {
         {/* Desktop (lg): 4 columnas de 3 unidades */}
         <div className="hidden lg:grid grid-cols-12 gap-[24px]">
           {PILLARS.map((pillar, index) => {
-            const hairlineDelayMs = index * 90;
-            const contentDelayMs = hairlineDelayMs + 150;
+            const hairlineDelayMs = Math.min(index, 4) * 80;
 
             return (
               <div
@@ -223,7 +166,7 @@ export default function PorQueJVK() {
                       style={{
                         transform:
                           isRevealed || prefersReducedMotion ? 'scaleX(1)' : 'scaleX(0)',
-                        transitionDuration: '500ms, 260ms',
+                        transitionDuration: '700ms, 260ms',
                         transitionDelay: prefersReducedMotion
                           ? '0ms'
                           : `${hairlineDelayMs}ms, 0ms`,
@@ -232,16 +175,7 @@ export default function PorQueJVK() {
                   </div>
 
                   {/* Contenido del pilar */}
-                  <div
-                    style={{
-                      opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                      transform:
-                        isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                      transition: prefersReducedMotion
-                        ? 'none'
-                        : `opacity 500ms cubic-bezier(0.16, 1, 0.3, 1) ${contentDelayMs}ms, transform 500ms cubic-bezier(0.16, 1, 0.3, 1) ${contentDelayMs}ms`,
-                    }}
-                  >
+                  <div style={getStyle(index + 1)}>
                     {/* 2. Nombre del pilar: 32px de aire */}
                     <h3 className="type-h3 text-paper mt-[32px] mb-0 min-h-[56px] flex items-start">
                       {pillar.name}
@@ -257,14 +191,7 @@ export default function PorQueJVK() {
                 {/* 4. Dato y Etiqueta: 32px de aire */}
                 <div
                   className="mt-[32px] pt-[8px] flex flex-col"
-                  style={{
-                    opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                    transform:
-                      isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                    transition: prefersReducedMotion
-                      ? 'none'
-                      : `opacity 500ms cubic-bezier(0.16, 1, 0.3, 1) ${contentDelayMs}ms, transform 500ms cubic-bezier(0.16, 1, 0.3, 1) ${contentDelayMs}ms`,
-                  }}
+                  style={getStyle(index + 1)}
                 >
                   <span className="type-data text-gold-500">
                     {pillar.data}
@@ -281,8 +208,7 @@ export default function PorQueJVK() {
         {/* Tablet (md a lg): Retícula de 2x2, separación vertical de 80px */}
         <div className="hidden md:grid lg:hidden grid-cols-2 gap-x-[32px] gap-y-[80px]">
           {PILLARS.map((pillar, index) => {
-            const hairlineDelayMs = index * 90;
-            const contentDelayMs = hairlineDelayMs + 150;
+            const hairlineDelayMs = Math.min(index, 4) * 80;
 
             return (
               <div
@@ -299,22 +225,13 @@ export default function PorQueJVK() {
                           isRevealed || prefersReducedMotion ? 'scaleX(1)' : 'scaleX(0)',
                         transition: prefersReducedMotion
                           ? 'none'
-                          : `transform 500ms cubic-bezier(0.16, 1, 0.3, 1) ${hairlineDelayMs}ms`,
+                          : `transform 700ms cubic-bezier(0.16, 1, 0.3, 1) ${hairlineDelayMs}ms`,
                       }}
                     />
                   </div>
 
                   {/* Contenido del pilar */}
-                  <div
-                    style={{
-                      opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                      transform:
-                        isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                      transition: prefersReducedMotion
-                        ? 'none'
-                        : `opacity 500ms cubic-bezier(0.16, 1, 0.3, 1) ${contentDelayMs}ms, transform 500ms cubic-bezier(0.16, 1, 0.3, 1) ${contentDelayMs}ms`,
-                    }}
-                  >
+                  <div style={getStyle(index + 1)}>
                     {/* 2. Nombre del pilar */}
                     <h3 className="type-h3 text-paper mt-[32px] mb-0 min-h-[32px]">
                       {pillar.name}
@@ -330,14 +247,7 @@ export default function PorQueJVK() {
                 {/* 4. Dato y Etiqueta */}
                 <div
                   className="mt-[32px] pt-[8px] flex flex-col"
-                  style={{
-                    opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                    transform:
-                      isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                    transition: prefersReducedMotion
-                      ? 'none'
-                      : `opacity 500ms cubic-bezier(0.16, 1, 0.3, 1) ${contentDelayMs}ms, transform 500ms cubic-bezier(0.16, 1, 0.3, 1) ${contentDelayMs}ms`,
-                  }}
+                  style={getStyle(index + 1)}
                 >
                   <span className="type-data text-gold-500">
                     {pillar.data}
@@ -354,8 +264,7 @@ export default function PorQueJVK() {
         {/* Mobile (< 768px): 1 pilar por fila, separación vertical de 64px */}
         <div className="flex md:hidden flex-col gap-y-[64px]">
           {PILLARS.map((pillar, index) => {
-            const hairlineDelayMs = index * 90;
-            const contentDelayMs = hairlineDelayMs + 150;
+            const hairlineDelayMs = Math.min(index, 4) * 80;
 
             return (
               <div
@@ -369,21 +278,12 @@ export default function PorQueJVK() {
                       isRevealed || prefersReducedMotion ? 'scaleX(1)' : 'scaleX(0)',
                     transition: prefersReducedMotion
                       ? 'none'
-                      : `transform 500ms cubic-bezier(0.16, 1, 0.3, 1) ${hairlineDelayMs}ms`,
+                      : `transform 700ms cubic-bezier(0.16, 1, 0.3, 1) ${hairlineDelayMs}ms`,
                   }}
                 />
 
                 {/* Contenido del pilar */}
-                <div
-                  style={{
-                    opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                    transform:
-                      isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                    transition: prefersReducedMotion
-                      ? 'none'
-                      : `opacity 500ms cubic-bezier(0.16, 1, 0.3, 1) ${contentDelayMs}ms, transform 500ms cubic-bezier(0.16, 1, 0.3, 1) ${contentDelayMs}ms`,
-                  }}
-                >
+                <div style={getStyle(index + 1)}>
                   {/* 2. Nombre del pilar */}
                   <h3 className="type-h3 text-paper mt-[24px] mb-0">
                     {pillar.name}

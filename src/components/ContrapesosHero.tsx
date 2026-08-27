@@ -1,43 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useReveal } from '../hooks/useReveal';
 
 export default function ContrapesosHero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isRevealed, setIsRevealed] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-
-    const handleMediaChange = (e: MediaQueryListEvent) => {
-      setPrefersReducedMotion(e.matches);
-    };
-
-    mediaQuery.addEventListener('change', handleMediaChange);
-    return () => mediaQuery.removeEventListener('change', handleMediaChange);
-  }, []);
-
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting) {
-          setIsRevealed(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15 }
-    );
-
-    observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  const { ref: sectionRef, isRevealed, prefersReducedMotion, getStyle } = useReveal<HTMLElement>();
 
   return (
     <section
@@ -53,12 +17,8 @@ export default function ContrapesosHero() {
             {/* Columnas 1 a 7 */}
             <div className="col-span-7 flex flex-col gap-[24px]">
               <span
-                className="type-label text-gold-700 transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{
-                  opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                  transform:
-                    isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                }}
+                className="type-label text-gold-700"
+                style={getStyle(0)}
               >
                 PRODUCTO
               </span>
@@ -93,13 +53,8 @@ export default function ContrapesosHero() {
             {/* Columnas 9 a 12: Alineado a la línea base de la última línea del titular */}
             <div className="col-start-9 col-span-4 pb-[4px]">
               <p
-                className="type-body-sm text-steel-500 m-0 leading-[1.6] transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{
-                  opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                  transform:
-                    isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                  transitionDelay: prefersReducedMotion ? '0ms' : '300ms',
-                }}
+                className="type-body-sm text-steel-500 m-0 leading-[1.6]"
+                style={getStyle(1)}
               >
                 Tres tipos de montaje, un rango de 5 a 500 gramos y stock permanente. Filtra por lo que necesitas.
               </p>
@@ -110,12 +65,8 @@ export default function ContrapesosHero() {
           <div className="hidden md:flex lg:hidden flex-col">
             <div className="flex flex-col gap-[24px]">
               <span
-                className="type-label text-gold-700 transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{
-                  opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                  transform:
-                    isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                }}
+                className="type-label text-gold-700"
+                style={getStyle(0)}
               >
                 PRODUCTO
               </span>
@@ -150,13 +101,8 @@ export default function ContrapesosHero() {
             {/* Párrafo debajo del titular */}
             <div className="mt-[32px] max-w-[540px]">
               <p
-                className="type-body-sm text-steel-500 m-0 leading-[1.6] transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{
-                  opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                  transform:
-                    isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                  transitionDelay: prefersReducedMotion ? '0ms' : '300ms',
-                }}
+                className="type-body-sm text-steel-500 m-0 leading-[1.6]"
+                style={getStyle(1)}
               >
                 Tres tipos de montaje, un rango de 5 a 500 gramos y stock permanente. Filtra por lo que necesitas.
               </p>
@@ -166,12 +112,8 @@ export default function ContrapesosHero() {
           {/* Mobile Layout (< 768px) */}
           <div className="flex md:hidden flex-col gap-[20px]">
             <span
-              className="type-label text-gold-700 transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-              style={{
-                opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                transform:
-                  isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-              }}
+              className="type-label text-gold-700"
+              style={getStyle(0)}
             >
               PRODUCTO
             </span>
@@ -203,13 +145,8 @@ export default function ContrapesosHero() {
             </h1>
 
             <p
-              className="type-body-sm text-steel-500 m-0 leading-[1.6] transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-              style={{
-                opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                transform:
-                  isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-                transitionDelay: prefersReducedMotion ? '0ms' : '300ms',
-              }}
+              className="type-body-sm text-steel-500 m-0 leading-[1.6]"
+              style={getStyle(1)}
             >
               Tres tipos de montaje, un rango de 5 a 500 gramos y stock permanente. Filtra por lo que necesitas.
             </p>
@@ -218,13 +155,8 @@ export default function ContrapesosHero() {
 
         {/* Fila de Resumen: 80px de aire bajo el titular (64px tablet, 48px mobile) */}
         <div
-          className="mt-[48px] md:mt-[64px] lg:mt-[80px] transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-          style={{
-            opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-            transform:
-              isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-            transitionDelay: prefersReducedMotion ? '0ms' : '450ms',
-          }}
+          className="mt-[48px] md:mt-[64px] lg:mt-[80px]"
+          style={getStyle(2)}
         >
           {/* Filete de 1px en line a ancho completo */}
           <div className="w-full border-t border-line" />

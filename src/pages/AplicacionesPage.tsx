@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useReveal } from '../hooks/useReveal';
 
 export interface SectorDetail {
   id: string;
@@ -85,34 +85,10 @@ export const SECTORS_DETAIL_DATA: SectorDetail[] = [
 
 interface SectorBlockProps {
   sector: SectorDetail;
-  prefersReducedMotion: boolean;
 }
 
-function SectorBlock({ sector, prefersReducedMotion }: SectorBlockProps) {
-  const blockRef = useRef<HTMLElement>(null);
-  const [isRevealed, setIsRevealed] = useState(false);
-
-  useEffect(() => {
-    const el = blockRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting) {
-          setIsRevealed(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+function SectorBlock({ sector }: SectorBlockProps) {
+  const { ref: blockRef, isRevealed, prefersReducedMotion, getStyle } = useReveal<HTMLElement>();
 
   return (
     <section
@@ -122,19 +98,10 @@ function SectorBlock({ sector, prefersReducedMotion }: SectorBlockProps) {
     >
       <div className="layout-container">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-[32px] md:gap-[24px] items-start">
-          {/* ========================================================= */}
           {/* COLUMNAS 1 A 6 (Tablet: 1 a 7, Mobile: 1 a 12) — ARGUMENTO */}
-          {/* ========================================================= */}
           <div
             className="col-span-12 md:col-span-7 lg:col-span-6 flex flex-col"
-            style={{
-              opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-              transform:
-                isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(16px)',
-              transition: prefersReducedMotion
-                ? 'none'
-                : 'opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1)',
-            }}
+            style={getStyle(0)}
           >
             {/* Nombre del sector en type-h2 */}
             <h2 className="type-h2 text-ink-900 m-0 leading-tight">
@@ -149,21 +116,11 @@ function SectorBlock({ sector, prefersReducedMotion }: SectorBlockProps) {
             {/* Lista de vehículos típicos con 40px de aire */}
             <ul className="mt-[40px] mb-0 p-0 list-none flex flex-col gap-[12px]">
               {sector.vehicles.map((vehicle, idx) => {
-                const itemDelayMs = prefersReducedMotion ? 0 : 200 + idx * 70;
                 return (
                   <li
                     key={vehicle}
                     className="flex items-center"
-                    style={{
-                      opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                      transform:
-                        isRevealed || prefersReducedMotion
-                          ? 'translateY(0)'
-                          : 'translateY(12px)',
-                      transition: prefersReducedMotion
-                        ? 'none'
-                        : `opacity 500ms cubic-bezier(0.16, 1, 0.3, 1) ${itemDelayMs}ms, transform 500ms cubic-bezier(0.16, 1, 0.3, 1) ${itemDelayMs}ms`,
-                    }}
+                    style={getStyle(idx + 1)}
                   >
                     {/* Filete horizontal de 16px y 1px en gold-500 con 12px de separación */}
                     <span
@@ -179,19 +136,10 @@ function SectorBlock({ sector, prefersReducedMotion }: SectorBlockProps) {
             </ul>
           </div>
 
-          {/* ========================================================= */}
           {/* COLUMNAS 8 A 12 (Tablet: 8 a 12, Mobile: 1 a 12) — FICHA */}
-          {/* ========================================================= */}
           <div
             className="col-span-12 md:col-span-5 md:col-start-8 lg:col-span-5 lg:col-start-8 mt-[64px] md:mt-0 self-start"
-            style={{
-              opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-              transform:
-                isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(16px)',
-              transition: prefersReducedMotion
-                ? 'none'
-                : 'opacity 600ms cubic-bezier(0.16, 1, 0.3, 1) 200ms, transform 600ms cubic-bezier(0.16, 1, 0.3, 1) 200ms',
-            }}
+            style={getStyle(1)}
           >
             {/* Filete de 1px en line a ancho de columna */}
             <div className="w-full border-t border-line" />
@@ -256,7 +204,7 @@ function SectorBlock({ sector, prefersReducedMotion }: SectorBlockProps) {
                         x2={`${sector.startPct}%`}
                         y2="17"
                         stroke="#C89B32"
-                        strokeWidth="1"
+                        strokeWidth="1.5"
                       />
 
                       {/* Right Tick Mark (10px height centered at y=12) */}
@@ -266,24 +214,28 @@ function SectorBlock({ sector, prefersReducedMotion }: SectorBlockProps) {
                         x2={`${sector.endPct}%`}
                         y2="17"
                         stroke="#C89B32"
-                        strokeWidth="1"
+                        strokeWidth="1.5"
                       />
                     </g>
                   </svg>
                 </div>
 
-                {/* Referencias bajo el riel con 12px de aire */}
-                <div className="mt-[12px] flex items-center justify-between w-full">
-                  <span className="type-label text-steel-500">0</span>
-                  <span className="type-label text-steel-500">500 G</span>
+                {/* Etiquetas de escala: 0 g a la izquierda, 500 g a la derecha con 8px de aire */}
+                <div className="flex justify-between items-center mt-[8px]">
+                  <span className="type-data text-steel-500 text-[12px]">
+                    0 g
+                  </span>
+                  <span className="type-data text-steel-500 text-[12px]">
+                    500 g
+                  </span>
                 </div>
               </div>
 
-              {/* 3. PARES DE FICHA con 48px de aire */}
-              <div className="mt-[48px] flex flex-col">
-                {/* Fila 1: MONTAJE */}
-                <div className="py-[16px] flex items-center justify-between border-b border-line gap-[16px]">
-                  <span className="type-label text-steel-500 shrink-0">
+              {/* 3. PARÁMETROS TÉCNICOS (3 filas con separador border-line) */}
+              <div className="mt-[40px] flex flex-col">
+                {/* Parámetro 1: Montaje */}
+                <div className="py-[16px] border-t border-line flex justify-between items-baseline">
+                  <span className="type-label text-steel-500">
                     MONTAJE
                   </span>
                   <span className="type-data text-ink-900 text-right">
@@ -291,9 +243,9 @@ function SectorBlock({ sector, prefersReducedMotion }: SectorBlockProps) {
                   </span>
                 </div>
 
-                {/* Fila 2: LLANTA */}
-                <div className="py-[16px] flex items-center justify-between border-b border-line gap-[16px]">
-                  <span className="type-label text-steel-500 shrink-0">
+                {/* Parámetro 2: Llanta compatible */}
+                <div className="py-[16px] border-t border-line flex justify-between items-baseline">
+                  <span className="type-label text-steel-500">
                     LLANTA
                   </span>
                   <span className="type-data text-ink-900 text-right">
@@ -301,9 +253,9 @@ function SectorBlock({ sector, prefersReducedMotion }: SectorBlockProps) {
                   </span>
                 </div>
 
-                {/* Fila 3: INCREMENTO */}
-                <div className="py-[16px] flex items-center justify-between border-b border-line gap-[16px]">
-                  <span className="type-label text-steel-500 shrink-0">
+                {/* Parámetro 3: Incremento */}
+                <div className="py-[16px] border-t border-b border-line flex justify-between items-baseline">
+                  <span className="type-label text-steel-500">
                     INCREMENTO
                   </span>
                   <span className="type-data text-ink-900 text-right">
@@ -312,18 +264,17 @@ function SectorBlock({ sector, prefersReducedMotion }: SectorBlockProps) {
                 </div>
               </div>
 
-              {/* 4. ENLACE AL CATÁLOGO con 48px de aire */}
-              <div className="mt-[48px]">
+              {/* 4. ENLACE A CATÁLOGO FILTRADO con 32px de aire */}
+              <div className="mt-[32px] self-start">
                 <Link
-                  to="/contrapesos#catalogo"
-                  className="group inline-flex items-center gap-[4px] type-label text-gold-700 relative py-[4px] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
+                  to="/contrapesos"
+                  className="group relative inline-flex items-center gap-[4px] text-gold-700 py-[4px] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
                 >
-                  <span>VER REFERENCIAS</span>
-                  <span className="inline-block transition-transform duration-[200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[2px] group-hover:-translate-y-[2px]">
+                  <span className="type-label">VER EN CATÁLOGO</span>
+                  <span className="type-label inline-block transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
                     ↗
                   </span>
-                  {/* Subrayado de 1px en gold-500 que crece desde la izquierda en hover */}
-                  <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-gold-500 transition-all duration-[240ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:w-full pointer-events-none" />
+                  <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-gold-500 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
                 </Link>
               </div>
             </div>
@@ -335,43 +286,8 @@ function SectorBlock({ sector, prefersReducedMotion }: SectorBlockProps) {
 }
 
 export default function AplicacionesPage() {
-  const heroRef = useRef<HTMLElement>(null);
-  const [isHeroRevealed, setIsHeroRevealed] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-
-    const handleMediaChange = (e: MediaQueryListEvent) => {
-      setPrefersReducedMotion(e.matches);
-    };
-
-    mediaQuery.addEventListener('change', handleMediaChange);
-    return () => mediaQuery.removeEventListener('change', handleMediaChange);
-  }, []);
-
-  useEffect(() => {
-    const el = heroRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting) {
-          setIsHeroRevealed(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15 }
-    );
-
-    observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  const { ref: heroRef, getStyle: getHeroStyle } = useReveal<HTMLElement>();
+  const { ref: closingRef, getStyle: getClosingStyle } = useReveal<HTMLElement>();
 
   return (
     <div className="w-full bg-paper flex flex-col">
@@ -386,16 +302,7 @@ export default function AplicacionesPage() {
         <div className="layout-container">
           <div
             className="grid grid-cols-1 md:grid-cols-12 gap-[24px] items-end"
-            style={{
-              opacity: isHeroRevealed || prefersReducedMotion ? 1 : 0,
-              transform:
-                isHeroRevealed || prefersReducedMotion
-                  ? 'translateY(0)'
-                  : 'translateY(12px)',
-              transition: prefersReducedMotion
-                ? 'none'
-                : 'opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1)',
-            }}
+            style={getHeroStyle(0)}
           >
             {/* Columnas 1 a 7 (Tablet: 1 a 12) */}
             <div className="col-span-12 md:col-span-12 lg:col-span-7 flex flex-col">
@@ -426,7 +333,6 @@ export default function AplicacionesPage() {
           <SectorBlock
             key={sector.id}
             sector={sector}
-            prefersReducedMotion={prefersReducedMotion}
           />
         ))}
       </div>
@@ -435,11 +341,15 @@ export default function AplicacionesPage() {
       {/* PARTE 3 — BANDA DE CIERRE                                 */}
       {/* ========================================================= */}
       <section
+        ref={closingRef}
         aria-label="Cierre de Aplicaciones"
         className="w-full bg-ink-900 py-[56px] md:py-[80px] lg:py-[128px] overflow-x-clip relative border-b border-paper/15"
       >
         <div className="layout-container">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-[32px] md:gap-[24px] items-end">
+          <div
+            className="grid grid-cols-1 md:grid-cols-12 gap-[32px] md:gap-[24px] items-end"
+            style={getClosingStyle(0)}
+          >
             {/* Columnas 1 a 7 (Tablet: 1 a 12) */}
             <div className="col-span-12 md:col-span-12 lg:col-span-7 flex flex-col">
               <h2 className="type-h2 text-paper m-0 leading-[1.1]">

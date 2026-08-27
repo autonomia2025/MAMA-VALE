@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { CONTRAPESOS_DATA, ContrapesoItem } from '../data/contrapesosData';
+import { useReveal } from '../hooks/useReveal';
 
 type TipoFilter = 'Todos' | 'Clip-on acero' | 'Clip-on aluminio' | 'Adhesivo';
 type RangoFilter = 'Todos' | '5 – 60 g' | '50 – 300 g' | '100 – 500 g';
@@ -19,9 +20,7 @@ const RANGO_OPTIONS: RangoFilter[] = [
 ];
 
 export default function TablaTecnica() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isRevealed, setIsRevealed] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const { ref: sectionRef, isRevealed, prefersReducedMotion, getStyle } = useReveal<HTMLElement>();
 
   // Filtros de estado
   const [selectedTipo, setSelectedTipo] = useState<TipoFilter>('Todos');
@@ -29,42 +28,6 @@ export default function TablaTecnica() {
 
   // Transición de filtrado suave
   const [isFiltering, setIsFiltering] = useState(false);
-
-  // Detección de reduced motion
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-
-    const handleMediaChange = (e: MediaQueryListEvent) => {
-      setPrefersReducedMotion(e.matches);
-    };
-
-    mediaQuery.addEventListener('change', handleMediaChange);
-    return () => mediaQuery.removeEventListener('change', handleMediaChange);
-  }, []);
-
-  // IntersectionObserver para revelado al entrar al viewport
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting) {
-          setIsRevealed(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15 }
-    );
-
-    observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
 
   // Filtrado de referencias
   const filteredData = useMemo(() => {
@@ -141,14 +104,7 @@ export default function TablaTecnica() {
     >
       <div className="layout-container">
         {/* Encabezado */}
-        <div
-          className="transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-          style={{
-            opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-            transform:
-              isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-          }}
-        >
+        <div style={getStyle(0)}>
           {/* Desktop & Tablet Header */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-[24px] items-end">
             <div className="md:col-span-8 lg:col-span-6 flex flex-col gap-[24px]">
@@ -175,12 +131,8 @@ export default function TablaTecnica() {
 
         {/* Barra de Filtros: 48px de aire bajo el encabezado */}
         <div
-          className="mt-[48px] transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-          style={{
-            opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-            transform:
-              isRevealed || prefersReducedMotion ? 'translateY(0)' : 'translateY(12px)',
-          }}
+          className="mt-[48px]"
+          style={getStyle(1)}
         >
           <div className="flex flex-col md:flex-col lg:flex-row lg:items-center gap-[24px] lg:gap-[64px]">
             {/* Grupo 1 — TIPO */}
@@ -246,11 +198,8 @@ export default function TablaTecnica() {
 
         {/* Tabla Técnica / Estado Vacío */}
         <div
-          className="mt-0 transition-opacity duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-          style={{
-            opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-            transitionDelay: prefersReducedMotion ? '0ms' : '200ms',
-          }}
+          className="mt-0"
+          style={getStyle(2)}
         >
           {filteredData.length === 0 ? (
             /* Estado Vacío */

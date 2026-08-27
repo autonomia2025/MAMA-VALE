@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import GramScale from './GramScale';
+import heroBg from '../assets/images/hero_zinc_weights_1787861999074.jpg';
 
 export default function Hero() {
   const heroRef = useRef<HTMLElement>(null);
@@ -11,7 +12,21 @@ export default function Hero() {
       aria-label="Presentación principal"
       className="relative w-full bg-paper flex flex-col justify-between overflow-hidden min-h-[640px] md:min-h-[720px] md:max-h-[960px] md:h-screen pt-[100px] pb-[48px] md:pt-[110px] md:pb-[64px]"
     >
-      <div className="layout-container h-full flex-1 flex flex-col justify-between">
+      {/* CAPA DE IMAGEN DE FONDO */}
+      <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
+        <img
+          src={heroBg}
+          alt="Contrapesos de zinc para balanceo de ruedas"
+          referrerPolicy="no-referrer"
+          className="w-full h-full object-cover object-[center_55%] md:object-[60%_50%] lg:object-[65%_45%] opacity-60 brightness-[1.08] contrast-[0.98] transition-opacity duration-700"
+        />
+        {/* Gradientes sutiles y luminosos para preservar legibilidad impecable */}
+        <div className="absolute inset-0 bg-gradient-to-r from-paper/95 via-paper/70 to-transparent hidden md:block" />
+        <div className="absolute inset-0 bg-gradient-to-b from-paper/85 via-paper/50 to-paper/90 md:hidden" />
+        <div className="absolute bottom-0 left-0 right-0 h-[100px] bg-gradient-to-t from-paper to-transparent" />
+      </div>
+
+      <div className="layout-container relative z-10 h-full flex-1 flex flex-col justify-between">
         {/* BLOQUE SUPERIOR — Eyebrow + Hairline */}
         <div className="w-full flex items-center min-w-0">
           <div className="grid-base w-full items-center">
@@ -54,7 +69,7 @@ export default function Hero() {
               <div className="mt-[32px] flex items-center gap-[24px]">
                 <Link
                   to="/contrapesos#catalogo"
-                  className="type-label inline-flex items-center justify-center py-[16px] px-[32px] rounded-full bg-ink-900 text-paper hover:bg-ink-900/90 hover:-translate-y-[2px] transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
+                  className="type-label inline-flex items-center justify-center py-[16px] px-[32px] rounded-full bg-ink-900 text-paper hover:bg-ink-900/90 hover:-translate-y-[2px] transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 shadow-sm"
                 >
                   Ver catálogo técnico
                 </Link>
@@ -98,7 +113,7 @@ export default function Hero() {
               <div className="mt-[32px] flex items-center gap-[24px]">
                 <Link
                   to="/contrapesos#catalogo"
-                  className="type-label inline-flex items-center justify-center py-[16px] px-[32px] rounded-full bg-ink-900 text-paper hover:bg-ink-900/90 hover:-translate-y-[2px] transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
+                  className="type-label inline-flex items-center justify-center py-[16px] px-[32px] rounded-full bg-ink-900 text-paper hover:bg-ink-900/90 hover:-translate-y-[2px] transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 shadow-sm"
                 >
                   Ver catálogo técnico
                 </Link>
@@ -142,7 +157,7 @@ export default function Hero() {
               <div className="mt-[32px] flex flex-col items-stretch gap-[16px]">
                 <Link
                   to="/contrapesos#catalogo"
-                  className="type-label w-full py-[16px] px-[24px] text-center rounded-full bg-ink-900 text-paper hover:bg-ink-900/90 transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
+                  className="type-label w-full py-[16px] px-[24px] text-center rounded-full bg-ink-900 text-paper hover:bg-ink-900/90 transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 shadow-sm"
                 >
                   Ver catálogo técnico
                 </Link>
