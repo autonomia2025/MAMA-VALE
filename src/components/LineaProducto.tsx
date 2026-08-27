@@ -307,7 +307,7 @@ export default function LineaProducto() {
                 }`}
               >
                 <Link
-                  to="/contrapesos"
+                  to="/consumibles/contrapesos"
                   aria-label={`${product.name} — Ver detalle`}
                   style={getStyle(index + 1)}
                   className="group flex flex-col h-full focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
@@ -376,7 +376,7 @@ export default function LineaProducto() {
                 }`}
               >
                 <Link
-                  to="/contrapesos"
+                  to="/consumibles/contrapesos"
                   aria-label={`${product.name} — Ver detalle`}
                   style={getStyle(index + 1)}
                   className="group flex flex-col h-full focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
@@ -443,7 +443,7 @@ export default function LineaProducto() {
                 className={index > 0 ? 'border-t border-line mt-[48px] pt-[48px]' : ''}
               >
                 <Link
-                  to="/contrapesos"
+                  to="/consumibles/contrapesos"
                   aria-label={`${product.name} — Ver detalle`}
                   style={getStyle(index + 1)}
                   className="flex flex-col focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"

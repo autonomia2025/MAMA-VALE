@@ -8,91 +8,6 @@ export const CONTACT_EMAIL = 'contacto@maquinariasjvk.cl';
 export const CONTACT_DISPATCH = 'Santiago y regiones';
 export const WHATSAPP_URL = `https://wa.me/${CONTACT_PHONE_CLEAN.replace('+', '')}`;
 
-interface ScaleTick {
-  isMajor: boolean;
-}
-
-// 12 marcas distribuidas idénticamente a la escala del Hero: mayores en 1, 5, 9 y 12 (índices 0, 4, 8 y 11)
-const CLOSING_TICKS: ScaleTick[] = [
-  { isMajor: true },  // 0 (pos 1)
-  { isMajor: false }, // 1
-  { isMajor: false }, // 2
-  { isMajor: false }, // 3
-  { isMajor: true },  // 4 (pos 5)
-  { isMajor: false }, // 5
-  { isMajor: false }, // 6
-  { isMajor: false }, // 7
-  { isMajor: true },  // 8 (pos 9)
-  { isMajor: false }, // 9
-  { isMajor: false }, // 10
-  { isMajor: true },  // 11 (pos 12)
-];
-
-interface ClosingScaleProps {
-  isRevealed: boolean;
-  prefersReducedMotion: boolean;
-}
-
-function ClosingScale({ isRevealed, prefersReducedMotion }: ClosingScaleProps) {
-  return (
-    <div
-      aria-hidden="true"
-      className="relative w-full max-w-full overflow-hidden h-[48px] flex items-center select-none pointer-events-none"
-    >
-      <svg
-        width="100%"
-        height="48"
-        className="block w-full max-w-full"
-        fill="none"
-      >
-        {/* Baseline (Línea base en 1px line a ancho completo, y=24) */}
-        <line
-          x1="0%"
-          y1="24"
-          x2="100%"
-          y2="24"
-          stroke="#D8DADC"
-          strokeWidth="1"
-          style={{
-            transformOrigin: '0% 24px',
-            transform: isRevealed || prefersReducedMotion ? 'scaleX(1)' : 'scaleX(0)',
-            transition: prefersReducedMotion
-              ? 'none'
-              : 'transform 700ms cubic-bezier(0.16, 1, 0.3, 1) 300ms',
-          }}
-        />
-
-        {/* Ticks (12 marcas idénticas en proporciones a la del hero) */}
-        {CLOSING_TICKS.map((tick, idx) => {
-          const stepPct = (idx / (CLOSING_TICKS.length - 1)) * 100;
-          const height = tick.isMajor ? 18 : 9;
-          const y1 = 24 - height / 2;
-          const y2 = 24 + height / 2;
-          const tickDelay = 300 + idx * 35;
-
-          return (
-            <line
-              key={idx}
-              x1={`${stepPct}%`}
-              y1={y1}
-              x2={`${stepPct}%`}
-              y2={y2}
-              stroke={tick.isMajor ? '#C89B32' : '#D8DADC'}
-              strokeWidth="1"
-              style={{
-                opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                transition: prefersReducedMotion
-                  ? 'none'
-                  : `opacity 400ms cubic-bezier(0.16, 1, 0.3, 1) ${tickDelay}ms`,
-              }}
-            />
-          );
-        })}
-      </svg>
-    </div>
-  );
-}
-
 export default function Cierre() {
   const { ref: sectionRef, isRevealed, prefersReducedMotion, getStyle } = useReveal<HTMLElement>();
 
@@ -384,14 +299,6 @@ export default function Cierre() {
               </span>
             </div>
           </div>
-        </div>
-
-        {/* Escala de Cierre (Cierre de arco visual) */}
-        <div className="mt-[64px] md:mt-[96px]">
-          <ClosingScale
-            isRevealed={isRevealed}
-            prefersReducedMotion={prefersReducedMotion}
-          />
         </div>
       </div>
     </section>

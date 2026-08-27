@@ -3,24 +3,52 @@ import { useLocation } from 'react-router-dom';
 
 const ROUTE_META: Record<string, { title: string; description: string }> = {
   '/': {
-    title: 'Maquinarias JVK — Contrapesos para Balanceo de Neumáticos',
-    description: 'Provisión técnica de contrapesos de zinc clip-on y adhesivos para el sector automotriz, transporte pesado y maquinaria en Chile.',
+    title: 'Maquinarias JVK — Equipamiento y Servicios para Talleres Automotrices',
+    description: 'Equipamiento, consumibles y servicios técnicos para talleres automotrices, vulcanizadoras y flotas en Chile.',
   },
-  '/contrapesos': {
+  '/equipamiento': {
+    title: 'Equipamiento — Maquinarias JVK',
+    description: 'Líneas completas de equipamiento para talleres automotrices: elevadores, alineadores, desmontadoras, lubricación y redes.',
+  },
+  '/equipamiento/elevadores': {
+    title: 'Elevadores — Maquinarias JVK',
+    description: 'Elevadores automotrices de 2 y 4 columnas, tijera y sistemas de elevación para talleres.',
+  },
+  '/equipamiento/alineadores': {
+    title: 'Alineadores — Maquinarias JVK',
+    description: 'Sistemas de alineación 3D y computarizada de alta precisión para talleres mecánicos.',
+  },
+  '/equipamiento/desmontadoras': {
+    title: 'Desmontadoras y Balanceadoras — Maquinarias JVK',
+    description: 'Desmontadoras y balanceadoras de neumáticos para automóviles, camiones y maquinaria.',
+  },
+  '/equipamiento/lubricacion': {
+    title: 'Equipos de Lubricación — Maquinarias JVK',
+    description: 'Sistemas de distribución y extracción de aceites, grasas y fluidos para taller.',
+  },
+  '/equipamiento/redes': {
+    title: 'Redes de Aire y Fluidos — Maquinarias JVK',
+    description: 'Instalación y dimensionamiento de redes de aire comprimido y fluidos industriales.',
+  },
+  '/consumibles': {
+    title: 'Consumibles — Maquinarias JVK',
+    description: 'Insumos y consumibles técnicos de alta rotación para el trabajo diario de taller.',
+  },
+  '/consumibles/contrapesos': {
     title: 'Contrapesos — Maquinarias JVK',
     description: 'Línea de contrapesos de zinc tipo clip-on y adhesivos con gramaje estampado para balanceo de precisión.',
   },
-  '/aplicaciones': {
-    title: 'Aplicaciones — Maquinarias JVK',
-    description: 'Soluciones de balanceo para flotas automotrices, transporte de carga pesada y maquinaria industrial.',
+  '/proyectos': {
+    title: 'Proyectos — Maquinarias JVK',
+    description: 'Instalaciones y proyectos de equipamiento para talleres automotrices en Chile.',
   },
   '/nosotros': {
     title: 'Nosotros — Maquinarias JVK',
-    description: 'Empresa chilena especializada en provisión técnica y disponibilidad continua de insumos de balanceo.',
+    description: 'Empresa chilena especializada en equipamiento y provisión técnica continua para talleres automotrices.',
   },
   '/cotizar': {
     title: 'Cotizar — Maquinarias JVK',
-    description: 'Solicitud directa de cotización de contrapesos para vulcanizadoras, talleres y jefes de flota.',
+    description: 'Solicitud directa de cotización de equipamiento y consumibles para talleres automotrices y flotas.',
   },
 };
 

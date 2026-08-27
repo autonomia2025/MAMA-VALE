@@ -17,7 +17,7 @@ export default function Footer() {
             </div>
           </Link>
           <p className="type-body-sm text-paper/65 text-left max-w-[640px]">
-            Contrapesos para balanceo de neumáticos. Sector automotriz, transporte y maquinaria.
+            Equipamiento, consumibles y servicios para talleres automotrices en Chile.
           </p>
         </div>
 
@@ -26,13 +26,60 @@ export default function Footer() {
 
         {/* Bottom Row: 4 Columns (2 cols on mobile, 4 on desktop) */}
         <div className="grid grid-cols-2 lg:grid-cols-12 gap-x-[20px] gap-y-[32px] lg:gap-[24px]">
-          {/* Column 1: Producto */}
+          {/* Column 1: Equipamiento */}
           <div className="col-span-1 lg:col-span-3 flex flex-col gap-[24px]">
-            <span className="type-label text-gold-500">PRODUCTO</span>
+            <span className="type-label text-gold-500">EQUIPAMIENTO</span>
             <ul className="flex flex-col gap-[12px] p-0 m-0 list-none">
               <li>
                 <Link
-                  to="/contrapesos"
+                  to="/equipamiento/elevadores"
+                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
+                >
+                  Elevadores
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/equipamiento/alineadores"
+                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
+                >
+                  Alineadores
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/equipamiento/desmontadoras"
+                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
+                >
+                  Desmontadoras y balanceadoras
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/equipamiento/lubricacion"
+                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
+                >
+                  Lubricación
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/equipamiento/redes"
+                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
+                >
+                  Redes de aire y fluidos
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 2: Consumibles */}
+          <div className="col-span-1 lg:col-span-3 flex flex-col gap-[24px]">
+            <span className="type-label text-gold-500">CONSUMIBLES</span>
+            <ul className="flex flex-col gap-[12px] p-0 m-0 list-none">
+              <li>
+                <Link
+                  to="/consumibles/contrapesos"
                   className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
                 >
                   Contrapesos clip-on
@@ -40,7 +87,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/contrapesos"
+                  to="/consumibles/contrapesos"
                   className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
                 >
                   Contrapesos adhesivos
@@ -48,41 +95,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/contrapesos#catalogo"
+                  to="/consumibles/contrapesos#catalogo"
                   className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
                 >
-                  Catálogo técnico
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 2: Aplicaciones */}
-          <div className="col-span-1 lg:col-span-3 flex flex-col gap-[24px]">
-            <span className="type-label text-gold-500">APLICACIONES</span>
-            <ul className="flex flex-col gap-[12px] p-0 m-0 list-none">
-              <li>
-                <Link
-                  to="/aplicaciones"
-                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
-                >
-                  Automotriz
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/aplicaciones"
-                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
-                >
-                  Transporte pesado
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/aplicaciones"
-                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
-                >
-                  Maquinaria
+                  Catálogo de contrapesos
                 </Link>
               </li>
             </ul>

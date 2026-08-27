@@ -1,184 +1,375 @@
-import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import GramScale from './GramScale';
-import heroBg from '../assets/images/hero_zinc_weights_1787861999074.jpg';
+import heroImage from '../assets/images/hero_elevador_taller_1787864098950.jpg';
+
+interface LineItem {
+  name: string;
+  href: string;
+}
+
+const LINES: LineItem[] = [
+  { name: 'ELEVADORES', href: '/equipamiento/elevadores' },
+  { name: 'ALINEADORES', href: '/equipamiento/alineadores' },
+  { name: 'DESMONTADORAS', href: '/equipamiento/desmontadoras' },
+  { name: 'LUBRICACIÓN', href: '/equipamiento/lubricacion' },
+  { name: 'REDES', href: '/equipamiento/redes' },
+];
 
 export default function Hero() {
-  const heroRef = useRef<HTMLElement>(null);
-
   return (
     <section
-      ref={heroRef}
       aria-label="Presentación principal"
-      className="relative w-full bg-paper flex flex-col justify-between overflow-hidden min-h-[640px] md:min-h-[720px] md:max-h-[960px] md:h-screen pt-[100px] pb-[48px] md:pt-[110px] md:pb-[64px]"
+      className="relative w-full bg-paper flex flex-col justify-between overflow-x-clip min-h-[640px] py-[96px] md:py-0 md:h-screen md:min-h-[720px] md:max-h-[960px] md:pt-[100px] md:pb-[64px]"
     >
-      {/* CAPA DE IMAGEN DE FONDO */}
-      <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
-        <img
-          src={heroBg}
-          alt="Contrapesos de zinc para balanceo de ruedas"
-          referrerPolicy="no-referrer"
-          className="w-full h-full object-cover object-[center_55%] md:object-[60%_50%] lg:object-[65%_45%] opacity-60 brightness-[1.08] contrast-[0.98] transition-opacity duration-700"
-        />
-        {/* Gradientes sutiles y luminosos para preservar legibilidad impecable */}
-        <div className="absolute inset-0 bg-gradient-to-r from-paper/95 via-paper/70 to-transparent hidden md:block" />
-        <div className="absolute inset-0 bg-gradient-to-b from-paper/85 via-paper/50 to-paper/90 md:hidden" />
-        <div className="absolute bottom-0 left-0 right-0 h-[100px] bg-gradient-to-t from-paper to-transparent" />
-      </div>
-
-      <div className="layout-container relative z-10 h-full flex-1 flex flex-col justify-between">
-        {/* BLOQUE SUPERIOR — Eyebrow + Hairline */}
+      <div className="layout-container h-full flex-1 flex flex-col justify-between">
+        {/* BLOQUE SUPERIOR — Eyebrow + Filete Dorado */}
         <div className="w-full flex items-center min-w-0">
           <div className="grid-base w-full items-center">
-            <div className="col-span-12 md:col-span-8 lg:col-span-6 flex items-center gap-[12px] sm:gap-[16px] min-w-0">
-              <span className="type-label text-gold-700 anim-hero-eyebrow text-[9.5px] xs:text-[10px] sm:text-[11px] tracking-[0.06em] sm:tracking-[0.10em] truncate sm:whitespace-nowrap">
-                CONTRAPESOS PARA BALANCEO DE NEUMÁTICOS
+            <div className="col-span-12 md:col-span-8 lg:col-span-6 flex items-center gap-[16px] min-w-0">
+              <span className="type-label text-gold-700 anim-hero-eyebrow whitespace-nowrap">
+                EQUIPAMIENTO PARA TALLERES AUTOMOTRICES
               </span>
-              <div className="h-[1px] bg-gold-500 flex-1 anim-hero-hairline min-w-[12px] hidden xs:block" />
+              <div className="h-[1px] bg-gold-500 flex-1 anim-hero-hairline min-w-[16px] hidden sm:block" />
             </div>
           </div>
         </div>
 
-        {/* BLOQUE CENTRAL — Titular y Apoyo (ópticamente centrado hacia arriba) */}
-        <div className="w-full my-auto py-[32px] md:py-[40px] md:-translate-y-[16px]">
-          {/* Desktop Layout (≥1200px / lg) */}
-          <div className="hidden lg:grid grid-cols-12 gap-[24px] items-end">
-            {/* Titular: Columnas 1 a 8 */}
-            <div className="col-span-8">
+        {/* BLOQUE CENTRAL — Contenido Principal */}
+        <div className="w-full my-auto py-[32px] md:py-[40px]">
+          {/* =========================================================================
+              1. DESKTOP LAYOUT (≥ 1200px / lg)
+              ========================================================================= */}
+          <div className="hidden lg:grid grid-cols-12 gap-[24px] items-start">
+            {/* Columnas 1 a 7: Bloque de texto */}
+            <div className="col-span-7 flex flex-col">
+              {/* Titular en 2 líneas forzadas */}
               <h1 className="type-display text-ink-900 m-0">
                 <span className="block overflow-hidden py-1">
-                  <span className="block anim-hero-title-1">El equilibrio</span>
+                  <span className="block anim-hero-title-1">
+                    Un taller <span className="italic font-bold">detenido</span>
+                  </span>
                 </span>
                 <span className="block overflow-hidden py-1">
-                  <span className="block anim-hero-title-2">se mide</span>
-                </span>
-                <span className="block overflow-hidden py-1">
-                  <span className="block anim-hero-title-3">
-                    en <span className="italic font-bold">gramos.</span>
+                  <span className="block anim-hero-title-2">
+                    no factura.
                   </span>
                 </span>
               </h1>
+
+              {/* Párrafo de apoyo y Acciones juntos en la animación */}
+              <div className="anim-hero-body-actions">
+                <p className="type-body text-steel-500 m-0 mt-[48px] max-w-[560px] leading-[1.6]">
+                  Elevadores, alineadores, desmontadoras, lubricación y redes. Vendemos, instalamos y damos servicio, para que el equipo no sea el que te frena.
+                </p>
+
+                {/* Acciones en una fila */}
+                <div className="mt-[40px] flex items-center gap-[24px]">
+                  {/* Píldora primaria */}
+                  <Link
+                    to="/equipamiento"
+                    className="type-label group inline-flex items-center justify-center h-[56px] px-[28px] rounded-full bg-ink-900 text-paper hover:bg-ink-900/90 hover:-translate-y-[2px] transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 shadow-sm"
+                  >
+                    <span>VER EQUIPAMIENTO</span>
+                    <span className="ml-[8px] text-gold-500 transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[2px] group-hover:-translate-y-[2px]">
+                      ↗
+                    </span>
+                  </Link>
+
+                  {/* Enlace secundario */}
+                  <Link
+                    to="/cotizar"
+                    className="type-label group relative inline-flex items-center gap-[4px] text-gold-700 py-[4px] transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
+                  >
+                    <span>COTIZAR</span>
+                    <span className="inline-block transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
+                      ↗
+                    </span>
+                    <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-gold-500 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                  </Link>
+                </div>
+              </div>
             </div>
 
-            {/* Párrafo de apoyo y Acciones: Columnas 9 a 12, alineado abajo */}
-            <div className="col-span-4 self-end flex flex-col justify-end anim-hero-body">
-              <p className="type-body text-steel-500 m-0 max-w-[380px] leading-[1.6]">
-                Contrapesos de zinc para automóviles, transporte pesado y maquinaria. Gramaje exacto, adherencia garantizada, stock permanente en Santiago.
-              </p>
-
-              <div className="mt-[32px] flex items-center gap-[24px]">
-                <Link
-                  to="/contrapesos#catalogo"
-                  className="type-label inline-flex items-center justify-center py-[16px] px-[32px] rounded-full bg-ink-900 text-paper hover:bg-ink-900/90 hover:-translate-y-[2px] transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 shadow-sm"
-                >
-                  Ver catálogo técnico
-                </Link>
-                <Link
-                  to="/cotizar"
-                  className="type-label group relative inline-flex items-center gap-[4px] text-gold-700 py-[4px] transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
-                >
-                  <span>Cotizar</span>
-                  <span className="inline-block transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
-                    ↗
-                  </span>
-                  <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-gold-500 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
-                </Link>
+            {/* Columnas 9 a 12: Bloque de imagen (col-start-9 col-span-4) */}
+            <div className="col-start-9 col-span-4 flex flex-col anim-hero-image">
+              <div className="relative w-full aspect-[4/5] rounded-[20px] overflow-hidden bg-mist">
+                <img
+                  src={heroImage}
+                  alt="Elevador automotriz de dos columnas con un vehículo elevado en un taller"
+                  loading="eager"
+                  fetchPriority="high"
+                  width={400}
+                  height={500}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover"
+                />
               </div>
+              <span className="type-label text-steel-500 mt-[16px]">
+                ELEVADOR DE DOS COLUMNAS · INSTALACIÓN
+              </span>
             </div>
           </div>
 
-          {/* Tablet Layout (768px a 1199px) */}
-          <div className="hidden md:flex lg:hidden flex-col">
-            <div className="w-full max-w-[85%]">
+          {/* =========================================================================
+              2. TABLET LAYOUT (768px a 1199px / md)
+              ========================================================================= */}
+          <div className="hidden md:grid lg:hidden grid-cols-12 gap-[24px] items-start">
+            {/* Columnas 1 a 7: Texto */}
+            <div className="col-span-7 flex flex-col">
               <h1 className="type-display text-ink-900 m-0">
                 <span className="block overflow-hidden py-1">
-                  <span className="block anim-hero-title-1">El equilibrio</span>
+                  <span className="block anim-hero-title-1">
+                    Un taller <span className="italic font-bold">detenido</span>
+                  </span>
                 </span>
                 <span className="block overflow-hidden py-1">
-                  <span className="block anim-hero-title-2">se mide</span>
-                </span>
-                <span className="block overflow-hidden py-1">
-                  <span className="block anim-hero-title-3">
-                    en <span className="italic font-bold">gramos.</span>
+                  <span className="block anim-hero-title-2">
+                    no factura.
                   </span>
                 </span>
               </h1>
+
+              <div className="anim-hero-body-actions">
+                <p className="type-body text-steel-500 m-0 mt-[40px] leading-[1.6]">
+                  Elevadores, alineadores, desmontadoras, lubricación y redes. Vendemos, instalamos y damos servicio, para que el equipo no sea el que te frena.
+                </p>
+
+                <div className="mt-[32px] flex items-center gap-[24px]">
+                  <Link
+                    to="/equipamiento"
+                    className="type-label group inline-flex items-center justify-center h-[56px] px-[28px] rounded-full bg-ink-900 text-paper hover:bg-ink-900/90 hover:-translate-y-[2px] transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 shadow-sm"
+                  >
+                    <span>VER EQUIPAMIENTO</span>
+                    <span className="ml-[8px] text-gold-500 transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[2px] group-hover:-translate-y-[2px]">
+                      ↗
+                    </span>
+                  </Link>
+                  <Link
+                    to="/cotizar"
+                    className="type-label group relative inline-flex items-center gap-[4px] text-gold-700 py-[4px] transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
+                  >
+                    <span>COTIZAR</span>
+                    <span className="inline-block transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
+                      ↗
+                    </span>
+                    <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-gold-500 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                  </Link>
+                </div>
+              </div>
             </div>
 
-            <div className="mt-[48px] max-w-[600px] anim-hero-body">
-              <p className="type-body text-steel-500 m-0">
-                Contrapesos de zinc para automóviles, transporte pesado y maquinaria. Gramaje exacto, adherencia garantizada, stock permanente en Santiago.
-              </p>
-
-              <div className="mt-[32px] flex items-center gap-[24px]">
-                <Link
-                  to="/contrapesos#catalogo"
-                  className="type-label inline-flex items-center justify-center py-[16px] px-[32px] rounded-full bg-ink-900 text-paper hover:bg-ink-900/90 hover:-translate-y-[2px] transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 shadow-sm"
-                >
-                  Ver catálogo técnico
-                </Link>
-                <Link
-                  to="/cotizar"
-                  className="type-label group relative inline-flex items-center gap-[4px] text-gold-700 py-[4px] transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
-                >
-                  <span>Cotizar</span>
-                  <span className="inline-block transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
-                    ↗
-                  </span>
-                  <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-gold-500 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
-                </Link>
+            {/* Columnas 8 a 12: Imagen (col-span-5) */}
+            <div className="col-span-5 flex flex-col anim-hero-image">
+              <div className="relative w-full aspect-[4/5] rounded-[20px] overflow-hidden bg-mist">
+                <img
+                  src={heroImage}
+                  alt="Elevador automotriz de dos columnas con un vehículo elevado en un taller"
+                  loading="eager"
+                  fetchPriority="high"
+                  width={400}
+                  height={500}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover"
+                />
               </div>
+              <span className="type-label text-steel-500 mt-[16px]">
+                ELEVADOR DE DOS COLUMNAS · INSTALACIÓN
+              </span>
             </div>
           </div>
 
-          {/* Mobile Layout (< 768px) */}
+          {/* =========================================================================
+              3. MOBILE LAYOUT (< 768px)
+              ========================================================================= */}
           <div className="flex md:hidden flex-col">
-            <div className="w-full">
-              <h1 className="type-display text-ink-900 m-0 text-[42px] leading-[1.0]">
-                <span className="block overflow-hidden py-0.5">
-                  <span className="block anim-hero-title-1">El equilibrio</span>
+            {/* Titular mobile */}
+            <h1 className="type-display text-ink-900 m-0 text-[42px] leading-[1.0]">
+              <span className="block overflow-hidden py-0.5">
+                <span className="block anim-hero-title-1">
+                  Un taller <span className="italic font-bold">detenido</span>
                 </span>
-                <span className="block overflow-hidden py-0.5">
-                  <span className="block anim-hero-title-2">se mide</span>
+              </span>
+              <span className="block overflow-hidden py-0.5">
+                <span className="block anim-hero-title-2">
+                  no factura.
                 </span>
-                <span className="block overflow-hidden py-0.5">
-                  <span className="block anim-hero-title-3">
-                    en <span className="italic font-bold">gramos.</span>
-                  </span>
-                </span>
-              </h1>
+              </span>
+            </h1>
+
+            {/* Imagen en mobile: proporción 3:2, 40px aire arriba y abajo */}
+            <div className="my-[40px] flex flex-col anim-hero-image">
+              <div className="relative w-full aspect-[3/2] rounded-[20px] overflow-hidden bg-mist">
+                <img
+                  src={heroImage}
+                  alt="Elevador automotriz de dos columnas con un vehículo elevado en un taller"
+                  loading="eager"
+                  fetchPriority="high"
+                  width={600}
+                  height={400}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <span className="type-label text-steel-500 mt-[12px]">
+                ELEVADOR DE DOS COLUMNAS · INSTALACIÓN
+              </span>
             </div>
 
-            <div className="mt-[32px] w-full anim-hero-body">
-              <p className="type-body text-steel-500 m-0">
-                Contrapesos de zinc para automóviles, transporte pesado y maquinaria. Gramaje exacto, adherencia garantizada, stock permanente en Santiago.
+            {/* Párrafo y acciones */}
+            <div className="anim-hero-body-actions flex flex-col">
+              <p className="type-body text-steel-500 m-0 leading-[1.6]">
+                Elevadores, alineadores, desmontadoras, lubricación y redes. Vendemos, instalamos y damos servicio, para que el equipo no sea el que te frena.
               </p>
 
+              {/* Acciones apiladas */}
               <div className="mt-[32px] flex flex-col items-stretch gap-[16px]">
                 <Link
-                  to="/contrapesos#catalogo"
-                  className="type-label w-full py-[16px] px-[24px] text-center rounded-full bg-ink-900 text-paper hover:bg-ink-900/90 transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 shadow-sm"
+                  to="/equipamiento"
+                  className="type-label flex items-center justify-center w-full h-[56px] px-[24px] rounded-full bg-ink-900 text-paper focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 shadow-sm"
                 >
-                  Ver catálogo técnico
+                  <span>VER EQUIPAMIENTO</span>
+                  <span className="ml-[8px] text-gold-500">↗</span>
                 </Link>
+
                 <Link
                   to="/cotizar"
-                  className="type-label group relative inline-flex items-center justify-start gap-[4px] text-gold-700 py-[8px] transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
+                  className="type-label inline-flex items-center justify-start gap-[4px] text-gold-700 py-[8px] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 self-start"
                 >
-                  <span>Cotizar</span>
-                  <span className="inline-block transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
-                    ↗
-                  </span>
-                  <span className="absolute bottom-0 left-0 w-[64px] h-[1px] bg-gold-500 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                  <span>COTIZAR</span>
+                  <span>↗</span>
                 </Link>
               </div>
             </div>
           </div>
         </div>
 
-        {/* BLOQUE INFERIOR — Escala de Gramaje */}
-        <div className="w-full pt-[24px]">
-          <GramScale heroRef={heroRef} />
+        {/* =========================================================================
+            BASE DEL HERO — ÍNDICE DE LÍNEAS
+            ========================================================================= */}
+        <div className="w-full pt-[40px] md:pt-0">
+          {/* DESKTOP (≥ 1200px): 5 Celdas en 1 fila uniforme con filetes verticales */}
+          <div className="hidden lg:block relative w-full">
+            {/* Filete superior a ancho completo animado */}
+            <div className="w-full border-t border-line anim-hero-index-line" />
+
+            {/* Fila de 5 celdas */}
+            <div className="grid grid-cols-5 w-full">
+              {LINES.map((line, index) => (
+                <div key={line.href} className="relative">
+                  {/* Filete vertical de separación (4 filetes entre celdas) de 48px de alto */}
+                  {index > 0 && (
+                    <div
+                      aria-hidden="true"
+                      className="absolute left-0 top-0 w-[1px] h-[48px] bg-line pointer-events-none"
+                    />
+                  )}
+
+                  {/* Enlace de celda */}
+                  <Link
+                    to={line.href}
+                    className={`group relative flex items-center justify-between pt-[20px] pb-[16px] px-[16px] lg:px-[20px] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 anim-hero-cell-${index}`}
+                  >
+                    {/* Línea dorada superior que crece de izquierda a derecha en hover */}
+                    <span
+                      aria-hidden="true"
+                      className="absolute top-0 left-0 right-0 h-[1px] bg-gold-500 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[300ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+                    />
+
+                    {/* Nombre de la línea */}
+                    <span className="type-label text-ink-900/70 group-hover:text-ink-900 transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]">
+                      {line.name}
+                    </span>
+
+                    {/* Glifo con desplazamiento diagonal en hover */}
+                    <span className="type-label text-steel-500 group-hover:text-gold-700 transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
+                      ↗
+                    </span>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* TABLET (768px a 1199px): 2 filas (3 celdas arriba, 2 abajo) */}
+          <div className="hidden md:block lg:hidden relative w-full">
+            {/* Filete superior animado */}
+            <div className="w-full border-t border-line anim-hero-index-line" />
+
+            {/* Fila 1: 3 celdas */}
+            <div className="grid grid-cols-3 w-full border-b border-line">
+              {LINES.slice(0, 3).map((line, index) => (
+                <div key={line.href} className="relative">
+                  {index > 0 && (
+                    <div
+                      aria-hidden="true"
+                      className="absolute left-0 top-0 w-[1px] h-[48px] bg-line pointer-events-none"
+                    />
+                  )}
+                  <Link
+                    to={line.href}
+                    className={`group relative flex items-center justify-between pt-[20px] pb-[16px] px-[16px] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 anim-hero-cell-${index}`}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="absolute top-0 left-0 right-0 h-[1px] bg-gold-500 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[300ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+                    />
+                    <span className="type-label text-ink-900/70 group-hover:text-ink-900 transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]">
+                      {line.name}
+                    </span>
+                    <span className="type-label text-steel-500 group-hover:text-gold-700 transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
+                      ↗
+                    </span>
+                  </Link>
+                </div>
+              ))}
+            </div>
+
+            {/* Fila 2: 2 celdas */}
+            <div className="grid grid-cols-2 w-full">
+              {LINES.slice(3, 5).map((line, index) => (
+                <div key={line.href} className="relative">
+                  {index > 0 && (
+                    <div
+                      aria-hidden="true"
+                      className="absolute left-0 top-0 w-[1px] h-[48px] bg-line pointer-events-none"
+                    />
+                  )}
+                  <Link
+                    to={line.href}
+                    className={`group relative flex items-center justify-between pt-[20px] pb-[16px] px-[16px] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 anim-hero-cell-${index + 3}`}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="absolute top-0 left-0 right-0 h-[1px] bg-gold-500 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[300ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+                    />
+                    <span className="type-label text-ink-900/70 group-hover:text-ink-900 transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]">
+                      {line.name}
+                    </span>
+                    <span className="type-label text-steel-500 group-hover:text-gold-700 transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
+                      ↗
+                    </span>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* MOBILE (< 768px): 1 Columna con 5 filas apiladas */}
+          <div className="flex md:hidden flex-col w-full border-t border-line anim-hero-index-line">
+            {LINES.map((line, index) => (
+              <Link
+                key={line.href}
+                to={line.href}
+                className={`flex items-center justify-between py-[16px] border-b border-line focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 anim-hero-cell-${index}`}
+              >
+                <span className="type-label text-ink-900">
+                  {line.name}
+                </span>
+                <span className="type-label text-steel-500">
+                  ↗
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>

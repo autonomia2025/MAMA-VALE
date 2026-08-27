@@ -1,6 +1,6 @@
 {
   "name": "Maquinarias JVK",
-  "description": "Contrapesos para balanceo de neumáticos. Sector automotriz, transporte y maquinaria pesada.",
+  "description": "Equipamiento, consumibles y servicios para talleres automotrices en Chile.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

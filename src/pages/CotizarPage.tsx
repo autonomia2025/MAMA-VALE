@@ -434,7 +434,7 @@ export default function CotizarPage() {
               {/* Enlace con 16px de aire */}
               <div className="mt-[16px]">
                 <Link
-                  to="/contrapesos#catalogo"
+                  to="/consumibles/contrapesos#catalogo"
                   className="type-label inline-flex items-center gap-[4px] text-gold-700 hover:text-gold-700/80 transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
                 >
                   <span>VER CATÁLOGO ↗</span>

@@ -1,3 +1,10 @@
+// =============================================================================
+// COMPONENTE PRESERVADO (NO MONTADO EN RUTAS)
+// La ruta /aplicaciones ha sido retirada y redirige a /consumibles/contrapesos.
+// El contenido de este componente se reutilizará dentro de la página de
+// contrapesos más adelante.
+// =============================================================================
+
 import { Link } from 'react-router-dom';
 import { useReveal } from '../hooks/useReveal';
 
