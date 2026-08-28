@@ -1,3 +1,6 @@
+// NOTA: Este componente se encuentra desmontado de la Home en favor del nuevo eje de Equipamiento (<LineasEquipamiento />).
+// Su contenido de rangos por gramaje se reutilizará dentro de la página de contrapesos (/consumibles/contrapesos).
+
 import { Link } from 'react-router-dom';
 import { useReveal } from '../hooks/useReveal';
 
