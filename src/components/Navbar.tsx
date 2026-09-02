@@ -160,13 +160,13 @@ export default function Navbar() {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
           isScrolled
             ? 'h-[72px] navbar-glass-scrolled'
-            : 'h-[80px] bg-transparent border-b border-line/35'
+            : 'h-[80px] bg-ink-900 border-b border-paper/10'
         }`}
       >
         {/* Inner edge reflection: 1px in paper at 50% right above bottom border */}
         <div
           aria-hidden="true"
-          className={`absolute bottom-[1px] left-0 right-0 h-[1px] bg-paper/50 pointer-events-none transition-opacity duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`absolute bottom-[1px] left-0 right-0 h-[1px] bg-paper/10 pointer-events-none transition-opacity duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
             isScrolled ? 'opacity-100' : 'opacity-0'
           }`}
         />
@@ -175,25 +175,25 @@ export default function Navbar() {
           {/* Wordmark */}
           <Link
             to="/"
-            className="flex items-baseline focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"
+            className="flex items-baseline focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
             aria-label="Maquinarias JVK — Inicio"
           >
             <span
-              className={`font-medium tracking-[0.12em] text-ink-900 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`font-medium tracking-[0.12em] text-paper transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 isScrolled ? 'text-[14px]' : 'text-[16px]'
               }`}
             >
               MAQUINARIAS
             </span>
             <span
-              className={`text-ink-900 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`text-paper transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 isScrolled ? 'text-[14px]' : 'text-[16px]'
               }`}
             >
               &thinsp;
             </span>
             <span
-              className={`font-bold italic text-ink-900 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`font-bold italic text-paper transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 isScrolled ? 'text-[14px]' : 'text-[16px]'
               }`}
             >
@@ -218,8 +218,8 @@ export default function Navbar() {
                   aria-haspopup="true"
                   aria-controls="equipamiento-desktop-submenu"
                   onKeyDown={handleTriggerKeyDown}
-                  className={`group relative py-[8px] type-label text-left transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                    isEquipamientoActive ? 'text-ink-900' : 'text-ink-900/70 hover:text-ink-900'
+                  className={`group relative py-[8px] type-label text-[12px] text-left transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2 ${
+                    isEquipamientoActive ? 'text-paper' : 'text-paper/85 hover:text-paper'
                   }`}
                 >
                   <span>EQUIPAMIENTO</span>
@@ -305,10 +305,10 @@ export default function Navbar() {
             <NavLink
               to="/consumibles"
               className={({ isActive }) =>
-                `group relative py-[8px] type-label text-left transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                `group relative py-[8px] type-label text-[12px] text-left transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2 ${
                   isActive || isConsumiblesActive
-                    ? 'text-ink-900'
-                    : 'text-ink-900/70 hover:text-ink-900'
+                    ? 'text-paper'
+                    : 'text-paper/85 hover:text-paper'
                 }`
               }
             >
@@ -324,10 +324,10 @@ export default function Navbar() {
             <NavLink
               to="/nosotros"
               className={({ isActive }) =>
-                `group relative py-[8px] type-label text-left transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                `group relative py-[8px] type-label text-[12px] text-left transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2 ${
                   isActive || isNosotrosActive
-                    ? 'text-ink-900'
-                    : 'text-ink-900/70 hover:text-ink-900'
+                    ? 'text-paper'
+                    : 'text-paper/85 hover:text-paper'
                 }`
               }
             >
@@ -343,12 +343,12 @@ export default function Navbar() {
             <NavLink
               to="/cotizar"
               className={({ isActive }) =>
-                `type-label px-[28px] rounded-full border border-gold-500 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                `type-label px-[28px] rounded-full border transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
                   isScrolled ? 'py-[10px]' : 'py-[14px]'
                 } ${
                   isActive || isCotizarActive
-                    ? 'bg-ink-900 border-ink-900 text-paper'
-                    : 'bg-transparent text-gold-700 hover:bg-ink-900 hover:border-ink-900 hover:text-paper'
+                    ? 'bg-gold-700 border-gold-700 text-paper'
+                    : 'bg-gold-500 border-gold-500 text-ink-900 hover:bg-gold-700 hover:border-gold-700 hover:text-paper'
                 }`
               }
             >
@@ -364,16 +364,16 @@ export default function Navbar() {
             aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-navigation-overlay"
-            className="flex min-[900px]:hidden flex-col justify-center items-center w-[44px] h-[44px] text-ink-900 focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 z-50"
+            className="flex min-[900px]:hidden flex-col justify-center items-center w-[44px] h-[44px] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2 z-50"
           >
             <div className="relative w-[20px] h-[14px]">
               <span
-                className={`absolute left-0 w-[20px] h-[1.5px] bg-ink-900 transition-transform duration-[320ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                className={`absolute left-0 w-[20px] h-[1.5px] bg-paper transition-transform duration-[320ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
                   mobileMenuOpen ? 'top-[6px] rotate-45' : 'top-0 rotate-0'
                 }`}
               />
               <span
-                className={`absolute left-0 w-[20px] h-[1.5px] bg-ink-900 transition-transform duration-[320ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                className={`absolute left-0 w-[20px] h-[1.5px] bg-paper transition-transform duration-[320ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
                   mobileMenuOpen ? 'top-[6px] -rotate-45' : 'bottom-0 rotate-0'
                 }`}
               />
@@ -506,10 +506,10 @@ export default function Navbar() {
               to="/cotizar"
               onClick={() => setMobileMenuOpen(false)}
               className={({ isActive }) =>
-                `type-label block w-full py-[14px] text-center rounded-full border border-gold-500 transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                `type-label block w-full py-[14px] text-center rounded-full border transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
                   isActive
-                    ? 'bg-ink-900 border-ink-900 text-paper'
-                    : 'bg-transparent text-gold-700 hover:bg-ink-900 hover:border-ink-900 hover:text-paper'
+                    ? 'bg-gold-700 border-gold-700 text-paper'
+                    : 'bg-gold-500 border-gold-500 text-ink-900 hover:bg-gold-700 hover:border-gold-700 hover:text-paper'
                 }`
               }
             >

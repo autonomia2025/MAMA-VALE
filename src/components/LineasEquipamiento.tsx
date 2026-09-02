@@ -7,8 +7,16 @@ import {
 import elevadorDetailImage from '../assets/images/elevador_detalle_brazo_1787864733138.jpg';
 
 export default function LineasEquipamiento() {
-  const { ref: sectionRef, isRevealed, prefersReducedMotion, getStyle } =
-    useReveal<HTMLElement>();
+  const {
+    ref: sectionRef,
+    isRevealed,
+    prefersReducedMotion,
+    getStyle,
+    getTextStyle,
+    getParagraphStyle,
+    getImageContainerStyle,
+    getImageStyle,
+  } = useReveal<HTMLElement>();
 
   return (
     <section
@@ -21,19 +29,19 @@ export default function LineasEquipamiento() {
         {/* =========================================================================
             1. ENCABEZADO DE SECCIÓN
             ========================================================================= */}
-        <div style={getStyle(0)} className="grid-base items-end">
+        <div className="grid-base items-end">
           {/* Columnas 1 a 6: Eyebrow + Titular */}
           <div className="col-span-12 md:col-span-12 lg:col-span-6 flex flex-col">
-            <span className="type-label text-gold-700">EQUIPAMIENTO</span>
+            <span style={getTextStyle(0, 0)} className="type-label text-gold-700">EQUIPAMIENTO</span>
             <h2 className="type-h2 text-ink-900 mt-[24px] m-0">
-              <span className="block">Cinco líneas,</span>
-              <span className="block">un solo proveedor.</span>
+              <span style={getTextStyle(0, 1)} className="block">Cinco líneas,</span>
+              <span style={getTextStyle(0, 2)} className="block">un solo proveedor.</span>
             </h2>
           </div>
 
           {/* Columnas 8 a 12: Párrafo de apoyo / argumento comercial */}
           <div className="col-span-12 md:col-span-12 lg:col-span-5 lg:col-start-8 mt-[24px] lg:mt-0">
-            <p className="type-body-sm text-steel-500 m-0 leading-[1.6]">
+            <p style={getParagraphStyle(0, 3)} className="type-body-sm text-steel-500 m-0 leading-[1.6]">
               Equipar un taller con cinco proveedores distintos significa cinco
               garantías, cinco servicios técnicos y cinco números a los que
               llamar cuando algo falla.
@@ -48,20 +56,13 @@ export default function LineasEquipamiento() {
               ========================================================================= */}
           <div className="grid-base items-start">
             {/* Columnas 1 a 5 — Fotografía */}
-            <div
-              className="col-span-12 md:col-span-5 lg:col-span-5 flex flex-col"
-              style={{
-                clipPath:
-                  isRevealed || prefersReducedMotion
-                    ? 'inset(0 0 0 0)'
-                    : 'inset(100% 0 0 0)',
-                transition: prefersReducedMotion
-                  ? 'none'
-                  : 'clip-path 800ms cubic-bezier(0.16, 1, 0.3, 1) 0ms',
-              }}
-            >
-              <div className="relative w-full aspect-[3/2] md:aspect-[4/3] rounded-[20px] overflow-hidden bg-mist">
+            <div className="col-span-12 md:col-span-5 lg:col-span-5 flex flex-col">
+              <div
+                style={getImageContainerStyle(1)}
+                className="relative w-full aspect-[3/2] md:aspect-[4/3] rounded-[20px] overflow-hidden bg-mist"
+              >
                 <img
+                  style={getImageStyle(1)}
                   src={elevadorDetailImage}
                   alt={MAIN_FEATURED_EQUIPMENT.imageAlt}
                   loading="lazy"
@@ -74,36 +75,24 @@ export default function LineasEquipamiento() {
             </div>
 
             {/* Columnas 7 a 12 (Desktop) / 6 a 12 (Tablet) / 12 (Mobile) — Contenido */}
-            <div
-              className="col-span-12 md:col-span-7 lg:col-span-6 md:col-start-6 lg:col-start-7 flex flex-col mt-[40px] md:mt-0"
-              style={{
-                opacity: isRevealed || prefersReducedMotion ? 1 : 0,
-                transform:
-                  isRevealed || prefersReducedMotion
-                    ? 'translateY(0)'
-                    : 'translateY(20px)',
-                transition: prefersReducedMotion
-                  ? 'none'
-                  : 'opacity 700ms cubic-bezier(0.16, 1, 0.3, 1) 150ms, transform 700ms cubic-bezier(0.16, 1, 0.3, 1) 150ms',
-              }}
-            >
+            <div className="col-span-12 md:col-span-7 lg:col-span-6 md:col-start-6 lg:col-start-7 flex flex-col mt-[40px] md:mt-0">
               {/* Etiqueta Línea Principal */}
-              <span className="type-label text-gold-700">
+              <span style={getTextStyle(1, 0)} className="type-label text-gold-700">
                 {MAIN_FEATURED_EQUIPMENT.label}
               </span>
 
               {/* Nombre de la línea */}
-              <h3 className="type-h2 text-ink-900 mt-[20px] m-0">
+              <h3 style={getTextStyle(1, 1)} className="type-h2 text-ink-900 mt-[20px] m-0">
                 {MAIN_FEATURED_EQUIPMENT.title}
               </h3>
 
               {/* Párrafo */}
-              <p className="type-body text-steel-500 mt-[24px] m-0 max-w-[560px] leading-[1.6]">
+              <p style={getParagraphStyle(1, 2)} className="type-body text-steel-500 mt-[24px] m-0 max-w-[560px] leading-[1.6]">
                 {MAIN_FEATURED_EQUIPMENT.description}
               </p>
 
               {/* Lista de 3 puntos con filete horizontal dorado */}
-              <ul className="mt-[40px] p-0 m-0 list-none flex flex-col gap-[14px]">
+              <ul style={getParagraphStyle(1, 3)} className="mt-[40px] p-0 m-0 list-none flex flex-col gap-[14px]">
                 {MAIN_FEATURED_EQUIPMENT.bulletPoints.map((point) => (
                   <li
                     key={point}
@@ -119,7 +108,7 @@ export default function LineasEquipamiento() {
               </ul>
 
               {/* Enlace a Elevadores */}
-              <div className="mt-[48px]">
+              <div style={getParagraphStyle(1, 4)} className="mt-[48px]">
                 <Link
                   to={MAIN_FEATURED_EQUIPMENT.actionHref}
                   className="type-label group relative inline-flex items-center gap-[4px] text-gold-700 py-[4px] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2"

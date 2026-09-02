@@ -8,31 +8,14 @@ import {
 } from '../components/Cierre';
 import { useReveal } from '../hooks/useReveal';
 
-const TIPO_OPTIONS = [
-  'Clip-on acero',
-  'Clip-on aluminio',
-  'Adhesivo',
-  'No estoy seguro',
-] as const;
 
-const VOLUMEN_OPTIONS = [
-  'Menos de 500 piezas',
-  '500 a 2.000',
-  'Más de 2.000',
-  'Aún no lo sé',
-] as const;
 
 export default function CotizarPage() {
   const { ref: pageRef, getStyle } = useReveal<HTMLElement>();
 
   // Form State
   const [nombre, setNombre] = useState('');
-  const [empresa, setEmpresa] = useState('');
-  const [telefono, setTelefono] = useState('');
   const [correo, setCorreo] = useState('');
-  const [comuna, setComuna] = useState('');
-  const [selectedTipos, setSelectedTipos] = useState<string[]>([]);
-  const [selectedVolumen, setSelectedVolumen] = useState<string>('');
   const [mensaje, setMensaje] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -42,38 +25,14 @@ export default function CotizarPage() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo.trim());
   }, [correo]);
 
-  // Form validation: nombre, telefono, correo valid
+  // Form validation: nombre, correo valid, and message filled
   const isFormValid = useMemo(() => {
     return (
       nombre.trim().length > 0 &&
-      telefono.trim().length > 0 &&
-      isEmailValid
+      isEmailValid &&
+      mensaje.trim().length > 0
     );
-  }, [nombre, telefono, isEmailValid]);
-
-  // Handler for selector de tipo (selección múltiple con regla 'No estoy seguro')
-  const handleToggleTipo = (tipo: string) => {
-    if (tipo === 'No estoy seguro') {
-      if (selectedTipos.includes('No estoy seguro')) {
-        setSelectedTipos([]);
-      } else {
-        setSelectedTipos(['No estoy seguro']);
-      }
-    } else {
-      let nextTipos = selectedTipos.filter((t) => t !== 'No estoy seguro');
-      if (nextTipos.includes(tipo)) {
-        nextTipos = nextTipos.filter((t) => t !== tipo);
-      } else {
-        nextTipos = [...nextTipos, tipo];
-      }
-      setSelectedTipos(nextTipos);
-    }
-  };
-
-  // Handler for selector de volumen (selección única)
-  const handleSelectVolumen = (vol: string) => {
-    setSelectedVolumen((prev) => (prev === vol ? '' : vol));
-  };
+  }, [nombre, isEmailValid, mensaje]);
 
   // Form Submit Handler
   const handleSubmit = (e: FormEvent) => {
@@ -92,12 +51,7 @@ export default function CotizarPage() {
   // Reset handler to return to empty form
   const handleResetForm = () => {
     setNombre('');
-    setEmpresa('');
-    setTelefono('');
     setCorreo('');
-    setComuna('');
-    setSelectedTipos([]);
-    setSelectedVolumen('');
     setMensaje('');
     setIsSubmitted(false);
   };
@@ -159,7 +113,7 @@ export default function CotizarPage() {
 
                 {/* Subtexto con 16px de aire */}
                 <p className="type-body-sm text-steel-500 mt-[16px] mb-0">
-                  Te contactamos al correo o teléfono que dejaste.
+                  Te contactamos al correo que dejaste.
                 </p>
 
                 {/* Botón ENVIAR OTRA ↗ con 32px de aire */}
@@ -176,15 +130,15 @@ export default function CotizarPage() {
               <form onSubmit={handleSubmit} noValidate className="w-full">
                 {/* Campos de línea apilados verticalmente con 40px de separación */}
                 <div className="flex flex-col gap-[40px]">
-                  {/* Fila 1: NOMBRE y EMPRESA O TALLER */}
+                  {/* Fila 1: NOMBRE Y APELLIDO y CORREO */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px] md:gap-[24px]">
-                    {/* NOMBRE */}
+                    {/* NOMBRE Y APELLIDO */}
                     <div className="flex flex-col">
                       <label
                         htmlFor="cotizar-nombre"
                         className="type-label text-steel-500 mb-[8px]"
                       >
-                        NOMBRE
+                        NOMBRE Y APELLIDO
                       </label>
                       <input
                         id="cotizar-nombre"
@@ -193,46 +147,6 @@ export default function CotizarPage() {
                         required
                         value={nombre}
                         onChange={(e) => setNombre(e.target.value)}
-                        className="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-line rounded-none py-[12px] px-0 type-body text-ink-900 focus:border-gold-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-4 transition-colors duration-[200ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-                      />
-                    </div>
-
-                    {/* EMPRESA O TALLER */}
-                    <div className="flex flex-col">
-                      <label
-                        htmlFor="cotizar-empresa"
-                        className="type-label text-steel-500 mb-[8px]"
-                      >
-                        EMPRESA O TALLER
-                      </label>
-                      <input
-                        id="cotizar-empresa"
-                        name="empresa"
-                        type="text"
-                        value={empresa}
-                        onChange={(e) => setEmpresa(e.target.value)}
-                        className="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-line rounded-none py-[12px] px-0 type-body text-ink-900 focus:border-gold-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-4 transition-colors duration-[200ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Fila 2: TELÉFONO y CORREO */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px] md:gap-[24px]">
-                    {/* TELÉFONO */}
-                    <div className="flex flex-col">
-                      <label
-                        htmlFor="cotizar-telefono"
-                        className="type-label text-steel-500 mb-[8px]"
-                      >
-                        TELÉFONO
-                      </label>
-                      <input
-                        id="cotizar-telefono"
-                        name="telefono"
-                        type="tel"
-                        required
-                        value={telefono}
-                        onChange={(e) => setTelefono(e.target.value)}
                         className="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-line rounded-none py-[12px] px-0 type-body text-ink-900 focus:border-gold-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-4 transition-colors duration-[200ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
                       />
                     </div>
@@ -257,103 +171,24 @@ export default function CotizarPage() {
                     </div>
                   </div>
 
-                  {/* Fila 3: COMUNA (ancho completo) */}
+                  {/* Fila 2: ¿QUÉ NECESITAS? */}
                   <div className="flex flex-col">
                     <label
-                      htmlFor="cotizar-comuna"
+                      htmlFor="cotizar-mensaje"
                       className="type-label text-steel-500 mb-[8px]"
                     >
-                      COMUNA
+                      ¿QUÉ NECESITAS?
                     </label>
-                    <input
-                      id="cotizar-comuna"
-                      name="comuna"
-                      type="text"
-                      value={comuna}
-                      onChange={(e) => setComuna(e.target.value)}
-                      className="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-line rounded-none py-[12px] px-0 type-body text-ink-900 focus:border-gold-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-4 transition-colors duration-[200ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+                    <textarea
+                      id="cotizar-mensaje"
+                      name="mensaje"
+                      required
+                      rows={4}
+                      value={mensaje}
+                      onChange={(e) => setMensaje(e.target.value)}
+                      className="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-line rounded-none py-[12px] px-0 type-body text-ink-900 resize-none focus:border-gold-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-4 transition-colors duration-[200ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
                     />
                   </div>
-                </div>
-
-                {/* SELECTOR DE TIPO DE CONTRAPESO — Con 48px de aire */}
-                <div className="mt-[48px] flex flex-col">
-                  <span className="type-label text-steel-500 mb-[12px]">
-                    TIPO DE CONTRAPESO
-                  </span>
-                  <div className="flex flex-wrap items-center gap-x-[24px] gap-y-[16px]">
-                    {TIPO_OPTIONS.map((tipo) => {
-                      const isSelected = selectedTipos.includes(tipo);
-                      return (
-                        <button
-                          key={tipo}
-                          type="button"
-                          aria-pressed={isSelected}
-                          onClick={() => handleToggleTipo(tipo)}
-                          className={`type-label relative py-[4px] bg-transparent border-0 cursor-pointer text-left transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 ${
-                            isSelected
-                              ? 'text-ink-900 font-medium'
-                              : 'text-steel-500 hover:text-ink-900'
-                          }`}
-                        >
-                          <span>{tipo}</span>
-                          {/* Subrayado de 1px en gold-500 cuando está activo */}
-                          {isSelected && (
-                            <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-gold-500 pointer-events-none" />
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* VOLUMEN MENSUAL ESTIMADO — Con 40px de aire */}
-                <div className="mt-[40px] flex flex-col">
-                  <span className="type-label text-steel-500 mb-[12px]">
-                    VOLUMEN MENSUAL ESTIMADO
-                  </span>
-                  <div className="flex flex-wrap items-center gap-x-[24px] gap-y-[16px]">
-                    {VOLUMEN_OPTIONS.map((vol) => {
-                      const isSelected = selectedVolumen === vol;
-                      return (
-                        <button
-                          key={vol}
-                          type="button"
-                          aria-pressed={isSelected}
-                          onClick={() => handleSelectVolumen(vol)}
-                          className={`type-label relative py-[4px] bg-transparent border-0 cursor-pointer text-left transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-2 ${
-                            isSelected
-                              ? 'text-ink-900 font-medium'
-                              : 'text-steel-500 hover:text-ink-900'
-                          }`}
-                        >
-                          <span>{vol}</span>
-                          {/* Subrayado de 1px en gold-500 cuando está activo */}
-                          {isSelected && (
-                            <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-gold-500 pointer-events-none" />
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* MENSAJE (OPCIONAL) — Con 48px de aire */}
-                <div className="mt-[48px] flex flex-col">
-                  <label
-                    htmlFor="cotizar-mensaje"
-                    className="type-label text-steel-500 mb-[8px]"
-                  >
-                    MENSAJE (OPCIONAL)
-                  </label>
-                  <textarea
-                    id="cotizar-mensaje"
-                    name="mensaje"
-                    rows={3}
-                    value={mensaje}
-                    onChange={(e) => setMensaje(e.target.value)}
-                    className="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-line rounded-none py-[12px] px-0 type-body text-ink-900 resize-none focus:border-gold-500 focus:outline-none focus-visible:outline-2 focus-visible:outline-ink-900 focus-visible:outline-offset-4 transition-colors duration-[200ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-                  />
                 </div>
 
                 {/* BOTÓN DE ENVÍO — Con 64px de aire */}
