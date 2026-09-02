@@ -28,9 +28,9 @@ export default function Hero() {
           loading="eager"
           fetchPriority="high"
           referrerPolicy="no-referrer"
-          className="absolute inset-0 w-full h-full object-cover scale-105 blur-[8px]"
+          className="absolute inset-0 w-full h-full object-cover scale-105 blur-[2px]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-ink-900/60 via-ink-900/40 to-ink-900/55" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink-900/70 via-ink-900/50 to-ink-900/15" />
       </div>
 
       <div className="relative z-10 layout-container h-full flex-1 flex flex-col justify-between">
@@ -38,7 +38,7 @@ export default function Hero() {
         <div className="w-full flex items-center min-w-0">
           <div className="grid-base w-full items-center">
             <div className="col-span-12 md:col-span-8 lg:col-span-6 flex items-center gap-[16px] min-w-0">
-              <span className="type-label text-gold-500 anim-hero-eyebrow whitespace-nowrap [text-shadow:0_2px_20px_rgba(0,0,0,0.4)]">
+              <span className="type-label font-semibold! text-gold-500 anim-hero-eyebrow whitespace-nowrap [text-shadow:0_1px_12px_rgba(0,0,0,0.55)]">
                 EQUIPAMIENTO PARA TALLERES AUTOMOTRICES
               </span>
               <div className="h-[1px] bg-gold-500 flex-1 anim-hero-hairline min-w-[16px] hidden sm:block" />
@@ -70,7 +70,7 @@ export default function Hero() {
 
               {/* Párrafo de apoyo y Acciones juntos en la animación */}
               <div className="anim-hero-body-actions">
-                <p className="type-body text-paper/75 m-0 mt-[48px] max-w-[560px] leading-[1.6]">
+                <p className="type-body font-medium! text-paper/75 m-0 mt-[48px] max-w-[560px] leading-[1.6] [text-shadow:0_1px_10px_rgba(0,0,0,0.45)]">
                   Elevadores, alineadores, desmontadoras, lubricación y redes. Vendemos, instalamos y damos servicio, para que el equipo no sea el que te frena.
                 </p>
 
@@ -79,7 +79,7 @@ export default function Hero() {
                   {/* Píldora primaria */}
                   <Link
                     to="/equipamiento"
-                    className="type-label group inline-flex items-center justify-center h-[56px] px-[28px] rounded-full bg-paper text-ink-900 hover:bg-paper/90 hover:-translate-y-[2px] transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-paper focus-visible:outline-offset-2 shadow-sm"
+                    className="type-label font-semibold! group inline-flex items-center justify-center h-[56px] px-[28px] rounded-full bg-paper text-ink-900 hover:bg-paper/90 hover:-translate-y-[2px] transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-paper focus-visible:outline-offset-2 shadow-sm"
                   >
                     <span>VER EQUIPAMIENTO</span>
                     <span className="ml-[8px] text-gold-700 transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[2px] group-hover:-translate-y-[2px]">
@@ -90,7 +90,7 @@ export default function Hero() {
                   {/* Enlace secundario */}
                   <Link
                     to="/cotizar"
-                    className="type-label group relative inline-flex items-center gap-[4px] text-gold-500 py-[4px] transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-paper focus-visible:outline-offset-2"
+                    className="type-label font-semibold! group relative inline-flex items-center gap-[4px] text-gold-500 py-[4px] transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-paper focus-visible:outline-offset-2 [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]"
                   >
                     <span>COTIZAR</span>
                     <span className="inline-block transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
@@ -123,14 +123,14 @@ export default function Hero() {
               </h1>
 
               <div className="anim-hero-body-actions">
-                <p className="type-body text-paper/75 m-0 mt-[40px] max-w-[560px] leading-[1.6]">
+                <p className="type-body font-medium! text-paper/75 m-0 mt-[40px] max-w-[560px] leading-[1.6] [text-shadow:0_1px_10px_rgba(0,0,0,0.45)]">
                   Elevadores, alineadores, desmontadoras, lubricación y redes. Vendemos, instalamos y damos servicio, para que el equipo no sea el que te frena.
                 </p>
 
                 <div className="mt-[32px] flex items-center gap-[24px]">
                   <Link
                     to="/equipamiento"
-                    className="type-label group inline-flex items-center justify-center h-[56px] px-[28px] rounded-full bg-paper text-ink-900 hover:bg-paper/90 hover:-translate-y-[2px] transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-paper focus-visible:outline-offset-2 shadow-sm"
+                    className="type-label font-semibold! group inline-flex items-center justify-center h-[56px] px-[28px] rounded-full bg-paper text-ink-900 hover:bg-paper/90 hover:-translate-y-[2px] transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-paper focus-visible:outline-offset-2 shadow-sm"
                   >
                     <span>VER EQUIPAMIENTO</span>
                     <span className="ml-[8px] text-gold-700 transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[2px] group-hover:-translate-y-[2px]">
@@ -139,7 +139,7 @@ export default function Hero() {
                   </Link>
                   <Link
                     to="/cotizar"
-                    className="type-label group relative inline-flex items-center gap-[4px] text-gold-500 py-[4px] transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-paper focus-visible:outline-offset-2"
+                    className="type-label font-semibold! group relative inline-flex items-center gap-[4px] text-gold-500 py-[4px] transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-paper focus-visible:outline-offset-2 [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]"
                   >
                     <span>COTIZAR</span>
                     <span className="inline-block transition-transform duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
@@ -172,7 +172,7 @@ export default function Hero() {
 
             {/* Párrafo y acciones */}
             <div className="anim-hero-body-actions flex flex-col mt-[32px]">
-              <p className="type-body text-paper/75 m-0 leading-[1.6]">
+              <p className="type-body font-medium! text-paper/75 m-0 leading-[1.6] [text-shadow:0_1px_10px_rgba(0,0,0,0.45)]">
                 Elevadores, alineadores, desmontadoras, lubricación y redes. Vendemos, instalamos y damos servicio, para que el equipo no sea el que te frena.
               </p>
 
@@ -180,7 +180,7 @@ export default function Hero() {
               <div className="mt-[32px] flex flex-col items-stretch gap-[16px]">
                 <Link
                   to="/equipamiento"
-                  className="type-label flex items-center justify-center w-full h-[56px] px-[24px] rounded-full bg-paper text-ink-900 focus-visible:outline-2 focus-visible:outline-paper focus-visible:outline-offset-2 shadow-sm"
+                  className="type-label font-semibold! flex items-center justify-center w-full h-[56px] px-[24px] rounded-full bg-paper text-ink-900 focus-visible:outline-2 focus-visible:outline-paper focus-visible:outline-offset-2 shadow-sm"
                 >
                   <span>VER EQUIPAMIENTO</span>
                   <span className="ml-[8px] text-gold-700">↗</span>
@@ -188,7 +188,7 @@ export default function Hero() {
 
                 <Link
                   to="/cotizar"
-                  className="type-label inline-flex items-center justify-start gap-[4px] text-gold-500 py-[8px] focus-visible:outline-2 focus-visible:outline-paper focus-visible:outline-offset-2 self-start"
+                  className="type-label font-semibold! inline-flex items-center justify-start gap-[4px] text-gold-500 py-[8px] focus-visible:outline-2 focus-visible:outline-paper focus-visible:outline-offset-2 self-start [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]"
                 >
                   <span>COTIZAR</span>
                   <span>↗</span>
@@ -231,7 +231,7 @@ export default function Hero() {
                     />
 
                     {/* Nombre de la línea */}
-                    <span className="type-label text-paper/70 group-hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]">
+                    <span className="type-label font-semibold! text-paper/70 group-hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]">
                       {line.name}
                     </span>
 
@@ -268,7 +268,7 @@ export default function Hero() {
                       aria-hidden="true"
                       className="absolute top-0 left-0 right-0 h-[1px] bg-gold-500 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[300ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
                     />
-                    <span className="type-label text-paper/70 group-hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]">
+                    <span className="type-label font-semibold! text-paper/70 group-hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]">
                       {line.name}
                     </span>
                     <span className="type-label text-paper/55 group-hover:text-gold-500 transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
@@ -297,7 +297,7 @@ export default function Hero() {
                       aria-hidden="true"
                       className="absolute top-0 left-0 right-0 h-[1px] bg-gold-500 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-[300ms] ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
                     />
-                    <span className="type-label text-paper/70 group-hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]">
+                    <span className="type-label font-semibold! text-paper/70 group-hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]">
                       {line.name}
                     </span>
                     <span className="type-label text-paper/55 group-hover:text-gold-500 transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
@@ -317,7 +317,7 @@ export default function Hero() {
                 to={line.href}
                 className={`flex items-center justify-between py-[16px] border-b border-paper/20 focus-visible:outline-2 focus-visible:outline-paper focus-visible:outline-offset-2 anim-hero-cell-${index}`}
               >
-                <span className="type-label text-paper">
+                <span className="type-label font-semibold! text-paper">
                   {line.name}
                 </span>
                 <span className="type-label text-paper/55">
