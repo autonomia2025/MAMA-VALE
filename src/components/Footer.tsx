@@ -1,161 +1,47 @@
-import { Link } from 'react-router-dom';
+import { useApp } from '../lib/app';
+import { CONTACT } from '../lib/config';
 
-export default function Footer() {
+const SITE: [string, string][] = [['inicio', 'Inicio'], ['contrapesos', 'Contrapesos'], ['catalogo', 'Catálogo'], ['empresa', 'Empresa'], ['contacto', 'Contacto']];
+const colHead = { fontFamily: 'var(--f-mono)', fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: '#8C9AB5', marginBottom: 6 } as const;
+const col = { display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-start' } as const;
+
+export function Footer() {
+  const { data, motion } = useApp();
+  const lines = data ? data.lines : [];
   return (
-    <footer className="bg-ink-900 pt-[96px] text-left">
-      <div className="layout-container">
-        {/* Top Row: Large Wordmark + Subtitle */}
-        <div className="flex flex-col gap-[16px]">
-          <Link
-            to="/"
-            className="inline-block focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
-            aria-label="Maquinarias JVK — Inicio"
-          >
-            <div className="type-h3 lg:type-h2 text-paper text-left">
-              <span>MAQUINARIAS </span>
-              <span className="italic font-bold">JVK</span>
-            </div>
-          </Link>
-          <p className="type-body-sm text-paper/65 text-left max-w-[640px]">
-            Equipamiento, consumibles y servicios para talleres automotrices en Chile.
-          </p>
-        </div>
-
-        {/* Divider Rule: 96px top air, 64px bottom air */}
-        <div className="border-t border-paper/15 mt-[96px] mb-[64px]" />
-
-        {/* Bottom Row: 4 Columns (2 cols on mobile, 4 on desktop) */}
-        <div className="grid grid-cols-2 lg:grid-cols-12 gap-x-[20px] gap-y-[32px] lg:gap-[24px]">
-          {/* Column 1: Equipamiento */}
-          <div className="col-span-1 lg:col-span-3 flex flex-col gap-[24px]">
-            <span className="type-label text-gold-500">EQUIPAMIENTO</span>
-            <ul className="flex flex-col gap-[12px] p-0 m-0 list-none">
-              <li>
-                <Link
-                  to="/equipamiento/elevadores"
-                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
-                >
-                  Elevadores
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/equipamiento/alineadores"
-                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
-                >
-                  Alineadores
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/equipamiento/desmontadoras"
-                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
-                >
-                  Desmontadoras y balanceadoras
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/equipamiento/lubricacion"
-                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
-                >
-                  Lubricación
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/equipamiento/redes"
-                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
-                >
-                  Redes de aire y fluidos
-                </Link>
-              </li>
-            </ul>
+    <footer data-dark="1" style={{ background: 'var(--navy-deep)', color: 'var(--soft-2)', overflow: 'hidden', marginTop: 'calc(-1 * clamp(24px,3vw,40px))', paddingTop: 'clamp(24px,3vw,40px)' }}>
+      <div className="wrap" style={{ paddingTop: 'clamp(64px,8vw,112px)' }}>
+        <div data-reveal="stagger" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,200px),1fr))', gap: '48px 32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
+            <img src="/assets/jvk-logo-white.png" alt="Maquinarias JVK" style={{ height: 40, width: 'auto', alignSelf: 'flex-start' }} />
+            <p style={{ margin: 0, maxWidth: 280, fontSize: 15, lineHeight: 1.6, color: 'var(--soft)' }}>Soluciones para el sector automotriz, transporte y maquinaria.</p>
           </div>
-
-          {/* Column 2: Consumibles */}
-          <div className="col-span-1 lg:col-span-3 flex flex-col gap-[24px]">
-            <span className="type-label text-gold-500">CONSUMIBLES</span>
-            <ul className="flex flex-col gap-[12px] p-0 m-0 list-none">
-              <li>
-                <Link
-                  to="/consumibles/contrapesos"
-                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
-                >
-                  Contrapesos clip-on
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/consumibles/contrapesos"
-                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
-                >
-                  Contrapesos adhesivos
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/consumibles/contrapesos#catalogo"
-                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
-                >
-                  Catálogo de contrapesos
-                </Link>
-              </li>
-            </ul>
+          <nav aria-label="Pie de página" style={col}>
+            <span style={colHead}>Sitio</span>
+            {SITE.map(([k, t]) => <a key={k} href={'#/' + k} className="flink">{t}</a>)}
+          </nav>
+          <div style={col}>
+            <span style={colHead}>Líneas</span>
+            {lines.map(l => <a key={l.k} href={'#/catalogo?linea=' + l.k} className="flink">{l.t}</a>)}
           </div>
-
-          {/* Column 3: Empresa */}
-          <div className="col-span-1 lg:col-span-3 flex flex-col gap-[24px]">
-            <span className="type-label text-gold-500">EMPRESA</span>
-            <ul className="flex flex-col gap-[12px] p-0 m-0 list-none">
-              <li>
-                <Link
-                  to="/nosotros"
-                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
-                >
-                  Nosotros
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/cotizar"
-                  className="type-body-sm text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
-                >
-                  Cotizar
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 4: Contacto */}
-          <div className="col-span-2 sm:col-span-1 lg:col-span-3 flex flex-col gap-[24px]">
-            <span className="type-label text-gold-500">CONTACTO</span>
-            <div className="flex flex-col gap-[12px]">
-              <span className="type-body-sm text-paper/65">
-                Santiago, Chile
-              </span>
-              <a
-                href="tel:+56223456789"
-                className="type-data text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2"
-              >
-                +56 2 2345 6789 ↗
-              </a>
-              <a
-                href="mailto:contacto@maquinariasjvk.cl"
-                className="type-data text-paper/65 hover:text-paper transition-colors duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-2 focus-visible:outline-gold-500 focus-visible:outline-offset-2 break-all"
-              >
-                contacto@maquinariasjvk.cl ↗
-              </a>
-            </div>
+          <div style={col}>
+            <span style={colHead}>Contacto</span>
+            <a href={'mailto:' + CONTACT.email} className="flink">{CONTACT.email}</a>
+            <a href={CONTACT.phoneHref} className="flink">{CONTACT.phone}</a>
+            <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="flink">WhatsApp</a>
+            <span style={{ fontSize: 15, color: 'var(--soft)' }}>{CONTACT.hours}</span>
           </div>
         </div>
-
-        {/* Closing Row: 64px air above, text-label in paper/65 */}
-        <div className="mt-[64px] pb-[64px] flex items-center justify-between">
-          <p className="type-label text-paper/65 text-left m-0">
-            &copy; 2026 MAQUINARIAS JVK
-          </p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 16, marginTop: 'clamp(56px,7vw,96px)', padding: '22px 0', borderTop: '1px solid var(--foot-line)', fontFamily: 'var(--f-mono)', fontSize: 11, letterSpacing: '.06em', textTransform: 'uppercase', color: '#8C9AB5' }}>
+          <span>© 2026 Maquinarias JVK</span>
+          <span>Calidad · Precisión · Confianza · Relaciones de largo plazo</span>
+          <button className="to-top" onClick={() => window.scrollTo({ top: 0, behavior: motion.rm ? 'auto' : 'smooth' })}>
+            Volver arriba <span aria-hidden="true" className="to-top__arrow">↑</span>
+          </button>
         </div>
+      </div>
+      <div style={{ position: 'relative', overflow: 'hidden' }}>
+        <div data-par="-0.14" aria-hidden="true" style={{ fontFamily: 'var(--f-display)', fontStyle: 'italic', fontStretch: '125%', fontWeight: 800, fontSize: 'clamp(140px,31vw,500px)', lineHeight: .74, letterSpacing: '-.05em', color: '#14223D', textAlign: 'center', marginBottom: '-.06em', userSelect: 'none' }}>JVK</div>
       </div>
     </footer>
   );

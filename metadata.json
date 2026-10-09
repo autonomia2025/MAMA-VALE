@@ -1,7 +1,0 @@
-{
-  "name": "Maquinarias JVK",
-  "description": "Equipamiento, consumibles y servicios para talleres automotrices en Chile.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
-
