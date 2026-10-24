@@ -50,7 +50,7 @@ export function ProductPage() {
         <div onMouseMove={zoomMove} onMouseLeave={zoomOut} style={{ position: 'relative', aspectRatio: '1/1', background: '#fff', borderRadius: 28, overflow: 'hidden', cursor: 'zoom-in', clipPath: I.clip, transition: `clip-path 1.3s ${E}` }}>
           {pr.i && (
             <img key={pr.id} ref={imgRef} src={pr.i} alt={pr.n} onError={() => setImgFailed(pr.id)}
-              style={{ position: 'absolute', inset: '10%', width: '80%', height: '80%', objectFit: 'contain', transition: `transform .6s ${E}`, animation: `jvkImgIn .9s ${E}`, visibility: imgFailed === pr.id ? 'hidden' : undefined }} />
+              style={{ position: 'absolute', inset: '10%', width: '80%', height: '80%', objectFit: 'contain', filter: pr.f, transition: `transform .6s ${E}`, animation: `jvkImgIn .9s ${E}`, visibility: imgFailed === pr.id ? 'hidden' : undefined }} />
           )}
           <span className="glass-light" style={{ position: 'absolute', left: 18, top: 18, display: 'inline-flex', alignItems: 'center', height: 36, padding: '0 14px', borderRadius: 999, fontFamily: 'var(--f-mono)', fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink)', pointerEvents: 'none' }}>Ref. {pr.id}</span>
           {!mob && <span className="glass-light" style={{ position: 'absolute', right: 18, bottom: 18, display: 'inline-flex', alignItems: 'center', height: 36, padding: '0 14px', borderRadius: 999, fontSize: 12, color: 'var(--muted)', pointerEvents: 'none' }}>Pasa el cursor para ampliar</span>}

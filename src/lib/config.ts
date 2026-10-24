@@ -4,8 +4,8 @@ export const SETTINGS = {
   showReadout: true,
   /** Desktop ring cursor. Off by request: the site uses the normal cursor. */
   customCursor: false,
-  /** Show published CLP prices; when false every product reads "Cotizar". */
-  showPrices: true,
+  /** Show published CLP prices; when false every product reads "Cotizar". Off since v5: no prices on the site. */
+  showPrices: false,
   /** Catalog grid density. */
   catalogDensity: 'Cómoda' as 'Cómoda' | 'Compacta',
 };

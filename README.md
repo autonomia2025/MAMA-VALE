@@ -1,6 +1,6 @@
 # Maquinarias JVK — sitio web
 
-Implementación de producción del diseño `project/JVK Sitio v4.dc.html` (Claude Design).
+Implementación de producción del diseño `project/JVK Sitio v5.dc.html` (Claude Design). La v5 aplica los cambios de `project/uploads/cambios pag jvk-2.pdf`: marca KAJOVA, sin precios y catálogo depurado.
 Vite + React + TypeScript, sin otras dependencias. Se publica como sitio estático.
 
 ## Desarrollo
@@ -19,7 +19,7 @@ npm run preview
 - `src/lib/motion.ts` — motor de scroll y cursor (reveals, parallax, sección fija lateral, glow); se activa con atributos `data-*`
 - `src/lib/config.ts` — **lo que se edita a menudo**: interruptores (precios, lectura del hero, cursor), datos de contacto y fotos
 - `src/styles.css` — sistema de diseño (colores, botones, links, vidrio)
-- `public/data/catalogo.json` — catálogo (516 productos, 8 líneas)
+- `public/data/catalogo.json` — catálogo KAJOVA (412 productos, 8 líneas; copia de `project/data/catalogo-kajova.json`)
 
 Las rutas usan hash (`#/catalogo?linea=elevadores`, `#/producto/16701`), así que funcionan en cualquier hosting estático sin reglas de reescritura.
 

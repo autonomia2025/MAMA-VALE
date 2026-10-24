@@ -16,7 +16,6 @@ export function CatalogPage() {
   const brandOpts = Array.from(new Set(list.map(p => p.b).filter(Boolean))).sort();
   if (cat.brand) list = list.filter(p => p.b === cat.brand);
   if (cat.q.trim()) { const t = norm(cat.q.trim()); list = list.filter(p => norm(p.n + ' ' + p.b + ' ' + p.c.join(' ')).includes(t)); }
-  if (cat.sort === 'precio') list = list.slice().sort((a, b) => (b.p ? 1 : 0) - (a.p ? 1 : 0) || a.p - b.p);
   if (cat.sort === 'az') list = list.slice().sort((a, b) => a.n.localeCompare(b.n, 'es'));
   const shown = list.slice(0, cat.limit);
 
@@ -59,7 +58,6 @@ export function CatalogPage() {
             <span className="sr-only">Ordenar</span>
             <select className="ctl" value={cat.sort} onChange={e => upd({ sort: e.target.value as CatFilters['sort'] })}>
               <option value="rel">Orden: destacados</option>
-              <option value="precio">Con precio publicado</option>
               <option value="az">Nombre A–Z</option>
             </select>
           </label>

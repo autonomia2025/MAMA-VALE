@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { EASE as E, intro, useApp } from '../lib/app';
-import { FEATURED, LINES, VALUES, brandCounts, type Product } from '../lib/catalog';
+import { FEATURED, LINES, VALUES, type Product } from '../lib/catalog';
 import { SETTINGS } from '../lib/config';
 import { Btn, FillWords, Glow, GramRuler, ImageSlot, ProductImg, ProductTile, TextLink } from '../components/ui';
 
@@ -18,15 +18,15 @@ export function Home() {
   const { data, entered } = useApp();
   const I = intro(entered);
   const P = data?.products || [];
-  const brands = brandCounts(P);
 
   return (
     <div data-screen-label="Inicio">
       {/* ---------- hero ---------- */}
       <section aria-labelledby="h-home" className="wrap" style={{ paddingTop: 'clamp(28px,4.5vw,64px)' }}>
-        <h1 id="h-home" style={{ margin: 0, display: 'flex', flexDirection: 'column', fontFamily: 'var(--f-display)', fontStretch: '112%', fontWeight: 600, fontSize: 'clamp(38px,5.8vw,94px)', lineHeight: .94, letterSpacing: I.ls, textTransform: 'uppercase', transition: `letter-spacing 1.6s ${E}` }}>
+        <h1 id="h-home" style={{ margin: 0, display: 'flex', flexDirection: 'column', fontFamily: 'var(--f-display)', fontStretch: '112%', fontWeight: 600, fontSize: 'clamp(28px, max(5.8vw, min(38px, 8.6vw)), 94px)', lineHeight: .94, letterSpacing: I.ls, textTransform: 'uppercase', transition: `letter-spacing 1.6s ${E}` }}>
           <span data-drift="-1" className="line-mask"><span style={{ transform: I.line, transition: `transform 1.1s ${E} .05s` }}>Equipamos talleres</span></span>
-          <span data-drift="1" className="line-mask" style={{ paddingLeft: 'clamp(0px,11vw,200px)' }}><span style={{ color: 'var(--gold-head)', transform: I.line, transition: `transform 1.1s ${E} .17s` }}>que no improvisan.</span></span>
+          <span data-drift="1" className="line-mask" style={{ paddingLeft: 'max(0px, min(11vw, 200px, 100vw - 420px))' }}><span style={{ color: 'var(--gold-head)', transform: I.line, transition: `transform 1.1s ${E} .17s` }}>automotrices.</span></span>
+          <span className="line-mask" style={{ marginTop: 'clamp(14px,1.6vw,22px)' }}><span style={{ fontFamily: 'var(--f-body)', fontStretch: '100%', fontWeight: 500, fontSize: 'clamp(20px,2.2vw,32px)', lineHeight: 1.2, letterSpacing: '-.01em', textTransform: 'none', color: 'var(--ink)', transform: I.line, transition: `transform 1.1s ${E} .29s` }}>Cuéntanos tu proyecto y juntos lo hacemos realidad.</span></span>
         </h1>
         {/* v4: everything under the headline is centred; the headline itself keeps its alignment. */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '28px 48px', marginTop: 'clamp(28px,4vw,52px)', marginBottom: 'clamp(28px,3.5vw,44px)' }}>
@@ -54,8 +54,8 @@ export function Home() {
           </div>
         </div>
         <div data-reveal="stagger" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,210px),1fr))', gap: '28px 32px', padding: 'clamp(28px,3vw,40px) 0 0' }}>
-          <div style={stat}><span style={statNum}>{data ? P.length : 516}</span><span style={statLbl}>productos en catálogo</span></div>
-          <div style={stat}><span style={statNum}>{data ? brands.length : 35}</span><span style={statLbl}>marcas de equipamiento</span></div>
+          <div style={stat}><span style={statNum}>{data ? P.length : 412}</span><span style={statLbl}>productos en catálogo</span></div>
+          <div style={stat}><span style={statNum}>KAJOVA</span><span style={statLbl}>marca de equipamiento</span></div>
           <div style={stat}><span style={statNum}>8</span><span style={statLbl}>líneas para el taller completo</span></div>
           <div style={stat}><span style={statNum}>5–60 g</span><span style={statLbl}>contrapesos de línea propia</span></div>
         </div>
@@ -127,7 +127,6 @@ export function Home() {
         </div>
       </section>
 
-      <Marquee brands={brands.slice(0, 16)} />
     </div>
   );
 }
@@ -238,7 +237,7 @@ function LinesSection() {
         {prevEnabled && (
           <div ref={el => { motion.refs.prev = el; }} aria-hidden="true" style={{ position: 'fixed', left: 0, top: 0, zIndex: 20, width: 260, pointerEvents: 'none', willChange: 'transform' }}>
             <div style={{ position: 'relative', aspectRatio: '4/5', borderRadius: 20, overflow: 'hidden', background: '#fff', boxShadow: '0 40px 80px -40px rgba(12,22,40,.45)', opacity: prevOn ? 1 : 0, transform: `scale(${prevOn ? 1 : .86})`, transition: `opacity .35s ${E}, transform .55s ${E}` }}>
-              {hp && <ProductImg key={hp.id} src={hp.i} alt={hp.n} style={{ position: 'absolute', inset: '12%', width: '76%', height: '76%', objectFit: 'contain', animation: `jvkImgIn .8s ${E}` }} />}
+              {hp && <ProductImg key={hp.id} src={hp.i} alt={hp.n} style={{ filter: hp.f, position: 'absolute', inset: '12%', width: '76%', height: '76%', objectFit: 'contain', animation: `jvkImgIn .8s ${E}` }} />}
               <span style={{ position: 'absolute', left: 12, right: 12, bottom: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, height: 34, padding: '0 14px', borderRadius: 999, background: 'rgba(241,240,236,.7)', backdropFilter: 'blur(14px) saturate(1.5)', WebkitBackdropFilter: 'blur(14px) saturate(1.5)', border: '1px solid rgba(255,255,255,.6)', fontFamily: 'var(--f-mono)', fontSize: 10, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink)' }}>
                 <span>Explorar</span><span style={{ color: 'var(--muted)' }}>{hl ? hl.n + ' productos' : ''}</span>
               </span>
@@ -254,7 +253,7 @@ function LinesSection() {
 function FeaturedSection() {
   const { data, pin, motion } = useApp();
   const P = data?.products || [];
-  const tiles = FEATURED.map(rx => P.find(p => rx.test(p.n))).filter((p): p is Product => !!p);
+  const tiles = FEATURED.map(id => P.find(p => p.id === id)).filter((p): p is Product => !!p);
   const rowRef = useRef<HTMLDivElement | null>(null);
   const barRef = useRef<HTMLDivElement | null>(null);
   const [edge, setEdge] = useState({ atStart: true, atEnd: false });
@@ -300,24 +299,6 @@ function FeaturedSection() {
             <div ref={el => { barRef.current = el; motion.refs.featBar = el; }} style={{ height: 1, background: 'var(--ink)', transformOrigin: '0 50%', transform: 'scaleX(.4)', transition: `transform .25s ${E}` }} />
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
-
-function Marquee({ brands }: { brands: string[] }) {
-  const { motion } = useApp();
-  useEffect(() => () => { motion.refs.marq = null; }, [motion]);
-  const items = [0, 1].flatMap(r => brands.map((b, i) => (
-    <span key={r + '-' + i} aria-hidden={r === 1 || undefined} style={{ display: 'inline-flex', alignItems: 'center', gap: 48, paddingRight: 48, fontFamily: 'var(--f-display)', fontStretch: '118%', fontWeight: 600, fontSize: 'clamp(26px,3vw,44px)', textTransform: 'uppercase', color: 'var(--ink)', whiteSpace: 'nowrap' }}>
-      {b}<span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--gold)', display: 'inline-block' }} />
-    </span>
-  )));
-  return (
-    <section aria-label="Marcas en catálogo" className="sec" style={{ overflow: 'hidden' }}>
-      <p className="wrap eyebrow" style={{ margin: '0 auto 28px' }}>Marcas en catálogo</p>
-      <div className="marquee-box" style={{ borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)', padding: '28px 0', overflow: 'hidden' }}>
-        <div ref={el => { motion.refs.marq = el; }} aria-label={brands.join(', ')} style={{ display: 'flex', width: 'max-content', animation: 'jvkMarquee 70s linear infinite', animationPlayState: 'var(--ps, running)' }}>{items}</div>
       </div>
     </section>
   );

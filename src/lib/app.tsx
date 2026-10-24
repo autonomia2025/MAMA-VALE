@@ -4,7 +4,7 @@ import type { Motion } from './motion';
 import type { Route } from './router';
 
 export interface QuoteItem { id: string; n: string; qty: number }
-export interface CatFilters { brand: string; q: string; sort: 'rel' | 'precio' | 'az'; limit: number }
+export interface CatFilters { brand: string; q: string; sort: 'rel' | 'az'; limit: number }
 
 export interface AppCtx {
   route: Route;

@@ -76,7 +76,7 @@ export function ProductTile({ p }: { p: Product }) {
   return (
     <article className="tile">
       <a href={href} aria-label={p.n} className="tile__media">
-        <ProductImg src={p.i} alt={p.n} className="tile__img" />
+        <ProductImg src={p.i} alt={p.n} className="tile__img" style={{ filter: p.f }} />
         <span aria-hidden="true" className="tile__peek glass-light">Ver ficha →</span>
       </a>
       <button className="tile__add" data-in={inQ} title="Añadir a cotización"
