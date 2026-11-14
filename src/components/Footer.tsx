@@ -19,6 +19,7 @@ export function Footer() {
           <nav aria-label="Pie de página" style={col}>
             <span style={colHead}>Sitio</span>
             {SITE.map(([k, t]) => <a key={k} href={'#/' + k} className="flink">{t}</a>)}
+            <a href="#/privacidad" className="flink">Política de privacidad</a>
           </nav>
           <div style={col}>
             <span style={colHead}>Líneas</span>

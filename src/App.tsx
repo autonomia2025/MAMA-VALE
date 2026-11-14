@@ -13,6 +13,7 @@ import { ProductPage } from './pages/Product';
 import { Contrapesos } from './pages/Contrapesos';
 import { Empresa } from './pages/Empresa';
 import { Contacto } from './pages/Contacto';
+import { Privacidad } from './pages/Privacidad';
 
 const QUOTE_KEY = 'jvk-quote-v1';
 const BASE = 'Maquinarias JVK';
@@ -22,7 +23,7 @@ function titleFor(r: Route, data: Catalog | null) {
   return ({
     inicio: BASE + ' — Equipos y contrapesos para talleres', catalogo: 'Catálogo — ' + BASE,
     contrapesos: 'Contrapesos para balanceo de neumáticos — ' + BASE, empresa: 'Empresa — ' + BASE,
-    contacto: 'Contacto y cotización — ' + BASE,
+    contacto: 'Contacto y cotización — ' + BASE, privacidad: 'Política de privacidad — ' + BASE,
   } as Record<string, string>)[r.page] || BASE;
 }
 
@@ -200,6 +201,7 @@ export default function App() {
           {page === 'contrapesos' && <Contrapesos />}
           {page === 'empresa' && <Empresa />}
           {page === 'contacto' && <Contacto />}
+          {page === 'privacidad' && <Privacidad />}
           {page !== 'contacto' && <CtaBand />}
         </main>
 
