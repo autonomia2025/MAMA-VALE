@@ -28,6 +28,6 @@ Las rutas usan hash (`#/catalogo?linea=elevadores`, `#/producto/16701`), así qu
 - **Fotos de marca:** cada espacio de foto muestra su descripción. Sube la imagen a `public/photos/` y pon la ruta en `PHOTOS` en `src/lib/config.ts` (por ejemplo `'cp-gancho': '/photos/contrapesos-gancho.jpg'`). En `public/photos/` ya están las 3 fotos del sitio anterior.
 - **Fotos de productos:** hoy se cargan desde chilelift.cl (como en el diseño). Si alguna falla, se oculta.
 - **Contacto:** correo, teléfono y WhatsApp son provisorios (`CONTACT` en `src/lib/config.ts`).
-- **Formulario:** el envío es simulado. Conecta un endpoint real en `sendQuoteRequest` (`src/pages/Contacto.tsx`).
+- **Formulario:** envía a `api/cotizacion.ts` (función de Vercel) que guarda en Supabase (`supabase/schema.sql`) y avisa por correo con Resend. Variables en `.env.example`; pruebas con `node --test tests/*.test.mjs` (Node 22+). `npm run dev` no ejecuta `/api`: usa `npx vercel dev` o el preview de Vercel. `api/keepalive.ts` corre a diario (cron en `vercel.json`) para que Supabase no pause el proyecto. Falta la página `#/privacidad`.
 
 El paquete original de Claude Design está en `project/`, `chats/` y `HANDOFF.md`.
