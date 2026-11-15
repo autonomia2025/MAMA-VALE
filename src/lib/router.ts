@@ -1,4 +1,4 @@
-export const PAGES = ['inicio', 'catalogo', 'producto', 'contrapesos', 'empresa', 'contacto'] as const;
+export const PAGES = ['inicio', 'catalogo', 'producto', 'contrapesos', 'empresa', 'contacto', 'privacidad'] as const;
 export type Page = typeof PAGES[number];
 export interface Route { page: Page; pid: string | null; line: string }
 
@@ -16,5 +16,5 @@ export function parseHash(hash: string): Route | null {
 }
 
 export const PAGE_LABEL: Record<Page, string> = {
-  inicio: 'Inicio', catalogo: 'Catálogo', producto: 'Catálogo', contrapesos: 'Contrapesos', empresa: 'Empresa', contacto: 'Contacto',
+  inicio: 'Inicio', catalogo: 'Catálogo', producto: 'Catálogo', contrapesos: 'Contrapesos', empresa: 'Empresa', contacto: 'Contacto', privacidad: 'Privacidad',
 };

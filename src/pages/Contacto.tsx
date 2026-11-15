@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { EASE as E, intro, useApp, type QuoteItem } from '../lib/app';
 import { CONTACT } from '../lib/config';
 import { Btn, BtnOutline, TextLink } from '../components/ui';
@@ -6,16 +6,43 @@ import { Btn, BtnOutline, TextLink } from '../components/ui';
 const TIPOS = ['Equipamiento', 'Contrapesos', 'Repuestos e insumos', 'Soporte técnico'];
 const EMPTY = { nombre: '', empresa: '', email: '', telefono: '', tipo: 'Equipamiento', mensaje: '' };
 type Form = typeof EMPTY;
-type Errors = Partial<Record<'nombre' | 'email' | 'mensaje', string>>;
+type ErrKey = 'nombre' | 'email' | 'telefono' | 'mensaje' | 'consentimiento';
+type Errors = Partial<Record<ErrKey, string>>;
+const ERR_KEYS: ErrKey[] = ['nombre', 'email', 'telefono', 'mensaje', 'consentimiento'];
 
-export interface QuoteRequest extends Form { items: QuoteItem[] }
+export interface QuoteRequest extends Form { items: QuoteItem[]; website: string; tiempoMs: number }
 
-/**
- * Sends a quote request. The design simulates the network call; replace the
- * body with a real endpoint (form service, API route, CRM) when it exists.
- */
-async function sendQuoteRequest(_req: QuoteRequest): Promise<void> {
-  await new Promise(r => setTimeout(r, 900));
+type QuoteResult =
+  | { ok: true; numero?: number }
+  | { ok: false; errores: Errors }
+  | { ok: false; failed: true };
+
+/** Posts the request to the serverless function in api/cotizacion.ts. */
+async function sendQuoteRequest(req: QuoteRequest): Promise<QuoteResult> {
+  let res: Response;
+  try {
+    res = await fetch('/api/cotizacion', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        nombre: req.nombre, empresa: req.empresa, email: req.email, telefono: req.telefono, tipo: req.tipo, mensaje: req.mensaje,
+        productos: req.items.map(x => ({ id: x.id, nombre: x.n, cantidad: x.qty })),
+        consentimiento: true,
+        website: req.website,
+        tiempoMs: req.tiempoMs,
+      }),
+    });
+  } catch {
+    return { ok: false, failed: true };
+  }
+  const json = await res.json().catch(() => null);
+  if (res.ok && json?.ok) return { ok: true, numero: typeof json.numero === 'number' ? json.numero : undefined };
+  if (res.status === 400 && json?.errores && typeof json.errores === 'object') {
+    const errores: Errors = {};
+    ERR_KEYS.forEach(k => { if (typeof json.errores[k] === 'string') errores[k] = json.errores[k]; });
+    if (Object.keys(errores).length) return { ok: false, errores };
+  }
+  return { ok: false, failed: true };
 }
 
 export function Contacto() {
@@ -24,7 +51,13 @@ export function Contacto() {
   const [form, setForm] = useState<Form>(EMPTY);
   const [errors, setErrors] = useState<Errors>({});
   const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState<string | null>(null);
+  const [sent, setSent] = useState<{ email: string; numero?: number } | null>(null);
+  const [consent, setConsent] = useState(false);
+  const [honeypot, setHoneypot] = useState('');
+  const [failed, setFailed] = useState(false);
+  // When the form was shown; the backend treats very fast submissions as bots.
+  const shownAt = useRef(Date.now());
+  useEffect(() => { if (!sent) shownAt.current = Date.now(); }, [sent]);
 
   useEffect(() => { requestAnimationFrame(() => { motion.scan(); motion.req(); }); }, [sent, motion]);
 
@@ -40,13 +73,21 @@ export function Contacto() {
     if (!form.nombre.trim()) err.nombre = 'Indica tu nombre.';
     if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) err.email = 'Revisa el correo electrónico.';
     if (!form.mensaje.trim() && !quote.length) err.mensaje = 'Cuéntanos qué necesitas o agrega productos a la cotización.';
+    if (!consent) err.consentimiento = 'Debes aceptar el uso de tus datos para responder tu solicitud.';
     setErrors(err);
+    setFailed(false);
     if (Object.keys(err).length) return;
     setSending(true);
     try {
-      await sendQuoteRequest({ ...form, items: quote });
-      setSent(form.email.trim());
-      clearQuote();
+      const r = await sendQuoteRequest({ ...form, items: quote, website: honeypot, tiempoMs: Date.now() - shownAt.current });
+      if (r.ok) {
+        setSent({ email: form.email.trim(), numero: r.numero });
+        clearQuote();
+      } else if ('errores' in r) {
+        setErrors(r.errores);
+      } else {
+        setFailed(true);
+      }
     } finally {
       setSending(false);
     }
@@ -81,10 +122,11 @@ export function Contacto() {
             <div role="status" style={{ display: 'flex', flexDirection: 'column', gap: 20, padding: '40px 0', animation: `jvkUp .7s ${E}` }}>
               <span style={{ width: 56, height: 56, borderRadius: '50%', background: 'var(--ink)', color: 'var(--gold-2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, animation: `jvkBump .6s ${E} .2s both` }}>✓</span>
               <h2 style={{ margin: 0, fontFamily: 'var(--f-display)', fontStretch: '112%', fontWeight: 600, fontSize: 'clamp(28px,3vw,40px)', lineHeight: 1, textTransform: 'uppercase' }}>Recibimos tu solicitud</h2>
-              <p className="body">Te escribiremos a {sent} con la cotización y las fichas técnicas.</p>
+              {sent.numero !== undefined && <p className="mono-label" style={{ fontSize: 12 }}>Solicitud N° {sent.numero}</p>}
+              <p className="body">Te escribiremos a {sent.email} con la cotización y las fichas técnicas.</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
                 <Btn href="#/catalogo">Seguir en el catálogo</Btn>
-                <BtnOutline onClick={() => { setSent(null); setForm(EMPTY); setErrors({}); }}>Nueva consulta</BtnOutline>
+                <BtnOutline onClick={() => { setSent(null); setForm(EMPTY); setErrors({}); setConsent(false); setHoneypot(''); setFailed(false); }}>Nueva consulta</BtnOutline>
               </div>
             </div>
           ) : (
@@ -118,7 +160,7 @@ export function Contacto() {
                   <Field label="Nombre *" err={errors.nombre}><input className="field__input" value={form.nombre} onChange={bind('nombre')} aria-invalid={!!errors.nombre} autoComplete="name" /></Field>
                   <Field label="Empresa o taller"><input className="field__input" value={form.empresa} onChange={bind('empresa')} autoComplete="organization" /></Field>
                   <Field label="Correo *" err={errors.email}><input className="field__input" type="email" value={form.email} onChange={bind('email')} aria-invalid={!!errors.email} autoComplete="email" /></Field>
-                  <Field label="Teléfono"><input className="field__input" type="tel" value={form.telefono} onChange={bind('telefono')} autoComplete="tel" /></Field>
+                  <Field label="Teléfono" err={errors.telefono}><input className="field__input" type="tel" value={form.telefono} onChange={bind('telefono')} aria-invalid={!!errors.telefono} autoComplete="tel" /></Field>
                 </div>
                 <fieldset style={{ border: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
                   <legend className="mono-label" style={{ padding: 0, marginBottom: 12 }}>Tipo de consulta</legend>
@@ -131,6 +173,23 @@ export function Contacto() {
                 <Field label="Mensaje" err={errors.mensaje}>
                   <textarea className="field__input" value={form.mensaje} onChange={bind('mensaje')} rows={4} placeholder="Vehículos que atiendes, espacio disponible, plazos…" />
                 </Field>
+                {/* Trap field for bots: hidden from people and assistive tech; must stay empty. */}
+                <div aria-hidden="true" style={{ position: 'absolute', left: -9999, top: 'auto', width: 1, height: 1, overflow: 'hidden' }}>
+                  <label>Sitio web<input type="text" name="website" tabIndex={-1} autoComplete="off" value={honeypot} onChange={e => setHoneypot(e.target.value)} /></label>
+                </div>
+                <div className="field">
+                  <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 14, lineHeight: 1.5, color: 'var(--ink-2)', cursor: 'pointer' }}>
+                    <input type="checkbox" checked={consent} onChange={e => { setConsent(e.target.checked); setErrors(er => ({ ...er, consentimiento: undefined })); }}
+                      aria-invalid={!!errors.consentimiento} required style={{ marginTop: 4, accentColor: 'var(--ink)', flexShrink: 0 }} />
+                    <span>Acepto que JVK use mis datos para responder esta solicitud. <a href="#/privacidad" style={{ color: 'var(--ink)' }}>Ver política de privacidad</a></span>
+                  </label>
+                  {errors.consentimiento && <span role="alert" className="field__err">{errors.consentimiento}</span>}
+                </div>
+                {failed && (
+                  <p role="alert" className="field__err" style={{ margin: 0 }}>
+                    No pudimos enviar tu solicitud. Intenta de nuevo o <a href={CONTACT.whatsapp} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit' }}>escríbenos por WhatsApp</a>.
+                  </p>
+                )}
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 16 }}>
                   <span style={{ fontSize: 13, color: 'var(--muted)' }}>* Campos obligatorios</span>
                   <Btn type="submit" disabled={sending}><span>{sending ? 'Enviando…' : 'Enviar solicitud'}</span></Btn>
