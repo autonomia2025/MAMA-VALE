@@ -19,7 +19,7 @@ npm run preview
 - `src/lib/motion.ts` — motor de scroll y cursor (reveals, parallax, sección fija lateral, glow); se activa con atributos `data-*`
 - `src/lib/config.ts` — **lo que se edita a menudo**: interruptores (precios, lectura del hero, cursor), datos de contacto y fotos
 - `src/styles.css` — sistema de diseño (colores, botones, links, vidrio)
-- `public/data/catalogo.json` — catálogo KAJOVA (362 productos, 8 líneas; copia de `project/data/catalogo-kajova-v12.json` con las rutas de fotos absolutas)
+- `public/data/catalogo.json` — catálogo KAJOVA (356 productos, 8 líneas; copia de `project/data/catalogo-kajova-v12.json` con las rutas de fotos absolutas)
 
 Las rutas usan hash (`#/catalogo?linea=elevadores`, `#/producto/16701`), así que funcionan en cualquier hosting estático sin reglas de reescritura.
 

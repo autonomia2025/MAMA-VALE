@@ -33,7 +33,7 @@ export const LINES: Record<string, [string, RegExp]> = {
 };
 
 /** Product ids shown in "Equipos destacados". */
-export const FEATURED = ['28268', '1256', '27336', '28407', '24693', '27449', '29506', '25061'];
+export const FEATURED = ['28268', '1256', '27336', '28407', '24700', '27449', '29506', '25061'];
 
 export const VALUES = [
   { num: '01', t: 'Calidad', d: 'Trabajamos con marcas que conocemos y productos que probamos antes de recomendarlos.' },

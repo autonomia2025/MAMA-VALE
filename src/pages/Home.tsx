@@ -54,7 +54,7 @@ export function Home() {
           </div>
         </div>
         <div data-reveal="stagger" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,210px),1fr))', gap: '28px 32px', padding: 'clamp(28px,3vw,40px) 0 0' }}>
-          <div style={stat}><span style={statNum}>{data ? P.length : 412}</span><span style={statLbl}>productos en catálogo</span></div>
+          <div style={stat}><span style={statNum}>{data ? P.length : 356}</span><span style={statLbl}>productos en catálogo</span></div>
           <div style={stat}><span style={statNum}>KAJOVA</span><span style={statLbl}>marca de equipamiento</span></div>
           <div style={stat}><span style={statNum}>8</span><span style={statLbl}>líneas para el taller completo</span></div>
           <div style={stat}><span style={statNum}>5–60 g</span><span style={statLbl}>contrapesos de línea propia</span></div>
