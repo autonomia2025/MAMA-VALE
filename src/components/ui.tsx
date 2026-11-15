@@ -1,6 +1,6 @@
-import { useState, type ButtonHTMLAttributes, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ButtonHTMLAttributes, type CSSProperties, type ReactNode } from 'react';
 import { useApp } from '../lib/app';
-import { PHOTOS, SETTINGS } from '../lib/config';
+import { CONTACT, PHOTOS, SETTINGS, type Phone } from '../lib/config';
 import { fmtCLP, type Product } from '../lib/catalog';
 
 const Arrows = () => (
@@ -37,6 +37,79 @@ export function TextLink({ href, children, light, plain, arrow = true, external 
   );
 }
 
+const WA_PATH = 'M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35m-5.42 7.4h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.89 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.31-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.41z';
+
+export function WaIcon({ size, color }: { size: number; color: string }) {
+  return <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill={color} style={{ flex: 'none', display: 'block' }}><path d={WA_PATH} /></svg>;
+}
+
+/** One sales line: WhatsApp link with its number, then a small "Llamar" link. */
+export function PhoneRow({ ph, dark }: { ph: Phone; dark?: boolean }) {
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: dark ? '4px 14px' : '4px 18px' }}>
+      {dark ? (
+        <a href={ph.wa} target="_blank" rel="noopener" aria-label={'Escribir por WhatsApp al ' + ph.label} className="flink" style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+          <WaIcon size={15} color="var(--gold-2)" />{ph.label}
+        </a>
+      ) : (
+        <a href={ph.wa} target="_blank" rel="noopener" aria-label={'Escribir por WhatsApp al ' + ph.label} className="tlink tlink--plain">
+          <WaIcon size={17} color="var(--gold-text)" />{ph.label}
+        </a>
+      )}
+      <a href={ph.tel} aria-label={'Llamar al ' + ph.label} className={'call-link' + (dark ? ' call-link--dark' : '')}>Llamar</a>
+    </div>
+  );
+}
+
+/** "WhatsApp" text link that opens a small menu to pick which sales line to write to. */
+export function WaPicker() {
+  const [open, setOpen] = useState(false);
+  const wrap = useRef<HTMLDivElement>(null);
+  const btn = useRef<HTMLButtonElement>(null);
+  const pop = useRef<HTMLDivElement>(null);
+  // On narrow screens the button can sit near the right edge; shift the menu left so it stays on screen.
+  const [shift, setShift] = useState(0);
+
+  useEffect(() => {
+    if (!open) { setShift(0); return; }
+    const r = pop.current?.getBoundingClientRect();
+    if (r) setShift(Math.min(0, document.documentElement.clientWidth - 20 - r.right));
+    pop.current?.querySelector('a')?.focus();
+    const down = (e: PointerEvent) => { if (wrap.current && !wrap.current.contains(e.target as Node)) setOpen(false); };
+    const key = (e: KeyboardEvent) => { if (e.key === 'Escape') { setOpen(false); btn.current?.focus(); } };
+    document.addEventListener('pointerdown', down);
+    document.addEventListener('keydown', key);
+    return () => { document.removeEventListener('pointerdown', down); document.removeEventListener('keydown', key); };
+  }, [open]);
+
+  const arrows = (e: React.KeyboardEvent) => {
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+    e.preventDefault();
+    const as = Array.from(pop.current?.querySelectorAll('a') || []);
+    const i = as.indexOf(document.activeElement as HTMLAnchorElement), n = as.length;
+    as[e.key === 'ArrowDown' ? (i + 1) % n : (i - 1 + n) % n]?.focus();
+  };
+
+  return (
+    <div ref={wrap} style={{ position: 'relative' }}
+      onBlur={e => { if (open && e.relatedTarget && !wrap.current?.contains(e.relatedTarget as Node)) setOpen(false); }}>
+      <button ref={btn} type="button" className="tlink tlink--btn" aria-haspopup="true" aria-expanded={open} aria-controls="wa-pick" onClick={() => setOpen(o => !o)}>
+        WhatsApp <span aria-hidden="true" className="tlink__arrow">→</span>
+      </button>
+      {open && (
+        <div id="wa-pick" ref={pop} role="group" aria-label="Elegir número de WhatsApp" className="wa-pick" style={{ left: shift }} onKeyDown={arrows}>
+          <span className="wa-pick__head">Escribir por WhatsApp a</span>
+          {CONTACT.phones.map(ph => (
+            <a key={ph.tel} href={ph.wa} target="_blank" rel="noopener" className="wa-pick__opt" onClick={() => setOpen(false)}>
+              <WaIcon size={18} color="var(--gold-text)" /><span style={{ flex: 1 }}>{ph.label}</span><span aria-hidden="true" className="wa-pick__arrow">→</span>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /** Brand photo area. Shows the captioned placeholder until PHOTOS[id] is set. */
 export function ImageSlot({ id, placeholder }: { id: string; placeholder: string }) {
   const src = PHOTOS[id];
@@ -66,7 +139,7 @@ export function ProductImg({ src, alt, className, style }: { src?: string; alt: 
 }
 
 export function priceOf(p: Product) {
-  return p.p && SETTINGS.showPrices ? fmtCLP(p.p) : 'Cotizar';
+  return p.p && SETTINGS.showPrices ? fmtCLP(p.p) : 'Precio a cotizar';
 }
 
 export function ProductTile({ p }: { p: Product }) {

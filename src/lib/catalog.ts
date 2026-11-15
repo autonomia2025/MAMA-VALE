@@ -22,18 +22,18 @@ export async function loadCatalog(): Promise<Catalog> {
 
 /** Short description and the product used as each line's preview image. */
 export const LINES: Record<string, [string, RegExp]> = {
-  elevadores: ['Dos y cuatro columnas y tijera.', /tijera de alineación/i],
+  elevadores: ['Dos y cuatro columnas y tijera.', /tijeras de alineación/i],
   rueda: ['Balanceadoras, desmontadoras, alineación y vulcanización.', /KWB-921/i],
   diagnostico: ['Scanners, analizadores de gases y software.', /X-431 PRO3 LINK/i],
   electro: ['Equipos y herramientas para vehículos eléctricos y baterías.', /EVM324/i],
-  fluidos: ['Lubricación, aire acondicionado y cambio de fluidos.', /AC519/i],
+  fluidos: ['Lubricación, aire acondicionado y cambio de fluidos.', /BC713/i],
   carroceria: ['Cabinas de pintura, soldadoras, spotters y mesas.', /TRAMONTANA/i],
   aire: ['Compresores, herramientas y estaciones de trabajo.', /COMPRESOR DE TORNILLO/i],
-  lavado: ['Lavado, limpieza, insumos y repuestos.', /HIDROLAVADORA MICHELIN/i],
+  lavado: ['Lavado, limpieza, insumos y repuestos.', /HIDROLAVADORA/i],
 };
 
 /** Product ids shown in "Equipos destacados". */
-export const FEATURED = ['28268', '1256', '27336', '28407', '24693', '27449', '992', '25061'];
+export const FEATURED = ['28268', '1256', '27336', '28407', '24693', '27449', '29506', '25061'];
 
 export const VALUES = [
   { num: '01', t: 'Calidad', d: 'Trabajamos con marcas que conocemos y productos que probamos antes de recomendarlos.' },

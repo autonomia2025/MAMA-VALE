@@ -181,6 +181,31 @@ button { font-family: inherit; }
 .tlink--light { color: #fff; background-image: linear-gradient(var(--gold-2), var(--gold-2)); }
 .tlink--light:hover { color: #fff; }
 .tlink--plain { font-size: 16px; font-weight: 400; overflow-wrap: anywhere; }
+.tlink--btn { border: none; font: 500 15px var(--f-body); cursor: pointer; }
+
+/* ---------- phone rows: "Llamar" next to each WhatsApp number ---------- */
+.call-link {
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none; padding: 8px 0; transition: color .25s var(--ease);
+}
+.call-link:hover { color: var(--ink); }
+.call-link--dark { color: #8C9AB5; padding: 6px 0; }
+.call-link--dark:hover { color: var(--gold-2); }
+
+/* ---------- WhatsApp number picker (CTA band) ---------- */
+.wa-pick {
+  position: absolute; left: 0; bottom: calc(100% + 12px); z-index: 40; width: min(300px, calc(100vw - 40px));
+  padding: 6px; border-radius: 20px; background: #fff; display: flex; flex-direction: column;
+  box-shadow: 0 0 0 1px rgba(19,33,59,.08), 0 22px 50px -14px rgba(12,22,40,.32);
+  animation: jvkUp .35s var(--ease);
+}
+.wa-pick__head { padding: 12px 14px 8px; font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.wa-pick__opt {
+  display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 14px; border-radius: 14px;
+  color: var(--ink); text-decoration: none; font-size: 16px; outline-offset: -2px; transition: background .2s var(--ease);
+}
+.wa-pick__opt:hover, .wa-pick__opt:focus-visible { --h: 1; background: var(--bg); color: var(--ink); }
+.wa-pick__arrow { display: inline-block; transform: translateX(calc(var(--h, 0) * 4px)); transition: transform .32s var(--ease); }
 
 /* ---------- small round icon buttons ---------- */
 .round {

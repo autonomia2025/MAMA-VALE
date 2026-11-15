@@ -15,7 +15,8 @@ import { Empresa } from './pages/Empresa';
 import { Contacto } from './pages/Contacto';
 import { Privacidad } from './pages/Privacidad';
 
-const QUOTE_KEY = 'jvk-quote-v1';
+// v14 catalog renumbered products, so carts saved by earlier versions are dropped.
+const QUOTE_KEY = 'jvk-quote-v6';
 const BASE = 'Maquinarias JVK';
 
 function titleFor(r: Route, data: Catalog | null) {

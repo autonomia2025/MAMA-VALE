@@ -26,10 +26,21 @@ export const PHOTOS: Record<string, string> = {
   'emp-maquinaria': '',
 };
 
+const WA_TEXT = encodeURIComponent('Hola, vengo del sitio web de Maquinarias JVK y quiero cotizar.');
+
+/** A sales line that takes both WhatsApp and calls. */
+export interface Phone { label: string; tel: string; wa: string }
+const phone = (label: string): Phone => {
+  const digits = label.replace(/\D/g, '');
+  return { label, tel: 'tel:+' + digits, wa: `https://wa.me/${digits}?text=${WA_TEXT}` };
+};
+
+const PHONES = [phone('+56 9 6678 6000'), phone('+56 9 7210 9294')];
+
 export const CONTACT = {
-  email: 'ventas@maquinariasjvk.cl',
-  phone: '+56 9 0000 0000',
-  phoneHref: 'tel:+56900000000',
-  whatsapp: 'https://wa.me/56900000000',
-  hours: 'Lunes a viernes, 9:00 a 18:00',
+  email: 'contacto@maquinariasjvk.cl',
+  phones: PHONES,
+  /** First line, used where a single WhatsApp link is needed. */
+  whatsapp: PHONES[0].wa,
+  hours: ['Lunes a viernes: 9:00 a 18:00', 'Sábado: 9:00 a 14:00'],
 };

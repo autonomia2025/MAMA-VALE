@@ -87,7 +87,7 @@ export function MobileMenu({ open, page, onClose }: { open: boolean; page: Page;
       </nav>
       <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 8, fontSize: 15, color: 'var(--soft)', opacity: open ? 1 : 0, transition: `opacity .5s ${E} .5s` }}>
         <a href={'mailto:' + CONTACT.email} style={{ color: '#fff' }}>{CONTACT.email}</a>
-        <a href={CONTACT.phoneHref} style={{ color: '#fff' }}>{CONTACT.phone}</a>
+        {CONTACT.phones.map(ph => <a key={ph.tel} href={ph.tel} style={{ color: '#fff' }}>{ph.label}</a>)}
       </div>
     </div>
   );
