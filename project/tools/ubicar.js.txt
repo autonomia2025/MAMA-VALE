@@ -1,0 +1,21 @@
+// args: d, specs [[id, tx0, ty0, tx1, ty1]] (thumbnail tile coords, 250 tile), out
+const load = async p => p.i.startsWith('assets') ? await readImage(p.i) : await createImageBitmap(await fetch(p.i, { mode: 'cors' }).then(r => r.blob()));
+const c = createCanvas(1400, 1000), x = c.getContext('2d'); x.fillStyle = '#666'; x.fillRect(0, 0, 1400, 1000);
+let ox = 0, oy = 0, rowH = 0; const info = [];
+for (const [id, a0, b0, a1, b1] of specs) {
+  const p = d.products.find(q => q.id === id); const im = await load(p);
+  const sc = Math.min(246 / im.width, 232 / im.height), tox = (250 - im.width * sc) / 2, toy = 16 + (232 - im.height * sc) / 2;
+  const s0 = Math.min(1, 1000 / Math.max(im.width, im.height)), PW = Math.round(im.width * s0), PH = Math.round(im.height * s0);
+  const pad = 22;
+  let X0 = Math.max(0, ((a0 - pad - tox) / sc) * s0), Y0 = Math.max(0, ((b0 - pad - toy) / sc) * s0), X1 = Math.min(PW, ((a1 + pad - tox) / sc) * s0), Y1 = Math.min(PH, ((b1 + pad - toy) / sc) * s0);
+  X0 = Math.floor(X0 / 10) * 10; Y0 = Math.floor(Y0 / 10) * 10;
+  const w = X1 - X0, h = Y1 - Y0, z = Math.min(4, 300 / h, 440 / w);
+  if (ox + w * z + 40 > 1400) { ox = 0; oy += rowH + 34; rowH = 0; }
+  x.imageSmoothingEnabled = false;
+  x.drawImage(im, X0 / s0, Y0 / s0, w / s0, h / s0, ox, oy + 12, w * z, h * z);
+  x.fillStyle = '#ff0'; x.font = '10px monospace'; x.fillText(id + ' ' + PW + 'x' + PH, ox, oy + 10);
+  for (let g = Math.ceil(X0 / 10) * 10; g <= X1; g += 10) { const X = ox + (g - X0) * z; x.fillStyle = g % 50 ? '#f88' : '#f00'; x.fillRect(X, oy + 12 + h * z, 1, g % 50 ? 4 : 9); if (g % 50 === 0) x.fillText(g, X - 8, oy + 31 + h * z); }
+  for (let g = Math.ceil(Y0 / 10) * 10; g <= Y1; g += 10) { const Y = oy + 12 + (g - Y0) * z; x.fillStyle = g % 50 ? '#f88' : '#f00'; x.fillRect(ox + w * z, Y, g % 50 ? 4 : 9, 1); if (g % 50 === 0) x.fillText(g, ox + w * z + 10, Y + 3); }
+  ox += w * z + 44; rowH = Math.max(rowH, h * z + 12);
+}
+await saveFile(out, await c.convertToBlob({ type: 'image/jpeg', quality: .9 }));
