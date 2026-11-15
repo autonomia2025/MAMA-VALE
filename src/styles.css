@@ -361,6 +361,9 @@ select.ctl { padding: 0 18px; cursor: pointer; }
 .side-line[aria-pressed='true'] { background: var(--ink); color: #fff; }
 .side-line:active { transform: scale(.98); }
 .side-line > span:first-child { transform: translateX(calc(var(--h, 0) * 4px)); transition: transform .4s var(--ease); }
+/* Empresa "Qué nos diferencia": sized so its longest word (ACOMPAÑAMIENTO) fits the column. */
+.dif-title { font-size: clamp(20px, calc(8.6vw - 6px), 44px); }
+@media (min-width: 840px) { .dif-title { font-size: clamp(30px, 3.7vw, 56px); } }
 .value-row:hover { --h: 1; }
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
