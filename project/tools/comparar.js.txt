@@ -1,0 +1,16 @@
+// args: items [[id, src, cx, cy, w, h]], out, readImage, saveFile, createCanvas
+const c = createCanvas(1400, 900), x = c.getContext('2d'); x.fillStyle = '#777'; x.fillRect(0, 0, 1400, 900);
+let ox = 0, oy = 0, rowH = 0;
+for (const [id, src, cx, cy, w, h] of items) {
+  for (const [k, path] of [[0, src], [1, 'assets/kajova/' + id + '-limpia.jpg']]) {
+    let im; try { im = path.startsWith('assets') ? await readImage(path) : await createImageBitmap(await fetch(path, { mode: 'cors' }).then(r => r.blob())); } catch (e) { continue; }
+    const s0 = Math.min(1, 1000 / Math.max(im.width, im.height));
+    const sc = Math.min(3, 200 / h, 330 / w);
+    if (ox + w * sc > 1400) { ox = 0; oy += rowH + 16; rowH = 0; }
+    x.drawImage(im, cx / s0, cy / s0, w / s0, h / s0, ox, oy + 12, w * sc, h * sc);
+    x.fillStyle = '#ff0'; x.font = '10px monospace'; x.fillText(id + (k ? ' limpia' : ' antes'), ox, oy + 10);
+    ox += w * sc + 8; rowH = Math.max(rowH, h * sc + 12);
+  }
+  ox += 10;
+}
+await saveFile(out, await c.convertToBlob({ type: 'image/jpeg', quality: .9 }));

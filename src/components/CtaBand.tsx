@@ -1,5 +1,4 @@
-import { CONTACT } from '../lib/config';
-import { Btn, TextLink } from './ui';
+import { Btn, WaPicker } from './ui';
 
 /** Closing call to action shown on every page except Contacto. */
 export function CtaBand() {
@@ -11,7 +10,7 @@ export function CtaBand() {
           <p className="body">Te respondemos con una cotización clara y la ficha técnica de cada equipo.</p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px 26px', alignItems: 'center' }}>
             <Btn href="#/contacto">Solicitar cotización</Btn>
-            <TextLink href={CONTACT.whatsapp} external>WhatsApp</TextLink>
+            <WaPicker />
           </div>
         </div>
       </div>

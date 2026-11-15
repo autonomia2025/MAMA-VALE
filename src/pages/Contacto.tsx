@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { EASE as E, intro, useApp, type QuoteItem } from '../lib/app';
 import { CONTACT } from '../lib/config';
-import { Btn, BtnOutline, TextLink } from '../components/ui';
+import { Btn, BtnOutline, PhoneRow, TextLink } from '../components/ui';
 
 const TIPOS = ['Equipamiento', 'Contrapesos', 'Repuestos e insumos', 'Soporte técnico'];
 const EMPTY = { nombre: '', empresa: '', email: '', telefono: '', tipo: 'Equipamiento', mensaje: '' };
@@ -46,7 +46,9 @@ async function sendQuoteRequest(req: QuoteRequest): Promise<QuoteResult> {
 }
 
 export function Contacto() {
-  const { quote, setQty, clearQuote, entered, vw, motion } = useApp();
+  const { data, quote, setQty, clearQuote, entered, vw, motion } = useApp();
+  // Show the current catalog name; the saved one may be from an older catalog.
+  const nameOf = (x: QuoteItem) => data?.products.find(p => p.id === x.id)?.n || x.n;
   const I = intro(entered);
   const [form, setForm] = useState<Form>(EMPTY);
   const [errors, setErrors] = useState<Errors>({});
@@ -111,9 +113,8 @@ export function Contacto() {
           <p className="body" style={{ maxWidth: 440, opacity: I.o, transform: I.up, transition: `opacity .9s ${E} .45s, transform 1s ${E} .45s` }}>Cuéntanos qué necesitas o arma tu lista desde el catálogo. Respondemos con una cotización formal y las fichas técnicas de cada equipo.</p>
           <dl style={{ margin: 0, borderTop: '1px solid var(--ink)', maxWidth: 520, opacity: I.o, transition: `opacity .9s ${E} .6s` }}>
             <div style={row}><dt style={dt}>Correo</dt><dd style={{ margin: 0 }}><TextLink href={'mailto:' + CONTACT.email} plain arrow={false}>{CONTACT.email}</TextLink></dd></div>
-            <div style={row}><dt style={dt}>Teléfono</dt><dd style={{ margin: 0 }}><TextLink href={CONTACT.phoneHref} plain arrow={false}>{CONTACT.phone}</TextLink></dd></div>
-            <div style={row}><dt style={dt}>WhatsApp</dt><dd style={{ margin: 0 }}><TextLink href={CONTACT.whatsapp} plain external>Escribir ahora</TextLink></dd></div>
-            <div style={row}><dt style={dt}>Horario</dt><dd style={{ margin: 0, fontSize: 16 }}>{CONTACT.hours}</dd></div>
+            <div style={row}><dt style={dt}>WhatsApp y teléfono</dt><dd style={{ margin: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>{CONTACT.phones.map(ph => <PhoneRow key={ph.tel} ph={ph} />)}</dd></div>
+            <div style={row}><dt style={dt}>Horario</dt><dd style={{ margin: 0, fontSize: 16, lineHeight: 1.6, paddingTop: 2 }}>{CONTACT.hours.map(h => <span key={h} style={{ display: 'block' }}>{h}</span>)}</dd></div>
           </dl>
         </div>
 
@@ -144,7 +145,7 @@ export function Contacto() {
                 <ul style={{ listStyle: 'none', margin: 0, padding: 0, borderTop: '1px solid var(--line)' }}>
                   {quote.map(x => (
                     <li key={x.id} style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) auto auto', alignItems: 'center', gap: 12, padding: '12px 0', borderBottom: '1px solid var(--line)', animation: `jvkUp .5s ${E}` }}>
-                      <a href={x.id.startsWith('cp-') ? '#/contrapesos' : '#/producto/' + x.id} style={{ fontSize: 14, lineHeight: 1.35, color: 'var(--ink)', textDecoration: 'none' }}>{x.n}</a>
+                      <a href={x.id.startsWith('cp-') ? '#/contrapesos' : '#/producto/' + x.id} style={{ fontSize: 14, lineHeight: 1.35, color: 'var(--ink)', textDecoration: 'none' }}>{nameOf(x)}</a>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 2, border: '1px solid var(--line)', borderRadius: 999 }}>
                         <button className="qty-btn" onClick={() => setQty(x.id, -1)} aria-label="Restar">−</button>
                         <span style={{ minWidth: 22, textAlign: 'center', fontFamily: 'var(--f-mono)', fontSize: 13 }}>{x.qty}</span>

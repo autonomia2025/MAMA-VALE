@@ -1,11 +1,17 @@
 import { EASE as E, intro, useApp } from '../lib/app';
-import { VALUES } from '../lib/catalog';
 import { FillWords, ImageSlot } from '../components/ui';
 
 const SECTORS = [
   { t: 'Automotriz', slot: 'emp-automotriz', ph: 'Fotografía: taller automotriz con elevador en uso', d: 'Talleres mecánicos, vulcanizaciones, concesionarios y centros de servicio rápido.' },
   { t: 'Transporte', slot: 'emp-transporte', ph: 'Fotografía: flota de camiones o buses en patio de mantención', d: 'Flotas de carga y pasajeros que necesitan mantención propia, sin detener la operación.' },
   { t: 'Maquinaria', slot: 'emp-maquinaria', ph: 'Fotografía: maquinaria pesada en faena o taller', d: 'Equipos, herramientas e insumos para mantener maquinaria de trabajo pesado.' },
+];
+
+const DIFERENCIAS = [
+  { num: '01', t: 'Atención personalizada', d: 'Escuchamos tus necesidades y te orientamos para encontrar la solución adecuada.' },
+  { num: '02', t: '30 años de experiencia', d: 'Aportamos conocimiento y trayectoria en el sector automotriz.' },
+  { num: '03', t: 'Acompañamiento en cada etapa', d: 'Te apoyamos en la definición del proyecto y el montaje de la maquinaria.' },
+  { num: '04', t: 'Soluciones a medida', d: 'Adaptamos cada propuesta a los requerimientos de tu negocio.' },
 ];
 
 const STEPS = [
@@ -49,26 +55,26 @@ export function Empresa() {
         </div>
       </section>
 
-      <section aria-label="Propósito" className="wrap sec">
+      <section aria-label="Quiénes somos" className="wrap sec">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,260px),1fr))', gap: 32 }}>
-          <p data-reveal="up" className="eyebrow">Nuestro trabajo</p>
+          <p data-reveal="up" className="eyebrow">Quiénes somos</p>
           <div style={{ gridColumn: '1/-1', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,420px),1fr))', gap: 'clamp(28px,4vw,64px)' }}>
             <p data-fill="1" style={{ margin: 0, fontFamily: 'var(--f-display)', fontStretch: '104%', fontWeight: 500, fontSize: 'clamp(26px,3vw,44px)', lineHeight: 1.12, letterSpacing: '-.015em', textWrap: 'pretty' }}>
-              <FillWords text="Elegir bien, explicar con claridad y seguir disponibles cuando el equipo ya está funcionando." />
+              <FillWords text="Tu proyecto, nuestra experiencia. Soluciones a medida para el sector automotriz." />
             </p>
             <div data-reveal="stagger" style={{ display: 'flex', flexDirection: 'column', gap: 18, fontSize: 17, lineHeight: 1.65, color: 'var(--ink-2)' }}>
-              <p style={{ margin: 0, textWrap: 'pretty' }}>Un taller no compra un elevador o una balanceadora todos los meses. Cuando lo hace, necesita saber que el equipo calza con su espacio, su flujo de trabajo y los vehículos que atiende.</p>
-              <p style={{ margin: 0, textWrap: 'pretty' }}>Por eso cada cotización de JVK incluye la ficha técnica, alternativas cuando corresponde y una conversación previa. Y después de la venta, seguimos ahí para repuestos, insumos y contrapesos.</p>
+              <p style={{ margin: 0, textWrap: 'pretty' }}>Somos una empresa con 30 años de experiencia en maquinaria y desarrollo de proyectos para el sector automotriz. Combinamos conocimiento técnico y atención personalizada para ofrecer soluciones a la medida de cada cliente.</p>
+              <p style={{ margin: 0, textWrap: 'pretty' }}>Acompañamos cada proyecto desde la idea inicial hasta el montaje de la maquinaria, con una propuesta adaptada a sus necesidades, espacio y objetivos.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section aria-labelledby="h-val2" className="wrap sec">
-        <h2 data-reveal="up" id="h-val2" className="eyebrow" style={{ fontWeight: 400, marginBottom: 'clamp(32px,4vw,56px)' }}>Valores</h2>
-        {VALUES.map(v => (
+      <section aria-labelledby="h-dif" className="wrap sec">
+        <h2 data-reveal="up" id="h-dif" className="eyebrow" style={{ fontWeight: 400, marginBottom: 'clamp(32px,4vw,56px)' }}>Qué nos diferencia</h2>
+        {DIFERENCIAS.map(v => (
           <div key={v.num} data-reveal="up" className="value-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,360px),1fr))', gap: '16px clamp(28px,4vw,64px)', padding: 'clamp(28px,3vw,40px) 0', borderTop: '1px solid var(--ink)', alignItems: 'baseline' }}>
-            <h3 style={{ margin: 0, display: 'flex', alignItems: 'baseline', gap: 18, fontFamily: 'var(--f-display)', fontStretch: '116%', fontWeight: 600, fontSize: 'clamp(30px,4.6vw,72px)', lineHeight: .95, letterSpacing: 'calc(-.02em + var(--h,0) * .025em)', textTransform: 'uppercase', transition: `letter-spacing .7s ${E}` }}>
+            <h3 className="dif-title" style={{ margin: 0, display: 'flex', alignItems: 'baseline', gap: 18, fontFamily: 'var(--f-display)', fontStretch: '116%', fontWeight: 600, lineHeight: .95, letterSpacing: 'calc(-.02em + var(--h,0) * .025em)', textTransform: 'uppercase', transition: `letter-spacing .7s ${E}` }}>
               <span style={{ fontFamily: 'var(--f-mono)', fontSize: 13, fontWeight: 400, letterSpacing: 0, color: 'var(--gold-text)' }}>{v.num}</span>{v.t}
             </h3>
             <p className="body" style={{ maxWidth: 520 }}>{v.d}</p>

@@ -1,5 +1,6 @@
 import { useApp } from '../lib/app';
 import { CONTACT } from '../lib/config';
+import { PhoneRow } from './ui';
 
 const SITE: [string, string][] = [['inicio', 'Inicio'], ['contrapesos', 'Contrapesos'], ['catalogo', 'Catálogo'], ['empresa', 'Empresa'], ['contacto', 'Contacto']];
 const colHead = { fontFamily: 'var(--f-mono)', fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: '#8C9AB5', marginBottom: 6 } as const;
@@ -28,9 +29,10 @@ export function Footer() {
           <div style={col}>
             <span style={colHead}>Contacto</span>
             <a href={'mailto:' + CONTACT.email} className="flink">{CONTACT.email}</a>
-            <a href={CONTACT.phoneHref} className="flink">{CONTACT.phone}</a>
-            <a href={CONTACT.whatsapp} target="_blank" rel="noopener" className="flink">WhatsApp</a>
-            <span style={{ fontSize: 15, color: 'var(--soft)' }}>{CONTACT.hours}</span>
+            {CONTACT.phones.map(ph => <PhoneRow key={ph.tel} ph={ph} dark />)}
+            <span style={{ display: 'flex', flexDirection: 'column', gap: 2, marginTop: 4, fontSize: 15, lineHeight: 1.5, color: 'var(--soft)' }}>
+              {CONTACT.hours.map(h => <span key={h} style={{ display: 'block' }}>{h}</span>)}
+            </span>
           </div>
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 16, marginTop: 'clamp(56px,7vw,96px)', padding: '22px 0', borderTop: '1px solid var(--foot-line)', fontFamily: 'var(--f-mono)', fontSize: 11, letterSpacing: '.06em', textTransform: 'uppercase', color: '#8C9AB5' }}>
