@@ -20,10 +20,10 @@ export const PHOTOS: Record<string, string> = {
   'cp-adhesivo': '/photos/contrapesos/adhesivos-v2.jpg',
   'cp-gancho': '/photos/contrapesos/gancho-v2.jpg',
   'cp-pesado': '/photos/contrapesos/linea-pesada-v2.jpg',
-  'emp-hero': '',
-  'emp-automotriz': '',
-  'emp-transporte': '',
-  'emp-maquinaria': '',
+  'emp-hero': '/photos/empresa/hero.jpg',
+  'emp-automotriz': '/photos/empresa/automotriz.jpg',
+  'emp-transporte': '/photos/empresa/transporte.jpg',
+  'emp-maquinaria': '/photos/empresa/maquinaria.jpg',
 };
 
 const WA_TEXT = encodeURIComponent('Hola, vengo del sitio web de Maquinarias JVK y quiero cotizar.');
