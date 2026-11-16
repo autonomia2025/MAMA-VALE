@@ -2,7 +2,7 @@ import { useApp } from '../lib/app';
 import { CONTACT } from '../lib/config';
 import { PhoneRow } from './ui';
 
-const SITE: [string, string][] = [['inicio', 'Inicio'], ['contrapesos', 'Contrapesos'], ['catalogo', 'Catálogo'], ['empresa', 'Empresa'], ['contacto', 'Contacto']];
+const SITE: [string, string][] = [['inicio', 'Inicio'], ['contrapesos', 'Contrapesos'], ['catalogo', 'Catálogo'], ['empresa', 'Nosotros'], ['contacto', 'Contacto']];
 const colHead = { fontFamily: 'var(--f-mono)', fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: '#8C9AB5', marginBottom: 6 } as const;
 const col = { display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-start' } as const;
 

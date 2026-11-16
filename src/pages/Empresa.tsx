@@ -26,10 +26,10 @@ export function Empresa() {
   const I = intro(entered);
 
   return (
-    <div data-screen-label="Empresa">
+    <div data-screen-label="Nosotros">
       <section aria-labelledby="h-emp" className="wrap" style={{ paddingTop: 'clamp(28px,4vw,56px)' }}>
         <nav aria-label="Ruta" className="crumbs" style={{ opacity: I.o, transition: `opacity .8s ${E} .3s` }}>
-          <a href="#/inicio">Inicio</a><span>/</span><span style={{ color: 'var(--ink)' }}>Empresa</span>
+          <a href="#/inicio">Inicio</a><span>/</span><span style={{ color: 'var(--ink)' }}>Nosotros</span>
         </nav>
         <h1 id="h-emp" style={{ margin: 'clamp(20px,3vw,36px) 0 0', display: 'flex', flexDirection: 'column', fontFamily: 'var(--f-display)', fontStretch: '112%', fontWeight: 600, fontSize: 'clamp(38px,6vw,98px)', lineHeight: .94, letterSpacing: I.ls, textTransform: 'uppercase', transition: `letter-spacing 1.6s ${E}` }}>
           <span data-drift="-1" className="line-mask"><span style={{ transform: I.line, transition: `transform 1.1s ${E} .05s` }}>Que cada rueda</span></span>

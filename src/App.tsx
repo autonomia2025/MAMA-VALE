@@ -23,7 +23,7 @@ function titleFor(r: Route, data: Catalog | null) {
   if (r.page === 'producto' && data) { const p = data.products.find(x => x.id === r.pid); if (p) return p.n + ' — ' + BASE; }
   return ({
     inicio: BASE + ' — Equipos y contrapesos para talleres', catalogo: 'Catálogo — ' + BASE,
-    contrapesos: 'Contrapesos para balanceo de neumáticos — ' + BASE, empresa: 'Empresa — ' + BASE,
+    contrapesos: 'Contrapesos para balanceo de neumáticos — ' + BASE, empresa: 'Nosotros — ' + BASE,
     contacto: 'Contacto y cotización — ' + BASE, privacidad: 'Política de privacidad — ' + BASE,
   } as Record<string, string>)[r.page] || BASE;
 }

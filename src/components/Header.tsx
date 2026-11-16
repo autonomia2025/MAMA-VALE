@@ -3,7 +3,7 @@ import { EASE as E } from '../lib/app';
 import { CONTACT } from '../lib/config';
 import type { Page } from '../lib/router';
 
-const NAV: [Page, string][] = [['contrapesos', 'Contrapesos'], ['catalogo', 'Catálogo'], ['empresa', 'Empresa'], ['contacto', 'Contacto']];
+const NAV: [Page, string][] = [['inicio', 'Inicio'], ['contrapesos', 'Contrapesos'], ['catalogo', 'Catálogo'], ['empresa', 'Nosotros'], ['contacto', 'Contacto']];
 const activeOf = (p: Page) => (p === 'producto' ? 'catalogo' : p);
 
 interface HeaderProps { scrolled: boolean; dark: boolean; mob: boolean; page: Page; quoteCount: number; menu: boolean; onMenu(): void }
@@ -66,7 +66,7 @@ export function MobileMenu({ open, page, onClose }: { open: boolean; page: Page;
     return () => clearTimeout(t);
   }, [open]);
   const active = activeOf(page);
-  const links: [Page, string][] = [['inicio', 'Inicio'], ...NAV];
+  const links: [Page, string][] = NAV;
   return (
     <div role="dialog" aria-modal="true" aria-label="Menú" aria-hidden={!open}
       style={{ position: 'fixed', inset: 0, zIndex: 80, background: 'var(--navy-deep)', color: '#fff', display: 'flex', flexDirection: 'column', padding: '0 20px 32px', clipPath: open ? 'circle(150% at calc(100% - 48px) 38px)' : 'circle(0% at calc(100% - 48px) 38px)', visibility: open ? 'visible' : 'hidden', transition: `clip-path .75s cubic-bezier(.76,0,.24,1), visibility 0s linear ${open ? '0s' : '.75s'}` }}>

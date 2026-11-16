@@ -16,5 +16,5 @@ export function parseHash(hash: string): Route | null {
 }
 
 export const PAGE_LABEL: Record<Page, string> = {
-  inicio: 'Inicio', catalogo: 'Catálogo', producto: 'Catálogo', contrapesos: 'Contrapesos', empresa: 'Empresa', contacto: 'Contacto', privacidad: 'Privacidad',
+  inicio: 'Inicio', catalogo: 'Catálogo', producto: 'Catálogo', contrapesos: 'Contrapesos', empresa: 'Nosotros', contacto: 'Contacto', privacidad: 'Privacidad',
 };
