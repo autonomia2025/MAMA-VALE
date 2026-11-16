@@ -14,8 +14,8 @@ export const SETTINGS = {
 // show the captioned placeholder; set it to a path under /public (for example
 // '/photos/home-hero.jpg') once the real photo exists.
 export const PHOTOS: Record<string, string> = {
-  'home-hero': '',
-  'home-contrapesos': '',
+  'home-hero': '/photos/home-hero.png',
+  'home-contrapesos': '/photos/home-contrapesos.png',
   'cp-hero': '',
   'cp-adhesivo': '',
   'cp-gancho': '',
